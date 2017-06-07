@@ -1,39 +1,78 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width; initial-scale=1.0">
-<title>Gapi Application - Admin Panel</title>
-<!--[if lt IE 9]>
-<![endif]-->
-
-<!--[if lt IE 9]>
-<![endif]-->
-<link href="http://gapi.anilabsinc.com/assets/admin/css/dataportal.css" rel="stylesheet" type="text/css">
-<link href="http://gapi.anilabsinc.com/assets/admin/css/media-queries.css" rel="stylesheet" type="text/css">
-
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Gapi</title>
+  <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
+  <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
 </head>
-<body>
-	<div id="login-wrapper">
-	<header>
-		<div><a href="http://gapi.anilabsinc.com/admin"><img src="http://gapi.anilabsinc.com/assets/admin/images/spacer.gif" title="anilabsinc" /></a></div>
-	</header>
-	<section>
-		<div class="login-wrapper">
-    		<div id="login-content">
-				<h1>Welcome to the <br/>Gapi App</h1>
-								<div class="login-frm">
-					<a href="<%= url %>" class="google-btn">Login with Google</a>
-				</div>
-    		</div>
-			<script type="text/javascript" src="http://gapi.anilabsinc.com/assets/admin/js/jquery.js"></script>
-			<script type="text/javascript" src="http://gapi.anilabsinc.com/assets/admin/js/jquery-ui.js"></script>			
-		 	<footer>
-            	<p><a href="http://anilabsinc.com" target="_blank">anilabsinc.com</a></p>
-        	</footer>
-		</div>
-	</section>
-	<div class="clear-b"></div>
+<body style="background-image: url(assets/login_bg.jpg)">
+<header>
+<a href="/dashboard/index">
+<img alt="GAPI" class="hdr-logo" src="/assets/login_hdr_logo-35755dfcf5db6f757a2d112b483453eb.png" />
+</a>
+ 
+</header>
+ <div class="flash-message">  
+  
+
+
+     <div class="alert alert-danger fade in">
+       <p>Invalid Email/Password</p>
+     </div>
+
+ </div>
+<div class="abc">       
+<section>
+<div class="block" style="height:auto; min-height:500px;">
+<h2>Welcome to the <br>Gapi App</h2>
+
+      
+<div class="login-frm">
+
+<form method="post" action="/sign_in" role="login" class="login">
+       <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
+         <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
+          
+          <p> <input type="password" class="form-control input-lg" name="password" id="password" placeholder="Password" required="" />     </p>
+          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+          <div>
+       
+          </div>
+          
+        </form>
+ <form method="post" action="/new_password_resets" class="login" style="display:none">
+       <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
+         <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
+          
+          
+          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Get Verification Email</button>
+          <div>
+       
+          </div>
+          
+        </form>       
+         <a href="#" id="reset">Reset password</a>
+<a class="google-btn" href="/auth/google_oauth2">Login with Google </a></div>
+
+
 </div>
+</section>
+<script>
+$("#reset").on("click", function(){
+$(".login").toggle();
+});
+</script>
+
+</div>
+<footer>
+<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
+</footer>
 </body>
+
 </html>

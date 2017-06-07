@@ -1,40 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <style>
-        body        { padding-top:80px; }
-    </style>
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Gapi</title>
+  <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
+  <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
 </head>
-<body>
-<div class="container">
+<body style="background-image: url(assets/login_bg.jpg)">
+<header>
+<a href="/dashboard/index">
+<img alt="GAPI" class="hdr-logo" src="/assets/login_hdr_logo-35755dfcf5db6f757a2d112b483453eb.png" />
+</a>
+ 
+</header>
+ <div class="flash-message">  
+  
+     <div class="alert alert-success fade in">
+       <p>See you!</p>
+     </div>
 
-<div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Login</h1>
 
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+ </div>
+<div class="abc">               
+<section>
+<div class="block" style="height:auto; min-height:500px;">
+<h2>Welcome to the <br>Gapi App</h2>
 
-    <!-- LOGIN FORM -->
-    <form action="/login" method="post">
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" name="email">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
+      
+<div class="login-frm">
 
-        <button type="submit" class="btn btn-warning btn-lg">Login</button>        
-    </form>
+<form method="post" action="/login" role="login" class="login">
+       <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
+         <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
+          
+          <p> <input type="password" class="form-control input-lg" name="password" id="password" placeholder="Password" required="" />     </p>
+          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+          <div>
+       
+          </div>
+          
+        </form>
+ <form method="post" action="/login" class="login" style="display:none">
+       <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
+         <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
+          
+          
+          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Get Verification Email</button>
+          <div>
+       
+          </div>
+          
+        </form>       
+         <a href="#" id="reset">Reset password</a>
+<a class="google-btn" href="/auth/google_oauth2">Login with Google </a></div>
+
+
 </div>
+</section>
+<script>
+$("#reset").on("click", function(){
+$(".login").toggle();
+});
+</script>
 
 </div>
+<footer>
+<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
+</footer>
 </body>
+
 </html>
