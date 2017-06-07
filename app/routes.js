@@ -35,7 +35,7 @@ module.exports = function(app,passport) {
 
 
   app.get('/mailbox', function(req, res) {
-     res.render('mailbox.ejs');
+     res.render('home.ejs');
     });
 
 
@@ -250,15 +250,15 @@ module.exports = function(app,passport) {
 
 
 
- app.get('/login', function(req, res) {
+ app.get('/', function(req, res) {
         
        res.render('login.ejs', { message: req.flash('loginMessage') });
 
   });
     
- app.post('/login', passport.authenticate('local-login', {        
+ app.post('/', passport.authenticate('local-login', {        
         successRedirect : '/dashboard', 
-        failureRedirect : '/login', 
+        failureRedirect : '/', 
         failureFlash : true        
   }));
 

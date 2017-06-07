@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>Gapi</title>
   <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
   <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
@@ -21,20 +21,20 @@
 
 <div class="welcome-name">
 </div>
-		   	
+        
  
 </header>
 <nav class="nav">
-	<ul class="menu">
-		<li><a href="/dashboard"  >Dashboard</a>
-		</li>
-			<li><a href="/userlist" >Users</a></li>
-		<li><a href="/mailbox" class=active>Mail Box</a></li>
-		<li><a href="/emailmessages" >Email Messages</a></li>
-		<li><a href="/calendarevent" >Calendar Events</a></li>
-		<li><a href="/reports" >Reports</a></li>
-	
-	</ul>
+  <ul class="menu">
+    <li><a href="/"  >Dashboard</a>
+    </li>
+      <li><a href="/user/show" >Users</a></li>
+    <li><a href="/mailboxes/index" class=active>Mail Box</a></li>
+    <li><a href="/email_messages" >Email Messages</a></li>
+    <li><a href="/calender_events" >Calendar Events</a></li>
+    <li><a href="/reports/index" >Reports</a></li>
+  
+  </ul>
 </nav>
  <div class="flash-message">  
   
@@ -42,7 +42,7 @@
 
 
  </div>
-<div class="abc">				
+<div class="abc">       
 
 <section>
 
@@ -87,7 +87,7 @@
                  
                   <a class="edit-icon" href="/fetch_messages/15" title="Edit">fetch messages</a>
                   <a class="edit-icon" href="/fetch_events/15" title="Edit">Calender Events</a>
-					<a class="edit-icon" href="/email_messages" title="Edit">View Messages</a>
+          <a class="edit-icon" href="/email_messages" title="Edit">View Messages</a>
                  <a data-class="edit-icon" data-confirm="Are you sure?" data-method="get" data-title="delete" href="/mailboxes/delete_email/15">delete</a>            
                 </td>
         
@@ -96,8 +96,8 @@
 
         </tbody>
       </table>  
-    	
-    	
+      
+      
  </div>
  </div>
  </div>
@@ -113,11 +113,11 @@
       </div>
       <div class="modal-body">
       <form accept-charset="UTF-8" action="https://gapiruby.herokuapp.com/from_email" id="from_email_url" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" /></div>
-	
+  
 
 <div class="pop-row">
  
-	<input class=" form-control" id="mailbox_from_email" maxlength="50" name="mailbox[from_email]" size="50" type="email" />
+  <input class=" form-control" id="mailbox_from_email" maxlength="50" name="mailbox[from_email]" size="50" type="email" />
   </div>
   <input type="hidden" name="id" id="mailbox_id">
    <div class="modal-footer modal-footer-btn">
