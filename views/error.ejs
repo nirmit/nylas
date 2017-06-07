@@ -1,0 +1,25 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Create New User</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-user-plus"></span> Create New User</h1>
+        <a href="/" class="btn btn-default btn-sm"><span class="fa fa-home"></span> Home</a> <a href="/login" class="btn btn-default btn-sm"><span class="fa fa-sign-out"></span> Logout</a> <a href="/userlist" class="btn btn-default btn-sm">User List</a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        Error login with Nylas, <%= message  %>
+    </div>
+
+</div>
+</body>
+</html>

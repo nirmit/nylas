@@ -1,0 +1,43 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Nylas</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-home"></span> Nylas</h1>
+        <a href="/login" class="btn btn-default btn-sm"><span class="fa fa-sign-out"></span> Logout</a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        <a href="<%= url %>">Login To Nylas</a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        <a href="/syncuseremails">syncuseremails</a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        <a href="/syncemails">syncemails</a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        <a href="/emaillist">emaillist</a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        <a href="/calendar">calendar</a>
+    </div>
+     <div class="col-sm-6 col-sm-offset-3">
+        <a href="/synccalendars">synccalendars</a>
+    </div>
+     <div class="col-sm-6 col-sm-offset-3">
+        <a href="/calendarlist">calendarlist</a>
+    </div>
+
+</div>
+</body>
+</html>
