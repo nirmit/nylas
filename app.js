@@ -62,9 +62,33 @@ http.createServer( app ).listen( app.get( 'port' ), function (){
 
 
 
+/*
+var dotenv = require('dotenv/config')
+console.log(process.env.API_ID)
+var url = process.env.MONGODB_URI;
+mongoose.connect(url,function(err){
+	if(err){
+		console.log(err);
+
+	} else{
+		console.log("connected to mongodb");
+	}
+});
+global.Nylas = require('nylas').config({
+   appId: process.env.API_ID,
+   appSecret: process.env.API_SECRET
+});
+
+create file .env in ravinode
 
 
+API_ID = 68uz44xs3kiqhmpxxw08n5yi3
 
+API_SECRET = 6tk575tuvjpad651s02k23n7b
+
+MONGODB_URI = mongodb://tango:tango123@localhost/royal
+
+*/ 
 
 
 

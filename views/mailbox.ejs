@@ -1,345 +1,150 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gapi Application - Admin Panel</title>
-<link href="http://gapi.anilabsinc.com/assets/admin/css/dataportal.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="http://gapi.anilabsinc.com/assets/admin/css/jquery.filer.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+  <title>Gapi</title>
+  <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
+  <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
+</head>
+<body style="">
+<header>
+<a href="/dashboard/index">
+<img alt="GAPI" class="hdr-logo" src="/assets/login_hdr_logo-35755dfcf5db6f757a2d112b483453eb.png" />
+</a>
+<div class="welcome-name"><img alt="Ravinder Kumar" src="" width="50" /></div>
+<div class="welcome-name"><a data-method="delete" href="/logout" rel="nofollow">Log Out</a></div>
 
-<link href="http://gapi.anilabsinc.com/assets/admin/css/gapi.css" rel="stylesheet" type="text/css">
-<link href="http://gapi.anilabsinc.com/assets/admin/css/media-query.css" rel="stylesheet" type="text/css">
-<link href="http://gapi.anilabsinc.com/assets/admin/css/style.css" rel="stylesheet" type="text/css" />
-
-<script type="text/javascript" src="http://gapi.anilabsinc.com/assets/admin/js/jquery.js"></script>
-<script type="text/javascript" src="http://gapi.anilabsinc.com/assets/admin/js/jquery-ui.js"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-function fun_hide_msg()
-{
-	setTimeout(function() {   //calls click event after a certain time
-	   $('.close').click();
-	}, 5000);
-}
-
-// go to list page
-function backtolist()
-{
-	window.location.href = "http://gapi.anilabsinc.com/admin/emails";	
-}
-
-/* Function for pagination using AJAX to maintain serch area AND pagesize*/
-function show_ajax_cardswith_url(baseurl,fieldname,direction)
-{	
-	var search_string = $('#search_string').val();
-	
-	$.ajax({
-		url:baseurl,
-		data:"baseurl="+baseurl+"&search_string="+search_string,
-		type:'POST',
-		success:function(res)
-		{		 
-			$('#table_listing').html($(res).find('#table_listing').html());			
-		},
-		error:function(res) 
-		{
-			result = false;			
-		}
-	});	
-} 
-
-/* Function for pagination using AJAX */
-function show_ajax_cards(obj)
-{
-	var finalUrl;		
-	var baseurl = obj.id;
-	finalUrl = baseurl; // redirect
-	
-	var search_string = $('#search_string').val();
-	
-	$.ajax({
-		url:finalUrl,
-		data:"baseurl="+finalUrl+"&search_string="+search_string,	
-		type:'POST',
-		success:function(res)
-		{
-			$('#table_listing').html($(res).find('#table_listing').html());
-			$('.research').accordion({header: '.mailinfo', collapsible: true, active: false, heightStyle: "content", icons: null});
-		},
-		error:function(res) 
-		{
-			result = false;			
-		}
-	});
-}
+<div class="welcome-name">
+</div>
+		   	
  
-/* Function to select search area */
-function fun_clear()
-{	  
-	$('#search_string').val('');
-	$('#frm_search').submit();
-	return false;
-} 
-
-$( document ).ajaxStart(function() {
-	$("#loading").show();
-});
-
-$( document ).ajaxComplete(function() {
-	$("#loading").hide();
-});
-
-function pullEmails(emailId,emailaddress)
-{
-	var baseurl = 'http://gapi.anilabsinc.com/admin/emailmessages/pullemails';
+</header>
+<nav class="nav">
+	<ul class="menu">
+		<li><a href="/dashboard"  >Dashboard</a>
+		</li>
+			<li><a href="/userlist" >Users</a></li>
+		<li><a href="/mailbox" class=active>Mail Box</a></li>
+		<li><a href="/emailmessages" >Email Messages</a></li>
+		<li><a href="/calendarevent" >Calendar Events</a></li>
+		<li><a href="/reports" >Reports</a></li>
 	
-	$.ajax({
-		url:baseurl,
-		data:{'email_id': emailId},
-		type:'POST',
-		success:function(res)
-		{		 
-			$('#successmsg').html('Email details have been pulled successfully for '+emailaddress+'.');
-			fun_hide_msg();	
-		},
-		error:function(res) 
-		{
-			result = false;			
-		}
-	});
-}
+	</ul>
+</nav>
+ <div class="flash-message">  
+  
 
-function pullCalEvents(emailId)
-{
-	var baseurl = 'http://gapi.anilabsinc.com/admin/emailmessages/pullevents';
+
+
+ </div>
+<div class="abc">				
+
+<section>
+
+<a href="/auth/google_oauth2"><button type="button" class="btn btn-primary">Add/Authorize Email</button></a>
+</section>
+
+<section>
+
+<div class="inner-block">
+
+<h1>Mail Box</h1>
+<div class="frm">
+
+     <div class="table-responsive left width100">
+ <table class="table table-bordered table-hover tablesorter"  id="myTable">
+        <thead>
+          <tr>
+            
+            <th><span></span>Name</th>
+            <th><span></span>Email</th>
+            <th><span></span>Last Pull Date</th>
+             <!--<th class="sort-disabled">From Email</th>-->
+                   <th class="sort-disabled">Status</th>                      
+            <th class="action sort-disabled">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+           
+              <tr>
+               
+                <td>Ravi Punia</td>
+                
+                <td>ravi.punia9t3@gmail.com</td>
+                <td>2017-06-07 10:46:31 UTC</td>      
+                    
+               <!-- <td> | <button  data-toggle="modal" class="abcd" data-id="MTU=
+" data-target="#fromEmailForm">Add/Update</button></td>    -->
+                 <td>Authenticated</td>                        
+
+                <td class="action">
+                 
+                  <a class="edit-icon" href="/fetch_messages/15" title="Edit">fetch messages</a>
+                  <a class="edit-icon" href="/fetch_events/15" title="Edit">Calender Events</a>
+					<a class="edit-icon" href="/email_messages" title="Edit">View Messages</a>
+                 <a data-class="edit-icon" data-confirm="Are you sure?" data-method="get" data-title="delete" href="/mailboxes/delete_email/15">delete</a>            
+                </td>
+        
+
+              </tr>
+
+        </tbody>
+      </table>  
+    	
+    	
+ </div>
+ </div>
+ </div>
+</section>
+
+
+<div class="modal fade" id="fromEmailForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">From Email</h4>
+      </div>
+      <div class="modal-body">
+      <form accept-charset="UTF-8" action="https://gapiruby.herokuapp.com/from_email" id="from_email_url" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" /></div>
 	
-	$.ajax({
-		url:baseurl,
-		data:{'email_id': emailId},
-		type:'POST',
-		success:function(res)
-		{		 
-			$('#successmsg').html('Events have been pulled successfully.');
-			fun_hide_msg();	
-		},
-		error:function(res) 
-		{
-			result = false;			
-		}
-	});
-}
 
-function switch_user(id,switcheduserid)
-{
-	$( '#dialog-confirm-switch' ).dialog
-	({
-		height:170,
-		resizable:false,
-		width: 350,
-		modal: true,
-		closeText: "hide",
-		draggable: false,
-		buttons: 
-		{
-			"Yes": function() 
-			{		
-				var base_url = 'http://gapi.anilabsinc.com/admin/emails';
-				var switchURL = base_url+"/switchtouser/";
-				
-				$.ajax({
-					type: 'POST',
-					url:switchURL,
-					data:{'id': id,'switcheduserid':switcheduserid},
-					success:function(data)
-					{						
-						window.location.href = "http://gapi.anilabsinc.com/admin/dashboard";
-					},
-					error:function(data)
-					{
-						result = false;
-						document.getElementById('alert-success').style.display = 'none';
-						document.getElementById('alert-danger').style.display = 'block';
-						$('#dangermsg').html('Error While Switching User.');
-						fun_hide_msg();
-					},
-				});
-				$( this ).dialog( "close" );	
-			},
-			No: function() 
-			{
-				$( this ).dialog( "close" );
-			}
-		}
-	});	
-}
+<div class="pop-row">
+ 
+	<input class=" form-control" id="mailbox_from_email" maxlength="50" name="mailbox[from_email]" size="50" type="email" />
+  </div>
+  <input type="hidden" name="id" id="mailbox_id">
+   <div class="modal-footer modal-footer-btn">
+       <input class="btn btn-primary" name="submit" type="submit" value="Submit" />
+      </div>
+</form>    </div>
+  </div>
+</div>
+</div>
 
-function delete_data(id,imgname='',module='')
-{
-	if(module=='emailmessages')
-	{
-		$( '#dialog-confirm-emails' ).dialog
-		({
-			height:170,
-			resizable:false,
-			width: 350,
-			modal: true,
-			closeText: "hide",
-			draggable: false,
-			buttons: 
-			{
-				"Delete": function() 
-				{		
-					var base_url = 'http://gapi.anilabsinc.com/admin/emails';
-					var deleteURL = base_url+"/delete/";
-					
-					$.ajax({
-						type: 'POST',
-						url:deleteURL,
-						data:{'id': id,'img':imgname},
-						success:function(data)
-						{
-							show_ajax_cardswith_url(base_url);
-							$('tr[data-id='+id+']').remove();
-							document.getElementById('alert-danger').style.display = 'none';
-							document.getElementById('alert-success').style.display = 'block';
-							$('#successmsg').html(data+' Deleted Successfully.');
-							fun_hide_msg();
-						},
-						error:function(data)
-						{
-							//alert("No===>"+data);
-							result = false;
-							document.getElementById('alert-success').style.display = 'none';
-							document.getElementById('alert-danger').style.display = 'block';
-							$('#dangermsg').html('Error While Deleting Data.');
-							fun_hide_msg();
-						},
-					});
-					$( this ).dialog( "close" );		
-				},
-				Cancel: function() 
-				{
-					$( this ).dialog( "close" );
-				}
-			}
-		});	
-	}
-	else
-	{
-		$( '#dialog-confirm' ).dialog
-		({
-			height:170,
-			resizable:false,
-			width: 350,
-			modal: true,
-			closeText: "hide",
-			draggable: false,
-			buttons: 
-			{
-				"Delete": function() 
-				{		
-					var base_url = 'http://gapi.anilabsinc.com/admin/emails';
-					var deleteURL = base_url+"/delete/";
-					
-					$.ajax({
-						type: 'POST',
-						url:deleteURL,
-						data:{'id': id,'img':imgname},
-						success:function(data)
-						{
-							show_ajax_cardswith_url(base_url);
-							$('tr[data-id='+id+']').remove();
-							document.getElementById('alert-danger').style.display = 'none';
-							document.getElementById('alert-success').style.display = 'block';
-							$('#successmsg').html('Data Deleted Successfully.');
-							fun_hide_msg();
-						},
-						error:function(data)
-						{
-							//alert("No===>"+data);
-							result = false;
-							document.getElementById('alert-success').style.display = 'none';
-							document.getElementById('alert-danger').style.display = 'block';
-							$('#dangermsg').html('Error While Deleting Data.');
-							fun_hide_msg();
-						},
-					});
-					$( this ).dialog( "close" );		
-				},
-				Cancel: function() 
-				{
-					$( this ).dialog( "close" );
-				}
-			}
-		});	
-	}	
-}
+<script>
+
+$(document).on("click", ".abcd", function () {
+     var myBookId = $(this).data('id');
+     $(".modal-body #mailbox_id").val( myBookId );
+     // As pointed out in comments, 
+     // it is superfluous to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+});
 
 </script>
 
-</head>
-
-<body>
-	<header>
-		<a href="http://gapi.anilabsinc.com/admin/dashboard"><img src="http://gapi.anilabsinc.com/assets/admin/images/gapi_logo.png" alt="GAPI" title="GAPI" class="hdr-logo"></a>
-		<div class="welcome-name">Welcome Sandeep Kapil</div>			</header>
-	    <nav class="nav">
-		<ul class="menu">
-			<li><a href="/dashboard" >Dashboard</a></li>
-						<li><a href="/mailbox" class="active">Mail Box</a></li>
-			<li><a href="/email" >Email Messages</a></li>
-			<li><a href="/calendarevent" >Calendar Events</a></li>
-			<li><a href="/reports" >Reports</a></li>
-		</ul>
-	</nav>
-	
-	<section>
-		<div class="content-wrapper">
-  			<h1>Emails</h1>
-   			<form name="frm_search" id="frm_search" action="http://gapi.anilabsinc.com/admin/emails" method="post">	
-				<div class="search-wrapper"><label>Search</label>	
-					<input type="text" class="" value="" id="search_string" name="search_string" />
-					<button class="btn" type="submit"><i class="fa fa-floppy-o"></i><span>Search</span></button>
-					<button class="btn" type="button" onclick="fun_clear();"><i class="fa fa-times"></i><span>Clear</span></button>
-				</div>
-			</form>
-			<h3><a href="http://gapi.anilabsinc.com/admin/emails/add" class="btn">Add Email</a></h3>
-   			<div id="loading"><img src="http://gapi.anilabsinc.com/assets/admin/images/loading.gif" /></div>
-			<div id="successmsg">&nbsp;</div>
-			<div id="table_listing">
-				<div></div>
-				<table cellpadding="0" cellspacing="0" border="0">
-					<tr>
-						<th valign="top">Name</th>
-						<th valign="top">Email</th>
-						<th valign="top">Last pull date</th>
-						<th valign="top">Status</th>
-						<th valign="top"></th>
-					</tr>				
-										<tr data-id="67">
-						<td valign="top">sandeep kapil</td>
-						<td valign="top">kapilsandeep7@gmail.com</td>
-						<td valign="top">2016-09-27 04:31:38</td>
-						<td valign="top">Authenticated</td>
-						<td valign="top" class="action">
-														<a href="http://gapi.anilabsinc.com/admin/emails/update/67" title="Pull Emails"><span class="icon-pencil124"></span></a>
-							<a href="#" onclick="delete_data('67','','emailmessages')" title="Delete"><span class="icon-cross"></span></a>
-													</td>
-					</tr>
-									</table>			
-			</div>
-  			<div class="clear-b"></div>
-			<div></div>    
-		</div>
-	</section>
-	<footer>
-		<a href="http://www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> <a href="http://gapi.anilabsinc.com/admin/logout">Logout</a>
-	</footer>
-	<div id="dialog-confirm" title="Delete" style="display:none;"><p>Are you sure you want to delete this?</p></div>
-	<div id="dialog-confirm-emails" title="Delete" style="display:none;"><p>All relevant email messages will be deleted. Are you sure you want to delete this?</p></div>	
-	<div id="dialog-confirm-switch" title="Switch User" style="display:none;"><p>Are you sure you want to switch with this user?</p></div>
+</div>
+<footer>
+<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
+<a data-method="delete" href="/logout" rel="nofollow">Log Out</a>
+</footer>
 </body>
+
 </html>

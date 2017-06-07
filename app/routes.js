@@ -21,17 +21,7 @@ module.exports = function(app,passport) {
             });
         });
   });
-
-  app.get('/',  function(req, res, next) {
-      options = {
-          redirectURI: 'http://localhost:4000/oauth/callback',
-          trial: false
-      }
-      res.render('index.ejs', {
-          url: Nylas.urlForAuthentication(options)
-      });
-  });
-
+  
 
   app.get('/home', function(req, res,next) {
      options = {
@@ -49,7 +39,7 @@ module.exports = function(app,passport) {
     });
 
 
-  app.get('/email', function(req, res) {
+  app.get('/emailmessages', function(req, res) {
     emailUtil.getEmailList((success, emails) => {
         if(success === false) {
             return res.json({error: emails});
@@ -79,9 +69,9 @@ module.exports = function(app,passport) {
   
 
   app.get('/syncuseremails', function(req, res, next) {
-      //var token = req.user.accessToken;
-      //console.log(token);
-      var nylas = Nylas.with('aGVW0dn025jZi9h4kKsy5ajgkaunfP');
+      var token = req.user.accessToken;
+      console.log(token);
+      var nylas = Nylas.with(token);
       nylas.threads.list({'in':'inbox'}).then(function(emails) {
         console.log(emails);
         res.json(emails);
@@ -90,7 +80,9 @@ module.exports = function(app,passport) {
 
 
    app.get('/calendar', function(req, res, next) {
-      var nylas = Nylas.with('aGVW0dn025jZi9h4kKsy5ajgkaunfP');
+      var token = req.user.accessToken;
+      console.log(token);
+      var nylas = Nylas.with(token);
       nylas.calendars.list().then(function(calendars) {
         console.log(calendars);
         res.json(calendars);
@@ -118,7 +110,9 @@ module.exports = function(app,passport) {
 
 
   app.get('/syncemails',  function(req, res) {
-    var nylas = Nylas.with('aGVW0dn025jZi9h4kKsy5ajgkaunfP');
+      var token = req.user.accessToken;
+      console.log(token);
+      var nylas = Nylas.with(token);
     nylas.threads.list({'in':'inbox'}).then(function(threads) {
       if(threads.length > 0){
          for(i = 0; i < threads.length; i++){
@@ -163,7 +157,9 @@ module.exports = function(app,passport) {
 
 
  app.get('/synccalendars',  function(req, res) {
-    var nylas = Nylas.with('aGVW0dn025jZi9h4kKsy5ajgkaunfP');
+      var token = req.user.accessToken;
+      console.log(token);
+      var nylas = Nylas.with(token);
     nylas.calendars.list().then(function(calendars) {              
       if(calendars.length > 0){
         for(i = 0; i < calendars.length; i++){
@@ -261,7 +257,7 @@ module.exports = function(app,passport) {
   });
     
  app.post('/login', passport.authenticate('local-login', {        
-        successRedirect : '/userlist', 
+        successRedirect : '/dashboard', 
         failureRedirect : '/login', 
         failureFlash : true        
   }));
@@ -317,17 +313,6 @@ module.exports = function(app,passport) {
 
 
 
-
-/*
-function isAdmin(req,res,next) {
-
-  if (req == '/')
-
-      return next();
-    
-    res.render('home.ejs');
-} 
-*/
 
 
 
