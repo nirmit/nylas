@@ -48,7 +48,11 @@
 <div class="inner-block">
 <h1>Add User</h1>
 <div class="frm">
-<form accept-charset="UTF-8" action="/add/user" class="new_user" id="new_user" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="MrFoO863KD/+U2wFXV74TF6bl26DqoVeh8LZbR0XMew=" /></div>
+ <!-- show any messages that come back with authentication -->
+    <% if (message != '') { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+<form accept-charset="UTF-8" action="/createuser" class="new_user" id="new_user" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="MrFoO863KD/+U2wFXV74TF6bl26DqoVeh8LZbR0XMew=" /></div>
 
         <div class="frm-row col-2">
             <div class="frm-col-1"><label>First Name</label><input type="text" name="firstname" /></div>
