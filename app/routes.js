@@ -35,7 +35,7 @@ module.exports = function(app,passport) {
 
 
   app.get('/mailbox', function(req, res) {
-     res.render('home.ejs');
+     res.render('mailbox.ejs');
     });
 
 
