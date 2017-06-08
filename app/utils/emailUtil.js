@@ -7,8 +7,7 @@ module.exports = {
 
     getEmailList: (callback) => {
         Email.find((err, emaillist) => {
-           if(err) { return callback(false, "Failed to get contactlist. Please try again later.") };
-
+           if(err) { return callback(false, "Failed to get contactlist. Please try again later.") };            
            if(typeof(emaillist) === "undefined" || emaillist === null) {
                return callback(false, "No records Found.");
            } else {
@@ -32,14 +31,12 @@ module.exports = {
 
   
   
-   addNewEmail: (nylas_id,subject, account_id, callback) => {           
-         Email.findOne({nylas_id: nylas_id}, (err, emails) => {
+   addNewEmail: (emails,subject, callback) => {           
+         Email.findOne({'emails':emails}, (err, emails) => {
            if(err) { return callback(false, "") };                 
            if(typeof(emails) === "undefined" || emails === null) { 
-                emails = new Email();
-                emails.nylas_id =nylas_id;                
-                emails.subject = subject;                                
-                emails.account_id = account_id;                                
+                emails = new Email();                               
+                emails.subject = subject;                                                
                 emails.save((err) => {
                     if(err) { return callback(false, errorMessage); }
                     return callback(true, 'email Create Successfully.');

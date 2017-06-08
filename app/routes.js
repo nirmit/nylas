@@ -7,7 +7,7 @@ calendarUtil = require("./utils/calendarUtil");
 module.exports = function(app,passport) {
 
  
-  app.get('/userlist', function(req, res) {
+  app.get('/userlist', isLoggedIn, function(req, res) {
         userUtil.getUserList((success, userllist) => {
             if(success === false) {
                 return res.json({error: userllist});
@@ -23,24 +23,24 @@ module.exports = function(app,passport) {
   });
   
 
-  app.get('/home', function(req, res,next) {
+  app.get('/home',isLoggedIn, function(req, res,next) {
      options = {
           redirectURI: 'http://localhost:4000/oauth/callback',                    
           trial: false
       }
-      res.render('home.ejs', {
+      res.render('index.ejs', {
           url: Nylas.urlForAuthentication(options)          
       });
 
   });
 
 
-  app.get('/mailbox', function(req, res) {
+  app.get('/mailbox', isLoggedIn, function(req, res) {
      res.render('mailbox.ejs');
     });
 
 
-  app.get('/emailmessages', function(req, res) {
+  app.get('/emailmessages', isLoggedIn,  function(req, res) {
     emailUtil.getEmailList((success, emails) => {
         if(success === false) {
             return res.json({error: emails});
@@ -54,24 +54,25 @@ module.exports = function(app,passport) {
   });
 
   
-  app.get('/calendarevent', function(req, res) {
+  app.get('/calendarevent', isLoggedIn, function(req, res) {
      res.render('calendarevent.ejs');
     });
 
   
-  app.get('/reports', function(req, res) {
+  app.get('/reports', isLoggedIn,  function(req, res) {
      res.render('reports.ejs');
     });
 
 
-  app.get('/dashboard', function(req, res) {
+  app.get('/dashboard', isLoggedIn, function(req, res) {
      res.render('dashboard.ejs');
     });
   
 
-  app.get('/syncuseremails', function(req, res, next) {
-      var token = req.user.accessToken;
-      console.log(token);
+  app.get('/syncuseremails', isLoggedIn, function(req, res, next) {
+      console.log('req.user');
+      console.log(req.user);
+      var token = req.user.token;
       var nylas = Nylas.with(token);
       nylas.threads.list({'in':'inbox'}).then(function(emails) {
         console.log(emails);
@@ -80,8 +81,8 @@ module.exports = function(app,passport) {
   });
 
 
-  app.get('/calendar', function(req, res, next) {
-      var token = req.user.accessToken;
+  app.get('/calendar', isLoggedIn,  function(req, res, next) {
+      var token = req.user.token;
       console.log(token);
       var nylas = Nylas.with(token);
       nylas.calendars.list().then(function(calendars) {
@@ -91,10 +92,16 @@ module.exports = function(app,passport) {
     });
 
 
-  app.get('/oauth/callback', function (req, res, next) {
+  app.get('/oauth/callback', isLoggedIn, function (req, res, next) {
       if (req.query.code) {
-          Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
-              console.log(token);
+          Nylas.exchangeCodeForToken(req.query.code).then(function(token) {                            
+              userUtil.UpdateToken(req.user.email, token, (success, result) => {
+                res.render('createuser.ejs', {
+                    message : result,                                        
+                    token: token
+                });                
+              });
+              console.log(token);              
               res.render('dashboard.ejs');
           });
 
@@ -110,17 +117,13 @@ module.exports = function(app,passport) {
   });
 
 
-  app.get('/syncemails',  function(req, res) {
-      var token = req.user.accessToken;
-      console.log(token);
+  app.get('/syncemails',isLoggedIn,  function(req, res) {
+      var token = req.user.token;
       var nylas = Nylas.with(token);
     nylas.threads.list({'in':'inbox'}).then(function(threads) {
       if(threads.length > 0){
-         for(i = 0; i < threads.length; i++){
-             //console.log(threads[i]);          
-             //console.log(threads[i].subject);
-             //console.log(threads);          
-           emailUtil.addNewEmail(threads[i].id, threads[i].subject, threads[i].accountId, (success, result) => {               
+         for(i = 0; i < threads.length; i++){         
+           emailUtil.addNewEmail(threads[i].subject, (success, result) => {               
              if(success === false) {
                  return res.json({error: result});                 
              }              
@@ -130,17 +133,17 @@ module.exports = function(app,passport) {
        res.redirect('/email');
     });    
   });
+  
 
 
-
-  app.get('/emaillist',  function(req, res) {  
+  app.get('/emaillist',isLoggedIn,  function(req, res) {  
     emailUtil.getEmailList((success, emails) => {
         if(success === false) {
             return res.json({error: emails});
         }
         // res.json({'result':userllist});
         console.log(emails);
-        res.render('emaillist.ejs', {
+        res.render('email.ejs', {
             emails : emails,            
         });
     });     
@@ -149,7 +152,7 @@ module.exports = function(app,passport) {
 
 
  //delete emails
- app.get('/deleteemail/:nylas_id', function(req,res){
+ app.get('/deleteemail/:nylas_id',isLoggedIn, function(req,res){
       nylas_id = req.params.nylas_id;      
       emailUtil.RemoveEmailfromDB(nylas_id, (success, result) => {          
           res.redirect('/emaillist');
@@ -157,8 +160,8 @@ module.exports = function(app,passport) {
  });
 
 
- app.get('/synccalendars',  function(req, res) {
-      var token = req.user.accessToken;
+ app.get('/synccalendars',isLoggedIn,  function(req, res) {
+      var token = req.user.token;
       console.log(token);
       var nylas = Nylas.with(token);
     nylas.calendars.list().then(function(calendars) {              
@@ -180,7 +183,7 @@ module.exports = function(app,passport) {
 
 
 
-  app.get('/calendarlist',  function(req, res) {  
+  app.get('/calendarlist',isLoggedIn,  function(req, res) {  
     calendarUtil.getCalendarList((success, calendar) => {
         if(success === false) {
             return res.json({error: calendar});
@@ -195,7 +198,7 @@ module.exports = function(app,passport) {
 
 
   //delete calender
-  app.get('/deletecalendar/:nylas_id', function(req,res){
+  app.get('/deletecalendar/:nylas_id',isLoggedIn, function(req,res){
       nylas_id = req.params.nylas_id;      
       calendarUtil.RemoveCalendarfromDB(nylas_id, (success, result) => {          
           res.redirect('/calendarlist');
@@ -204,7 +207,7 @@ module.exports = function(app,passport) {
 
 
    
-  app.get("/removeuser/:uuid", function(req, res) {
+  app.get("/removeuser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;
         userUtil.RemoveUserfromDB(userid, (success, result) => {
             res.redirect('/userlist');
@@ -213,7 +216,7 @@ module.exports = function(app,passport) {
 
 
   //updateuser   
-  app.get("/edituser/:uuid", function(req, res) {
+  app.get("/edituser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;       
         userUtil.getUserDetails(userid, (success, result) => {
          console.log(success)
@@ -231,7 +234,7 @@ module.exports = function(app,passport) {
   });
 
 
-  app.post("/edituser/:uuid", function(req, res) {
+  app.post("/edituser/:uuid",isLoggedIn, function(req, res) {
         firstname = req.body.firstname,
         lastname = req.body.lastname,
         email = req.body.email,                
@@ -269,7 +272,7 @@ module.exports = function(app,passport) {
     // SIGNUP ==============================
     // =====================================
     // show the signup form
-    app.get('/createuser', function(req, res) {
+    app.get('/createuser',isLoggedIn, function(req, res) {
 
         // render the page and pass in any flash data if it exists
         res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role:'' });
@@ -283,7 +286,7 @@ module.exports = function(app,passport) {
    // }));
 
    //Update User Details
-    app.post("/createuser", function(req, res) {
+    app.post("/createuser",isLoggedIn, function(req, res) {
         firstname = req.body.firstname,
         lastname = req.body.lastname,   
         email = req.body.email,
@@ -291,7 +294,7 @@ module.exports = function(app,passport) {
         role = req.body.role;
         isValid = userUtil.isvalidEmail(email);
         if(isValid){
-            userUtil.addNewUser(firstname,lastname,email,role, password, (success, result) => {
+            userUtil.addNewUser(firstname,lastname,email,password, role, (success, result) => {
                 res.render('createuser.ejs', {
                     message : result,
                     firstname: firstname,lastname: lastname, email: email, role:role
@@ -314,7 +317,7 @@ module.exports = function(app,passport) {
     if (req.isAuthenticated())
         return next();
     
-    res.redirect('/login'); 
+    res.redirect('/'); 
   }
 
 

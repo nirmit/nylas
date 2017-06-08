@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 
 var emailSchema = mongoose.Schema({
 
-        nylas_id     : String,        
-        subject      : String,      
-        account_id   : String      
+                
+        subject      : String      
+            
         
 
 });

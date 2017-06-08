@@ -46,7 +46,7 @@ module.exports = {
         if(password != ''){
             var puser = new User();
             var passstring = puser.generateHash(password);
-            User.findOneAndUpdate({_id: userid}, { $set: { 'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring, 'phone': phone,'accessToken': accessToken, }}, {returnNewDocument: true}, (err, user) => {
+            User.findOneAndUpdate({_id: userid}, { $set: { 'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring, 'phone': phone,'token': accessToken, }}, {returnNewDocument: true}, (err, user) => {
            if(err) { return callback(false, "Failed to get user details. Please try again later.") };
                if(typeof(user) === "undefined" || user === null) {
                    return callback(false, "user not found.");
@@ -55,7 +55,7 @@ module.exports = {
                }
             });
         }else{
-            User.findOneAndUpdate({_id: userid}, { $set: {'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring,'phone': phone,'accessToken': accessToken, }}, {returnNewDocument: true}, (err, user) => {
+            User.findOneAndUpdate({_id: userid}, { $set: {'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring,'phone': phone,'token': accessToken, }}, {returnNewDocument: true}, (err, user) => {
            if(err) { return callback(false, "Failed to get user details. Please try again later.") };
                if(typeof(user) === "undefined" || user === null) {
                    return callback(false, "user not found.");
@@ -64,6 +64,17 @@ module.exports = {
                }
             });
         }        
+    },
+
+    UpdateToken: ( email, accessToken,callback) => {
+         User.findOneAndUpdate({email: email}, { $set: {'token':accessToken }}, {returnNewDocument: true}, (err, user) => {
+            if(err) { return callback(false, "Failed to get user details. Please try again later.") };
+            if(typeof(user) === "undefined" || user === null) {
+                return callback(false, "user not found.");
+            } else {
+                callback(true, user);
+            }
+         });     
     },
 
 

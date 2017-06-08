@@ -61,10 +61,9 @@
         <td><%= userlist[i].role %></td>        
         <td class="action">
         <a class="edit-icon" href="<%= sitelink %>/edituser/<%= userlist[i].id %>" title="Edit">Edit</a>
-        <a class="edit-icon" data-method="delete" href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" rel="nofollow" title="Delete">Delete</a>   
+        <a class="delete-icon" href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" title="Delete">Delete</a>         
         <a href="javascript:void(0);" onclick="switch_user(9, 1)" title="switch user">Switch User</a>
-        </td>
-        <!-- <td><a href="<%= sitelink %>/edituser/<%= userlist[i].id %>"><span class="fa fa-edit"></span></a>&nbsp;<a href="<%= sitelink %>/removeuser/<%= userlist[i].id %>"><span class="fa fa-remove"></span></a></td> --> 
+        </td>       
         </tr> 
         <% } %>
         <% }else{ %>

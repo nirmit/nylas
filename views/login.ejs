@@ -29,7 +29,11 @@
     <div class="block" style="height:auto; min-height:500px;">
     <h2>Welcome to the <br>Gapi App</h2>
 
-
+    <!-- show any messages that come back with authentication -->
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+    
     <div class="login-frm">
 
     <form method="post" action="/" role="login" class="login">
