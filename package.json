@@ -21,6 +21,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "test": "make test",
     "start": "node app.js"
   },
   "author": "",
