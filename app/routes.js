@@ -31,6 +31,7 @@ module.exports = function(app,passport) {
       res.render('home.ejs', {
           url: Nylas.urlForAuthentication(options)          
       });
+
   });
 
 
@@ -79,7 +80,7 @@ module.exports = function(app,passport) {
   });
 
 
-   app.get('/calendar', function(req, res, next) {
+  app.get('/calendar', function(req, res, next) {
       var token = req.user.accessToken;
       console.log(token);
       var nylas = Nylas.with(token);
@@ -264,36 +265,47 @@ module.exports = function(app,passport) {
 
 
 
- app.get('/createuser', function(req, res) {
-        
-        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role:'',phone: '',accessToken: '' });
+ // =====================================
+    // SIGNUP ==============================
+    // =====================================
+    // show the signup form
+    app.get('/createuser', function(req, res) {
 
-  });    
-   
- app.post("/createuser", function(req, res) {
+        // render the page and pass in any flash data if it exists
+        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role:'' });
+    });
+
+    // process the signup form
+   // app.post('/createuser', isAdmin, passport.authenticate('local-signup', {
+   //    successRedirect : '/createuser', // redirect to the secure profile section
+   //    failureRedirect : '/createuser', // redirect back to the signup page if there is an error
+   //    failureFlash : true // allow flash messages
+   // }));
+
+   //Update User Details
+    app.post("/createuser", function(req, res) {
         firstname = req.body.firstname,
         lastname = req.body.lastname,   
         email = req.body.email,
         password = req.body.password,
         role = req.body.role;
-        phone = req.body.phone;
-        accessToken = req.body.accessToken;
         isValid = userUtil.isvalidEmail(email);
         if(isValid){
-            userUtil.addNewUser(email, firstname,lastname ,role, password,phone,accessToken, (success, result) => {
-                res.render('createuser.ejs',{
-                  message : result,
-                  firstname: firstname,lastname: lastname, email: email,phone,accessToken, role:role
-                });                
+            userUtil.addNewUser(firstname,lastname,email,role, password, (success, result) => {
+                res.render('createuser.ejs', {
+                    message : result,
+                    firstname: firstname,lastname: lastname, email: email, role:role
+                });
+                // res.json({'name':name, 'email':email, 'role': role, 'result': result});
             });
         }else{
             res.render('createuser.ejs', {
                 message : 'Please enter a valid Email.',
-                firstname: firstname,lastname: lastname, email: email,phone,accessToken, role:role
-            });            
+                firstname: firstname,lastname: lastname, email: email, role:role
+            });
         }
         
-  });
+    });
 
 
 
