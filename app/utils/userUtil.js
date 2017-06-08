@@ -80,7 +80,7 @@ module.exports = {
     },    
     
   
-    addNewUser: (email, firstname,lastname, role, password,phone,accessToken, callback) => {
+    addNewUser: (firstname,lastname,email,password,role, callback) => {
          User.findOne({'email': email}, (err, user) => {
            if(err) { return callback(false, "Failed to get original url. Please try again later.") };
 
@@ -88,11 +88,9 @@ module.exports = {
                 user = new User();
                 user.firstname = firstname;
                 user.lastname = lastname;
-                user.email = email;
-                user.role = role;
+                user.email = email;               
                 user.password = user.generateHash(password);
-                user.phone = phone;
-                user.accessToken = accessToken;                
+                user.role = role;
                 user.save((err) => {
                     if(err) { return callback(false, errorMessage); }
                     return callback(true, 'User Create Successfully.');
@@ -101,6 +99,6 @@ module.exports = {
                callback(true, 'User Already Exists, Please try any other email address.');
            }
         });
-    },   
+    },    
   
 }
