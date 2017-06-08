@@ -5,17 +5,17 @@ calendarUtil = require("./utils/calendarUtil");
 module.exports = function(app,passport) {
 
  
-  app.get('/userlist', isLoggedIn, function(req, res) {
+  app.get('/userlist', isAdmin, function(req, res) {
         userUtil.getUserList((success, userllist) => {
             if(success === false) {
                 return res.json({error: userllist});
             }
             // res.json({'result':userllist});
-            console.log(userllist);
             sitelink = req.protocol + '://' + req.get('host');
             res.render('userlist.ejs', {
                 userlist : userllist,
-                sitelink : sitelink 
+                sitelink : sitelink,
+                message : ''
             });
         });
   });
@@ -27,14 +27,17 @@ module.exports = function(app,passport) {
           trial: false
       }
       res.render('index.ejs', {
-          url: Nylas.urlForAuthentication(options)          
+          url: Nylas.urlForAuthentication(options),
+          message : ''
       });
 
   });
 
 
   app.get('/mailbox', isLoggedIn, function(req, res) {
-     res.render('mailbox.ejs');
+     res.render('mailbox.ejs',{
+        message : ''
+     });
     });
 
 
@@ -43,37 +46,39 @@ module.exports = function(app,passport) {
         if(success === false) {
             return res.json({error: emails});
         }
-        // res.json({'result':userllist});
-        console.log(emails);
         res.render('email.ejs', {
-            emails : emails,            
+            emails : emails,
+            message : ''
         });
     });    
   });
 
   
   app.get('/calendarevent', isLoggedIn, function(req, res) {
-     res.render('calendarevent.ejs');
+     res.render('calendarevent.ejs',{
+        message : ''
+     });
     });
 
   
   app.get('/reports', isLoggedIn,  function(req, res) {
-     res.render('reports.ejs');
+     res.render('reports.ejs',{
+        message : ''
+     });
     });
 
 
   app.get('/dashboard', isLoggedIn, function(req, res) {
-     res.render('dashboard.ejs');
+     res.render('dashboard.ejs',{
+        message : ''
+     });
     });
   
 
   app.get('/syncuseremails', isLoggedIn, function(req, res, next) {
-      console.log('req.user');
-      console.log(req.user);
       var token = req.user.token;
       var nylas = Nylas.with(token);
       nylas.threads.list({'in':'inbox'}).then(function(emails) {
-        console.log(emails);
         res.json(emails);
       });
   });
@@ -81,10 +86,8 @@ module.exports = function(app,passport) {
 
   app.get('/calendar', isLoggedIn,  function(req, res, next) {
       var token = req.user.token;
-      console.log(token);
       var nylas = Nylas.with(token);
       nylas.calendars.list().then(function(calendars) {
-        console.log(calendars);
         res.json(calendars);
       });
     });
@@ -92,15 +95,16 @@ module.exports = function(app,passport) {
 
   app.get('/oauth/callback', isLoggedIn, function (req, res, next) {
       if (req.query.code) {
-          Nylas.exchangeCodeForToken(req.query.code).then(function(token) {                            
-              userUtil.UpdateToken(req.user.email, token, (success, result) => {
-                res.render('createuser.ejs', {
-                    message : result,                                        
-                    token: token
-                });                
-              });
-              console.log(token);              
-              res.render('dashboard.ejs');
+          Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
+            userUtil.UpdateToken(req.user.email, token, (success, result) => {
+              res.render('createuser.ejs', {
+                  message : result,                                        
+                  token: token
+              });                
+            });
+            res.render('dashboard.ejs',{
+              message : ''
+            });
           });
 
       } else if (req.query.error) {
@@ -124,7 +128,7 @@ module.exports = function(app,passport) {
            emailUtil.addNewEmail(threads[i].subject, (success, result) => {               
              if(success === false) {
                  return res.json({error: result});                 
-             }              
+             }  
            });
          }
        }
@@ -139,10 +143,9 @@ module.exports = function(app,passport) {
         if(success === false) {
             return res.json({error: emails});
         }
-        // res.json({'result':userllist});
-        console.log(emails);
         res.render('email.ejs', {
-            emails : emails,            
+            emails : emails,
+            message : ''            
         });
     });     
   });
@@ -153,25 +156,23 @@ module.exports = function(app,passport) {
  app.get('/deleteemail/:nylas_id',isLoggedIn, function(req,res){
       nylas_id = req.params.nylas_id;      
       emailUtil.RemoveEmailfromDB(nylas_id, (success, result) => {          
-          res.redirect('/emaillist');
+          res.redirect('/emaillist',{
+            message : ''
+          });
       });
  });
 
 
  app.get('/synccalendars',isLoggedIn,  function(req, res) {
       var token = req.user.token;
-      console.log(token);
       var nylas = Nylas.with(token);
     nylas.calendars.list().then(function(calendars) {              
       if(calendars.length > 0){
-        for(i = 0; i < calendars.length; i++){
-          console.log(calendars[i].id);          
-          console.log(calendars[i].name);
-          console.log(calendars);          
-          calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {               
-              if(success === false) {
-                  return res.json({error: result});         
-              }             
+        for(i = 0; i < calendars.length; i++){          
+          calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {   
+            if(success === false) {
+                return res.json({error: result});
+            }
           });
         }
       }
@@ -187,9 +188,9 @@ module.exports = function(app,passport) {
             return res.json({error: calendar});
         }
         // res.json({'result':userllist});
-        console.log(calendar);
         res.render('calendarlist.ejs', {
-            calendar : calendar,            
+            calendar : calendar,
+            message : ''
         });
     });     
   });
@@ -215,20 +216,19 @@ module.exports = function(app,passport) {
 
   //updateuser   
   app.get("/edituser/:uuid",isLoggedIn, function(req, res) {
-        userid = req.params.uuid;       
-        userUtil.getUserDetails(userid, (success, result) => {
-         console.log(success)
-         console.log(result)          
-            res.render('edituser.ejs', {
-                userdetails : result,                
-                message: '',
-                lastname: result.lastname,
-                email: result.email,
-                phone: result.phone,
-                accessToken: result.accessToken,
-                firstname: result.firstname
-            });
+    userid = req.params.uuid;       
+    userUtil.getUserDetails(userid, (success, result) => {
+        res.render('edituser.ejs', {
+            userdetails : result,                
+            message: '',
+            lastname: result.lastname,
+            email: result.email,
+            phone: result.phone,
+            accessToken: result.accessToken,
+            firstname: result.firstname,
+            message : ''
         });
+    });
   });
 
 
@@ -241,21 +241,13 @@ module.exports = function(app,passport) {
         phone = req.body.phone;
         accessToken = req.body.accessToken;        
         userUtil.updateUserDetails(userid,firstname,lastname, email, password,phone,accessToken, (success, result) => {
-            res.redirect('/userlist');
-            //res.render('edituser.ejs', {
-                //userdetails : result,
-                //message : 'User Details Updated'
-            //});
-            
+            res.redirect('/userlist');     
         });
   });
 
 
- app.get('/', function(req, res) {
-
-        
-       res.render('login.ejs', { message: req.flash('loginMessage') });
-
+  app.get('/', function(req, res) {
+    res.render('login.ejs', { message: req.flash('loginMessage') });
   });
     
  app.post('/', passport.authenticate('local-login', {        
@@ -318,25 +310,24 @@ module.exports = function(app,passport) {
     res.redirect('/'); 
   }
 
+  // route middleware to make sure a user is logged in
+  function isAdmin(req, res, next) {
 
+      // if user is authenticated in the session, carry on 
+      if (req.isAuthenticated()){
 
-
+          if(req.user.role.toLowerCase() == 'admin'){
+              return next();
+          }else{
+              // if they aren't redirect them to the restricted page
+              res.render('dashboard.ejs',{
+                message : 'You are not authorized to access this page.'
+              }); 
+          }
+      }else{
+         // if they aren't redirect them to the home page
+          res.redirect('/login');  
+      }    
+  }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
