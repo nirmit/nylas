@@ -31,12 +31,7 @@ module.exports = function(app,passport) {
       res.render('home.ejs', {
           url: Nylas.urlForAuthentication(options)          
       });
-  });
-
-
-  app.get('/mailbox', function(req, res) {
-     res.render('home.ejs');
-    });
+  });  
 
 
   app.get('/emailmessages', function(req, res) {
@@ -79,7 +74,7 @@ module.exports = function(app,passport) {
   });
 
 
-   app.get('/calendar', function(req, res, next) {
+  app.get('/calendar', function(req, res, next) {
       var token = req.user.accessToken;
       console.log(token);
       var nylas = Nylas.with(token);
