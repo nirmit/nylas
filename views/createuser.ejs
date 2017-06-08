@@ -1,42 +1,7 @@
-<!DOCTYPE html>
-
-<html lang='en'>
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gapi</title>
-  <link data-turbolinks-track="true" href="/styles/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
-  <script data-turbolinks-track="true" src="/js/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
-</head>
-
-<body>
-  <header>
-    <a href="/dashboard/index">
-      <img alt="GAPI" class="hdr-logo" />
-    </a>
-    <div class="welcome-name"><img alt="Ravinder Kumar" src="" width="50" /></div>
-    <div class="welcome-name"><a data-method="delete" href="/" rel="nofollow">Log Out</a></div>
-    <div class="welcome-name">
-    </div>
-  </header>
-  <nav class="nav">
-    <ul class="menu">
-
-      <li><a href="/dashboard">Dashboard</a></li>
-      <li><a href="/userlist" class=active>Users</a></li>
-      <li><a href="/mailbox" >Mail Box</a></li>
-      <li><a href="/emailmessages" >Email Messages</a></li>
-      <li><a href="/calendarevent" >Calendar Events</a></li>
-      <li><a href="/reports" >Reports</a></li>
-
-    </ul>
-  </nav>
-   <div class="flash-message"></div> 
-
+<% include ./common/header.ejs %> 
+<% include ./common/nav.ejs %> 
+<div class="flash-message"></div>
 <div class="abc">              
-
 <section>
 <div class="inner-block">
 <h1>Add User</h1>
@@ -66,10 +31,4 @@
 </section>
 
 </div>
-<footer>
-    <a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span>
-    <a data-method="delete" href="/logout" rel="nofollow">Log Out</a>
-</footer>
-</body>
-
-</html>
+<% include ./common/footer.ejs %>
