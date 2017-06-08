@@ -1,5 +1,3 @@
-var dotenv = require('dotenv/config');
-console.log(process.env.API_ID)
 var express = require( 'express' );
 var http = require( 'http' );
 var app = express();
