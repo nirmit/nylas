@@ -2,18 +2,13 @@ userUtil = require("./utils/userUtil");
 emailUtil = require("./utils/emailUtil");
 calendarUtil = require("./utils/calendarUtil");
 
-
-
 module.exports = function(app,passport) {
-
  
-  app.get('/userlist', isLoggedIn, function(req, res) {
+  app.get('/userlist', function(req, res) {
         userUtil.getUserList((success, userllist) => {
             if(success === false) {
                 return res.json({error: userllist});
             }
-            // res.json({'result':userllist});
-            console.log(userllist);
             sitelink = req.protocol + '://' + req.get('host');
             res.render('userlist.ejs', {
                 userlist : userllist,
@@ -22,7 +17,6 @@ module.exports = function(app,passport) {
         });
   });
   
-
   app.get('/home',isLoggedIn, function(req, res,next) {
      options = {
           redirectURI: 'http://localhost:4000/oauth/callback',                    
@@ -34,18 +28,15 @@ module.exports = function(app,passport) {
 
   });
 
-
   app.get('/mailbox', isLoggedIn, function(req, res) {
      res.render('mailbox.ejs');
     });
-
 
   app.get('/emailmessages', isLoggedIn,  function(req, res) {
     emailUtil.getEmailList((success, emails) => {
         if(success === false) {
             return res.json({error: emails});
         }
-        // res.json({'result':userllist});
         console.log(emails);
         res.render('email.ejs', {
             emails : emails,            
@@ -64,7 +55,7 @@ module.exports = function(app,passport) {
     });
 
 
-  app.get('/dashboard', isLoggedIn, function(req, res) {
+  app.get('/dashboard', function(req, res) {
      res.render('dashboard.ejs');
     });
   
@@ -272,7 +263,7 @@ module.exports = function(app,passport) {
     // SIGNUP ==============================
     // =====================================
     // show the signup form
-    app.get('/createuser',isLoggedIn, function(req, res) {
+    app.get('/createuser', function(req, res) {
 
         // render the page and pass in any flash data if it exists
         res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role:'' });
@@ -286,7 +277,7 @@ module.exports = function(app,passport) {
    // }));
 
    //Update User Details
-    app.post("/createuser",isLoggedIn, function(req, res) {
+    app.post("/createuser", function(req, res) {
         firstname = req.body.firstname,
         lastname = req.body.lastname,   
         email = req.body.email,
