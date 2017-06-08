@@ -47,8 +47,7 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
-        <th>Role</th>
-        <th>Status</th>    
+        <th>Role</th>          
         <th>Action</th>    
         </tr>
         </thead>
@@ -59,8 +58,7 @@
         <td><%= userlist[i].firstname %></td>
         <td><%= userlist[i].lastname %></td>
         <td><%= userlist[i].email %></td>
-        <td><%= userlist[i].phone %></td>
-        <td><%= userlist[i].accessToken %></td>
+        <td><%= userlist[i].role %></td>        
         <td class="action">
         <a class="edit-icon" href="<%= sitelink %>/edituser/<%= userlist[i].id %>" title="Edit">Edit</a>
         <a class="edit-icon" data-method="delete" href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" rel="nofollow" title="Delete">Delete</a>   

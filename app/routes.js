@@ -302,7 +302,7 @@ module.exports = function(app,passport) {
             res.render('createuser.ejs', {
                 message : 'Please enter a valid Email.',
                 firstname: firstname,lastname: lastname, email: email, role:role
-            });
+            });            
         }
         
     });
