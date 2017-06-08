@@ -1,108 +1,86 @@
 <!DOCTYPE html>
-<html>
+
+<html lang='en'>
 <head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gapi</title>
-  <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
-  <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
-  <meta content="authenticity_token" name="csrf-param" />
-<meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
+  <link data-turbolinks-track="true" href="/styles/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
+  <script data-turbolinks-track="true" src="/js/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
 </head>
-<body style="">
-<header>
-<a href="/dashboard/index">
-<img alt="GAPI" class="hdr-logo" src="/assets/login_hdr_logo-35755dfcf5db6f757a2d112b483453eb.png" />
-</a>
-<div class="welcome-name"><img alt="Ravinder Kumar" src="" width="50" /></div>
-<div class="welcome-name"><a data-method="delete" href="/logout" rel="nofollow">Log Out</a></div>
 
-<div class="welcome-name">
-</div>
-        
- 
-</header>
-<nav class="nav">
-  <ul class="menu">
-    <li><a href="/dashboard"  >Dashboard</a>
-    </li>
+<body>
+  <header>
+    <a href="/dashboard/index">
+      <img alt="GAPI" class="hdr-logo" />
+    </a>
+    <div class="welcome-name"><img alt="Ravinder Kumar" src="" width="50" /></div>
+    <div class="welcome-name"><a data-method="delete" href="/" rel="nofollow">Log Out</a></div>
+    <div class="welcome-name">
+    </div>
+  </header>
+  <nav class="nav">
+    <ul class="menu">
+
+      <li><a href="/dashboard">Dashboard</a></li>
       <li><a href="/userlist" class=active>Users</a></li>
-    <li><a href="/mailbox" >Mail Box</a></li>
-    <li><a href="/emailmessages" >Email Messages</a></li>
-    <li><a href="/calendarevent" >Calendar Events</a></li>
-    <li><a href="/reports" >Reports</a></li>
-  
-  </ul>
-</nav>
- <div class="flash-message">  
-  
+      <li><a href="/mailbox" >Mail Box</a></li>
+      <li><a href="/emailmessages" >Email Messages</a></li>
+      <li><a href="/calendarevent" >Calendar Events</a></li>
+      <li><a href="/reports" >Reports</a></li>
 
-
-
- </div>
-<div class="abc">       
-<section>
-<a href="/add/user"><button type="button" class="btn btn-primary" >Add User</button></a>
-<div class="inner-block usr_list_div">
-<h1>All User</h1>
-<div class="frm">
-     <div class="table-responsive left width100">
-<table class="table table-striped table-bordered table-hover table-condensed">
-  <thead>
-  <tr>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>accessToken</th>    
-    <th>Action</th>    
-  </tr>
-  </thead>
-  <tbody>
-  <% if (userlist.length > 0) { %>
-    <% for(var i=0; i < userlist.length; i++) { %>
-      <tr>
+    </ul>
+  </nav>
+   <div class="flash-message"></div>
+  <div class="abc">       
+    <section>
+      <a href="/createuser"><button type="button" class="btn btn-primary" >Add User</button></a>
+      <div class="inner-block usr_list_div">
+      <h1>All User</h1>
+      <div class="frm">
+        <div class="table-responsive left width100">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Role</th>          
+        <th>Action</th>    
+        </tr>
+        </thead>
+        <tbody>
+        <% if (userlist.length > 0) { %>
+        <% for(var i=0; i < userlist.length; i++) { %>
+        <tr>
         <td><%= userlist[i].firstname %></td>
         <td><%= userlist[i].lastname %></td>
         <td><%= userlist[i].email %></td>
-        <td><%= userlist[i].phone %></td>
-         <td><%= userlist[i].accessToken %></td>         
-        <td><a href="<%= sitelink %>/edituser/<%= userlist[i].id %>"><span class="fa fa-edit"></span></a>&nbsp;<a href="<%= sitelink %>/removeuser/<%= userlist[i].id %>"><span class="fa fa-remove"></span></a></td> 
-      </tr> 
-    <% } %>
-  <% }else{ %>
-    <tr><td colspan="4" style="text-align:center;">No Users Found.</td></tr>
-  <% } %>
-  </tbody>
-  </table>
-      
- </div>
- </div>
-</section>
+        <td><%= userlist[i].role %></td>        
+        <td class="action">
+        <a class="edit-icon" href="<%= sitelink %>/edituser/<%= userlist[i].id %>" title="Edit">Edit</a>
+        <a class="edit-icon" data-method="delete" href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" rel="nofollow" title="Delete">Delete</a>   
+        <a href="javascript:void(0);" onclick="switch_user(9, 1)" title="switch user">Switch User</a>
+        </td>
+        <!-- <td><a href="<%= sitelink %>/edituser/<%= userlist[i].id %>"><span class="fa fa-edit"></span></a>&nbsp;<a href="<%= sitelink %>/removeuser/<%= userlist[i].id %>"><span class="fa fa-remove"></span></a></td> --> 
+        </tr> 
+        <% } %>
+        <% }else{ %>
+        <tr><td colspan="4" style="text-align:center;">No Users Found.</td></tr>
+        <% } %>
+        </tbody>
+        </table>
 
-<script type="text/javascript">
-function switch_user(id,role){
-  
-  $.ajax({
-    type: 'post',
-    url: '/switch_user',
-    data: 'id='+id+'&role='+role,
-    complete: function(){
-          location.href = location.href;
-    }
-  });
-  
-}
-</script>
-
-
-</div>
-<footer>
-<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
-<a data-method="delete" href="/logout" rel="nofollow">Log Out</a>
-</footer>
+        </div>
+       </div>
+    </section>
+  </div>
+  <footer>
+  <a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
+  <a data-method="delete" href="/" rel="nofollow">Log Out</a>
+  </footer>
 </body>
 
 </html>

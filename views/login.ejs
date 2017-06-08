@@ -2,76 +2,68 @@
 <html>
 <head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <title>Gapi</title>
-  <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
-  <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
+  <link data-turbolinks-track="true" href="/styles/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
+  <script data-turbolinks-track="true" src="/js/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
   <meta content="authenticity_token" name="csrf-param" />
-<meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
+  <meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
 </head>
-<body style="background-image: url(assets/login_bg.jpg)">
-<header>
-<a href="/dashboard/index">
-<img alt="GAPI" class="hdr-logo" src="/assets/login_hdr_logo-35755dfcf5db6f757a2d112b483453eb.png" />
-</a>
- 
-</header>
- <div class="flash-message">  
-  
-     <div class="alert alert-success fade in">
-       <p>See you!</p>
-     </div>
+
+<body>
+  <header>
+    <a href="/dashboard/index">
+    <img alt="GAPI" class="hdr-logo" />
+    </a>
+  </header>
+
+  <div class="flash-message">  
+    <div class="alert alert-success fade in">
+      <p>See you!</p>
+    </div>
+  </div>
+  <div class="abc">               
+  <section>
+    <div class="block" style="height:auto; min-height:500px;">
+    <h2>Welcome to the <br>Gapi App</h2>
 
 
+    <div class="login-frm">
 
- </div>
-<div class="abc">               
-<section>
-<div class="block" style="height:auto; min-height:500px;">
-<h2>Welcome to the <br>Gapi App</h2>
+    <form method="post" action="/" role="login" class="login">
+      <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
+      <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
 
-      
-<div class="login-frm">
+      <p> <input type="password" class="form-control input-lg" name="password" id="password" placeholder="Password" required="" />     </p>
+      <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
+      <div>
 
-<form method="post" action="/login" role="login" class="login">
-       <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
-         <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
-          
-          <p> <input type="password" class="form-control input-lg" name="password" id="password" placeholder="Password" required="" />     </p>
-          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Sign in</button>
-          <div>
-       
-          </div>
-          
-        </form>
- <form method="post" action="/login" class="login" style="display:none">
-       <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
-         <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
-          
-          
-          <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Get Verification Email</button>
-          <div>
-       
-          </div>
-          
-        </form>       
-         <a href="#" id="reset">Reset password</a>
-<a class="google-btn" href="/auth/google_oauth2">Login with Google </a></div>
+      </div>
+
+    </form>
+      <form method="post" action="/" class="login" style="display:none">
+      <input id="authenticity_token" name="authenticity_token" type="hidden" value="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" />
+      <p> <input type="email" name="email" placeholder="Email" required class="form-control input-lg" value="" placeholder="example@gmail.com" /></p>
 
 
-</div>
-</section>
-<script>
-$("#reset").on("click", function(){
-$(".login").toggle();
-});
-</script>
+      <button type="submit" name="go" class="btn btn-lg btn-primary btn-block">Get Verification Email</button>
+      <div>
 
-</div>
+      </div>
+
+    </form>       
+    <a href="#" id="reset">Reset password</a>
+    <a class="google-btn" href="/auth/google_oauth2">Login with Google </a></div>
+
+
+    </div>
+  </section>
+
+  </div>
 <footer>
-<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
+  <a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
 </footer>
 </body>
 

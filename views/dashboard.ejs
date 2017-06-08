@@ -1,55 +1,41 @@
 <!DOCTYPE html>
-<html>
+
+<html lang='en'>
 <head>
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">	
-  <title>Gapi</title>
-  <link data-turbolinks-track="true" href="/assets/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
-  <script data-turbolinks-track="true" src="/assets/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
-  <meta content="authenticity_token" name="csrf-param" />
-<meta content="XJBoqvBa1fEjxPPaRWI5K7Mc6LpkyzsUwIzXxjTOzsE=" name="csrf-token" />
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+	<link data-turbolinks-track="true" href="/styles/application-2eb6d7a51d5ec8349796adf11bef9f84.css" media="all" rel="stylesheet" />
+    <script data-turbolinks-track="true" src="/js/application-8021b11c343de25b3f52231c6ae7bed5.js"></script>
 </head>
-<body style="">
-<header>
-<a href="/dashboard/index">
-<img alt="GAPI" class="hdr-logo" src="/assets/login_hdr_logo-35755dfcf5db6f757a2d112b483453eb.png" />
-</a>
-<div class="welcome-name"><img alt="Ravinder Kumar" src="" width="50" /></div>
-<div class="welcome-name"><a data-method="delete" href="/logout" rel="nofollow">Log Out</a></div>
 
-<div class="welcome-name">
-</div>
-		   	
- 
-</header>
- <div class="flash-message">  
-  
-     <div class="alert alert-success fade in">
-       <p>Welcome, Ravinder Kumar!</p>
-     </div>
+<body>
+	<header>
+	<a href="/dashboard/index">
+	<img alt="GAPI" class="hdr-logo" src="" />
+	</a>
+	<div class="welcome-name"><img alt="Sandeep Kumar" src="" width="50" /></div>
+    <div class="welcome-name"><a data-method="delete" href="/logout" rel="nofollow">Log Out</a></div>
+    </header>
+	
+	<div class="abc">
+		<section>
+			<div class="block">
+				<a href="/userlist"><div class="home-box user"><h1>Users</h1></div></a>
+				<a href="/mailbox"><div class="home-box mail-box"><h1>Mail box</h1></div></a>
+				<a href="/emailmessages"><div class="home-box email-message"><h1>Email Messages</h1></div></a>
+				<a href="/calendarevent"><div class="home-box cal-event"><h1>Calendar Events</h1></div></a>
+				<a href="/reports"><div class="home-box reports"><h1>Reports</h1></div></a>
+			</div>
+		</section>
+	</div>
 
-
-
- </div>
-<div class="abc">				
-<section>
-
-<div class="block">
-	<a href="/userlist"><div class="home-box user"><h1>Users</h1></div></a>
-<a href="/home"><div class="home-box mail-box"><h1>Mail box</h1></div></a>
-<a href="/emailmessages"><div class="home-box email-message"><h1>Email Messages</h1></div></a>
-<a href="/calendarevent"><div class="home-box cal-event"><h1>Calendar Events</h1></div></a>
-<a href="/reports"><div class="home-box reports"><h1>Reports</h1></div></a>
-</div>
-</section>
-
-</div>
-<footer>
-<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
-<a data-method="delete" href="/logout" rel="nofollow">Log Out</a>
-</footer>
+	<footer>
+		<a href="www.anilabsinc.com" target="_blank">anilabsinc.com</a> <span>|</span> 
+		<a data-method="delete" href="/logout" rel="nofollow">Log Out</a>
+    </footer>
 </body>
 
 </html>

@@ -3,6 +3,7 @@ console.log(process.env.API_ID)
 var express = require( 'express' );
 var http = require( 'http' );
 var app = express();
+app.use(express.static(__dirname + '/public'));
 var mongoose = require('mongoose');
 var path = require('path');
 app.set( 'port', process.env.PORT || 4000 );
@@ -35,13 +36,11 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
 
- 
 
 app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); 
 app.use(passport.initialize());
 app.use(passport.session()); 
 app.use(flash());
-
 global.Nylas = require('nylas').config({
    appId: process.env.API_ID,
    appSecret: process.env.API_SECRET
