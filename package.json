@@ -1,26 +1,28 @@
 {
- "name": "package.json",
- "version": "1.0.0",
- "description": "",
- "main": "index.js",
- "dependencies": {
-   "bcrypt-nodejs": "0.0.3",
-   "connect-flash": "^0.1.1",
-   "cookie-parser": "^1.4.3",
-   "dotenv": "^4.0.0",
-   "ejs": "^2.5.6",
-   "express": "^4.15.3",
-   "express-session": "^1.15.3",
-   "mongoose": "^4.10.4",
-   "morgan": "^1.8.2",
-   "passport": "^0.3.2",
-   "passport-local": "^1.0.0"
- },
- "devDependencies": {},
- "scripts": {
-   "test": "make test",
-   "start": "node app.js"
- },
- "author": "",
- "license": "ISC"
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "mongoose": "^4.10.4",
+    "morgan": "^1.8.2",
+    "nylas": "^3.0.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }
