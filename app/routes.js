@@ -203,8 +203,6 @@ module.exports = function(app,passport) {
           res.redirect('/calendarlist');
       });
   }); 
-
-
    
   app.get("/removeuser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;
@@ -212,7 +210,6 @@ module.exports = function(app,passport) {
             res.redirect('/userlist');
         });
   });
-
 
   //updateuser   
   app.get("/edituser/:uuid",isLoggedIn, function(req, res) {
@@ -241,14 +238,17 @@ module.exports = function(app,passport) {
         password = req.body.password;
         role = req.body.role;                
         userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => {
-            res.redirect('/userlist');
+            res.redirect('/userlist');       
         });
   });
 
 
-
- app.get('/', function(req, res) {
-    res.render('login.ejs', { message: req.flash('loginMessage') });
+  app.get('/', function(req, res) {
+    if(req.isAuthenticated()){
+      res.redirect('/dashboard')
+    }else{
+      res.render('login.ejs', { message: req.flash('loginMessage') });  
+    }
   });
     
  app.post('/', passport.authenticate('local-login', {        
@@ -317,7 +317,7 @@ module.exports = function(app,passport) {
       // if user is authenticated in the session, carry on 
       if (req.isAuthenticated()){
 
-          if(req.user.role.toLowerCase() == 'admin'){
+          if(req.user.role && req.user.role.toLowerCase() == 'admin'){
               return next();
           }else{
               // if they aren't redirect them to the restricted page
