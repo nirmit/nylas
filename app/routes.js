@@ -21,6 +21,19 @@ module.exports = function(app,passport) {
         });
 
   });
+
+  app.get('/reports', isLoggedIn,  function(req, res) {
+    userUtil.getUserList((success, userllist) => {
+      if(success === false) {
+          return res.json({error: userllist});
+      }
+   res.render('reports.ejs',{
+      message : '',
+      userlist : userllist,
+      role : req.user.role
+   });
+   });
+  });
   
   app.get('/logout', (req, res) => {
     req.logout();
@@ -91,15 +104,6 @@ module.exports = function(app,passport) {
      });
     });
 
-  
-  app.get('/reports', isLoggedIn,  function(req, res) {
-     res.render('reports.ejs',{
-        message : '',
-        role : req.user.role
-     });
-    });
-
-
   app.get('/dashboard', isLoggedIn, function(req, res) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
@@ -134,7 +138,8 @@ module.exports = function(app,passport) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
             userUtil.UpdateToken(req.user.email, token, (success, result) => {
               res.render('dashboard.ejs',{
-                message : 'Token updated successfully.'
+                message : 'Token updated successfully.',
+                role : req.user.role
               });   
             });
             

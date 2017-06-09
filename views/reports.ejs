@@ -31,10 +31,9 @@
 						</select>
 						<select name="search_string1" class="hide" id="search_string1" style="width: 250px;">
 							<option value="">--Select Email--</option>
-							<option value="streaksfdc@gmail.com"  >streaksfdc@gmail.com</option>
-							<option value="ravi.punia9t3@gmail.com"  >ravi.punia9t3@gmail.com</option>
-							<option value="releaseonce@gmail.com"  >releaseonce@gmail.com</option>
-							<option value="manojb72@gmail.com"  >manojb72@gmail.com</option>
+							<% for (var x in userlist) { %>
+							<option value="d3cloud" ><%= userlist[x].email; %></option>
+							<% } %>
 						</select>
 						<select name="seltype" id="seltype"  class="hide" style="width: 150px; display: inline-block;" aria-required="true" aria-invalid="false" class="valid">
 							<option value="" selected="selected">--Select Type--</option>
@@ -72,8 +71,6 @@
 				</form>
 			</div>
 		</div>
-	</div>
-
 
 	</section>
 
