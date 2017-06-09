@@ -61,16 +61,16 @@ module.exports = function(app,passport) {
   }));
 
 
-  app.get('/auth/google/callback', function(req, res){
-      console.log('In Callback');
-      // passport.authenticate('google',{
-      //   successRedirect : '/dashboard'
-      // });
-  });
+  // app.get('/auth/google/callback', function(req, res){
+  //     console.log('In Callback');
+  //     // passport.authenticate('google',{
+  //     //   successRedirect : '/dashboard'
+  //     // });
+  // });
 
   app.get('/mailbox', isLoggedIn, function(req, res) {
     options = {
-         redirectURI: 'http://localhost:4000/oauth/callback',                    
+         redirectURI: req.headers.host+'/oauth/callback',                    
          trial: false
      }
      res.render('mailbox.ejs',{
@@ -136,7 +136,7 @@ module.exports = function(app,passport) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
             userUtil.UpdateToken(req.user.email, token, (success, result) => {
               options = {
-                             redirectURI: 'http://localhost:4000/oauth/callback',                    
+                             redirectURI: req.headers.host+'/oauth/callback',                    
                              trial: false
                          }
               res.render('mailbox.ejs',{
