@@ -17,6 +17,7 @@
     "express-session": "^1.15.3",
     "mongoose": "^4.10.4",
     "morgan": "^1.8.2",
+    "nodemon": "^1.11.0",
     "nylas": "^3.0.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0"
