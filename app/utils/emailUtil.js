@@ -4,10 +4,9 @@ let Email = require("../models/email");
  
 module.exports = {
 
-
-    getEmailList: (callback) => {
-        Email.find((err, emaillist) => {
-           if(err) { return callback(false, "Failed to get contactlist. Please try again later.") };            
+    getEmailList: (user_id, callback) => {
+        Email.find({user_id : user_id},(err, emaillist) => {
+           if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
            if(typeof(emaillist) === "undefined" || emaillist === null) {
                return callback(false, "No records Found.");
            } else {
@@ -29,22 +28,25 @@ module.exports = {
         });
     },
 
-  
-  
-  addNewEmail: (nylas_id,subject,callback) => {           
+  addNewEmail: (nylas_id,from,to,subject,message,timestamp,user_id,callback) => {           
          Email.findOne({nylas_id : nylas_id}, (err, emails) => {
            if(err) { return callback(false, "") };                 
            if(typeof(emails) === "undefined" || emails === null) { 
-                emails = new Email();                               
-                emails.subject = subject;                                               
+                emails = new Email();
+                emails.from = from;                                              
+                emails.to = to;                                              
+                emails.subject = subject;                                        
+                emails.body = message;                                              
+                emails.date_timestamp = timestamp;                                          
+                emails.user_id = user_id;                       
                 emails.save((err) => {
                     if(err) { return callback(false, errorMessage); }
-                    return callback(true, 'email Create Successfully.');
+                    return callback(true, 'email fetched Successfully.');
                 });
 
            } else{
-              return callback(true, 'email Create Successfully.');
-              } 
+            return callback(true, 'email fetched Successfully.');
+           } 
         });
     },
   

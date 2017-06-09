@@ -3,12 +3,10 @@ var mongoose = require('mongoose');
 var emailMessagesSchema = mongoose.Schema({
         from : String,
         to : String,
-        cc : String,
-        bcc : String,
+        subject : String,
         body : String,
-        date : String,
-        mailbox_id : String,
-        subject : String
+        date_timestamp : String,
+        user_id : String
 });
 
 module.exports = mongoose.model('Email', emailMessagesSchema);

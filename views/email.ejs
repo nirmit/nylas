@@ -18,16 +18,17 @@
           <tr>
           <th><span></span>From</th>
           <th><span></span>Subject</th>
-          <th><span></span> Date</th>
-          <th class="sort-disabled">Body</th>
+          <th><span></span>Body</th>
           </tr>
           </thead>
           <tbody>
               <% if (emails.length > 0) { %>
               <% for (var i = 0; i < emails.length; i++) { %>
-                <tr>                        
-                  <td><%= emails[i].subject %></td>                  
-                </tr>                        
+                <tr>
+                  <td><%= emails[i].from %></td>
+                  <td><%= emails[i].subject %></td>
+                  <td><%= emails[i].body %></td>
+                </tr>
               <% } %>
               <% } %>                  
           </tbody>

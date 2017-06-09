@@ -1,5 +1,6 @@
 userUtil = require("./utils/userUtil");
 emailUtil = require("./utils/emailUtil");
+// mailboxUtil = require("./utils/mailboxUtil");
 calendarUtil = require("./utils/calendarUtil");
 
 module.exports = function(app,passport) {
@@ -60,28 +61,25 @@ module.exports = function(app,passport) {
          trial: false
      }
      res.render('mailbox.ejs',{
-
         url: Nylas.urlForAuthentication(options),
         message : '',
-        role : req.user.role
-
+        role : req.user.role,
+        user : req.user
      });
     });
 
-
   app.get('/emailmessages', isLoggedIn,  function(req, res) {
-    emailUtil.getEmailList((success, emails) => {
-        if(success === false) {
-            return res.json({error: emails});
-        }
-        res.render('email.ejs', {
-            emails : emails,
-            message : '',
-            role : req.user.role
-        });
-    });    
+   emailUtil.getEmailList(req.user.id, (success, emails) => {
+       if(success === false) {
+           return res.json({error: emails});
+       }
+       res.render('email.ejs', {
+           emails : emails,
+           message : '',
+           role : req.user.role
+       });
+   });    
   });
-
 
   
   app.get('/calendarevent', isLoggedIn, function(req, res) {
@@ -133,13 +131,25 @@ module.exports = function(app,passport) {
       if (req.query.code) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
             userUtil.UpdateToken(req.user.email, token, (success, result) => {
-              res.render('dashboard.ejs',{
-                message : 'Token updated successfully.'
-              });   
-            });
-            
-          });
+              options = {
+                             redirectURI: 'http://localhost:4000/oauth/callback',                    
+                             trial: false
+                         }
+              res.render('mailbox.ejs',{
+                url: Nylas.urlForAuthentication(options),
+                message : 'Email authorized successfully.',
+                role : req.user.role,
+                user : req.user
+              });
 
+              // mailboxUtil.addNewEmail(threads[i].id,threads[i].subject, (success, result) => {               
+              //   if(success === false) {
+              //     return res.json({error: result});                 
+              //   }
+              // });
+                 
+            });
+          });
       } else if (req.query.error) {
           res.render('error.ejs', {
               message: req.query.reason,
@@ -155,16 +165,18 @@ module.exports = function(app,passport) {
   app.get('/syncemails',isLoggedIn,  function(req, res) {
       var token = req.user.token;
       var nylas = Nylas.with(token);
-    nylas.threads.list({'in':'inbox'}).then(function(threads) {
-      if(threads.length > 0){
-         for(i = 0; i < threads.length; i++){         
-           emailUtil.addNewEmail(threads[i].id,threads[i].subject, (success, result) => {               
-             if(success === false) {
+
+      nylas.threads.list({'in':'inbox'}).then(function(threads) {
+        if(threads.length > 0){
+         for(i = 0; i < threads.length; i++){
+          //(id,from,to,subject,message,timestamp,user_id)
+            emailUtil.addNewEmail(threads[i].id,threads[i].participants[0].email,threads[i].participants[1].email,threads[i].subject, threads[i].snippet, threads[i].last_message_timestamp, req.user.id, (success, result) => {               
+              if(success === false) {
                  return res.json({error: result});                 
-             }  
+             }
            });
-         }
-       }
+          }
+        }
        res.redirect('/emailmessages');
     });    
   });
@@ -266,7 +278,8 @@ module.exports = function(app,passport) {
  app.post('/', passport.authenticate('local-login', {        
         successRedirect : '/dashboard', 
         failureRedirect : '/', 
-        failureFlash : true        
+        failureFlash : true,
+        role : 'User'
   }));
 
 
@@ -334,8 +347,8 @@ module.exports = function(app,passport) {
           }else{
               // if they aren't redirect them to the restricted page
               res.render('dashboard.ejs',{
-                message : 'You are not authorized to access this page.'
-           
+                message : 'You are not authorized to access this page.',
+                role : req.user.role
               }); 
           }
       }else{

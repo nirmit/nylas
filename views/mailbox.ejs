@@ -5,9 +5,8 @@
 <div class="flash-message"></div>
 <div class="abc">       
 <section>
-  <a href="<%= url %>"><button type="button" class="btn btn-primary">Add/Authorize Email</button></a>   
+  <a href="<%= url %>"><button type="button" class="btn btn-primary">Authorize Email</button></a>   
 </section>
-
 <section>
   <div class="inner-block">
     <h1>Mail Box</h1>
@@ -18,22 +17,17 @@
           <tr>
             <th><span></span>Name</th>
             <th><span></span>Email</th>
-            <th><span></span>Last Pull Date</th>
-            <th class="sort-disabled">Status</th>                      
             <th class="action sort-disabled">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Ravi Punia</td>
-            <td>ravi.punia9t3@gmail.com</td>
-            <td>2017-06-07 10:46:31 UTC</td>      
-            <td>Authenticated</td>                        
+            <td><%= user.firstname+' '+user. lastname %></td>
+            <td><%= user.email %></td>
             <td class="action">
               <a class="edit-icon" href="/syncemails" title="Edit">Fetch Messages</a>
               <a class="edit-icon" href="/fetch_events/15" title="Edit">Calender Events</a>
-              <a class="edit-icon" href="/emailmessages" title="Edit">View Messages</a>
-              <a data-class="edit-icon" data-confirm="Are you sure?" data-method="get" data-title="delete" href="#">Delete</a>           
+              <a class="edit-icon" href="/emailmessages" title="Edit">View Messages</a>           
             </td>
           </tr>
         </tbody>
