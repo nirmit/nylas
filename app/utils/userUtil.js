@@ -42,11 +42,12 @@ module.exports = {
     },
 
 
-    updateUserDetails: (userid, firstname,lastname, email, password,phone ,accessToken,callback) => {
+    updateUserDetails: (userid, firstname,lastname, email, password,role,callback) => {
+      console.log(userid)
         if(password != ''){
             var puser = new User();
             var passstring = puser.generateHash(password);
-            User.findOneAndUpdate({_id: userid}, { $set: { 'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring, 'phone': phone,'token': accessToken, }}, {returnNewDocument: true}, (err, user) => {
+            User.findOneAndUpdate({_id: userid}, { $set: { 'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring, 'role': role}}, {returnNewDocument: true}, (err, user) => {
            if(err) { return callback(false, "Failed to get user details. Please try again later.") };
                if(typeof(user) === "undefined" || user === null) {
                    return callback(false, "user not found.");
@@ -55,7 +56,7 @@ module.exports = {
                }
             });
         }else{
-            User.findOneAndUpdate({_id: userid}, { $set: {'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring,'phone': phone,'token': accessToken, }}, {returnNewDocument: true}, (err, user) => {
+            User.findOneAndUpdate({_id: userid}, { $set: {'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring,'role': role}}, {returnNewDocument: true}, (err, user) => {
            if(err) { return callback(false, "Failed to get user details. Please try again later.") };
                if(typeof(user) === "undefined" || user === null) {
                    return callback(false, "user not found.");

@@ -20,6 +20,14 @@ module.exports = function(app,passport) {
         });
   });
   
+  app.get('/logout', (req, res) => {
+    req.logout();
+    req.session.destroy();
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
+    res.redirect('/');
+  });
+
 
   app.get('/home',isLoggedIn, function(req, res,next) {
      options = {
@@ -69,10 +77,14 @@ module.exports = function(app,passport) {
 
 
   app.get('/dashboard', isLoggedIn, function(req, res) {
-     res.render('dashboard.ejs',{
-        message : ''
-     });
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
+
+    res.render('dashboard.ejs',{
+      message : ''
     });
+
+  });
   
 
   app.get('/syncuseremails', isLoggedIn, function(req, res, next) {
@@ -213,43 +225,45 @@ module.exports = function(app,passport) {
 
   //updateuser   
   app.get("/edituser/:uuid",isLoggedIn, function(req, res) {
-    userid = req.params.uuid;       
-    userUtil.getUserDetails(userid, (success, result) => {
-        res.render('edituser.ejs', {
-            userdetails : result,                
-            message: '',
-            lastname: result.lastname,
-            email: result.email,
-            phone: result.phone,
-            accessToken: result.accessToken,
-            firstname: result.firstname,
-            message : ''
+        userid = req.params.uuid;       
+        userUtil.getUserDetails(userid, (success, result) => {
+         console.log(success)
+         console.log(result)          
+            res.render('edituser.ejs', {
+                userdetails : result,                
+                message: '',
+                firstname: result.firstname,
+                lastname: result.lastname,
+                email: result.email,
+                role : result.role,           
+            });   
         });
     });
-  });
+  
 
 
-  app.post("/edituser/:uuid",isLoggedIn, function(req, res) {
+  app.post("/edituser/:uuid",isLoggedIn, function(req, res) {    
         firstname = req.body.firstname,
         lastname = req.body.lastname,
         email = req.body.email,                
         userid = req.body.userid;
         password = req.body.password;
-        phone = req.body.phone;
-        accessToken = req.body.accessToken;
-        userUtil.updateUserDetails(userid,firstname,lastname, email, password,phone,accessToken, (success, result) => {
-            res.redirect('/userlist');     
+        role = req.body.role;                
+        userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => {
+            res.redirect('/userlist');       
         });
   });
 
 
   app.get('/', function(req, res) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
+
     if(req.isAuthenticated()){
       res.redirect('/dashboard')
     }else{
       res.render('login.ejs', { message: req.flash('loginMessage') });  
     }
-    
   });
     
  app.post('/', passport.authenticate('local-login', {        
@@ -328,7 +342,7 @@ module.exports = function(app,passport) {
           }
       }else{
          // if they aren't redirect them to the home page
-          res.redirect('/login');  
+          res.redirect('/');  
       }    
   }
 
