@@ -5,7 +5,7 @@ calendarUtil = require("./utils/calendarUtil");
 module.exports = function(app,passport) {
 
  
-  app.get('/userlist', isAdmin, function(req, res) {
+  app.get('/userlist',  function(req, res) {
         userUtil.getUserList((success, userllist) => {
             if(success === false) {
                 return res.json({error: userllist});
@@ -15,9 +15,11 @@ module.exports = function(app,passport) {
             res.render('userlist.ejs', {
                 userlist : userllist,
                 sitelink : sitelink,
-                message : ''
+                message : '',
+                role : req.user.role
             });
         });
+
   });
   
   app.get('/logout', (req, res) => {
@@ -52,23 +54,17 @@ module.exports = function(app,passport) {
       // });
   });
 
-
-  app.get('/home',isLoggedIn, function(req, res,next) {
-    options = {
-        redirectURI: 'http://localhost:4000/oauth/callback',                    
-        trial: false
-    }
-    res.render('index.ejs', {
-        url: Nylas.urlForAuthentication(options),
-        message : ''
-    });
-
-  });
-
-
   app.get('/mailbox', isLoggedIn, function(req, res) {
+    options = {
+         redirectURI: 'http://localhost:4000/oauth/callback',                    
+         trial: false
+     }
      res.render('mailbox.ejs',{
-        message : ''
+
+        url: Nylas.urlForAuthentication(options),
+        message : '',
+        role : req.user.role
+
      });
     });
 
@@ -80,22 +76,26 @@ module.exports = function(app,passport) {
         }
         res.render('email.ejs', {
             emails : emails,
-            message : ''
+            message : '',
+            role : req.user.role
         });
     });    
   });
 
+
   
   app.get('/calendarevent', isLoggedIn, function(req, res) {
      res.render('calendarevent.ejs',{
-        message : ''
+        message : '',
+        role : req.user.role
      });
     });
 
   
   app.get('/reports', isLoggedIn,  function(req, res) {
      res.render('reports.ejs',{
-        message : ''
+        message : '',
+        role : req.user.role
      });
     });
 
@@ -103,9 +103,9 @@ module.exports = function(app,passport) {
   app.get('/dashboard', isLoggedIn, function(req, res) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
-
     res.render('dashboard.ejs',{
-      message : ''
+      message : '',
+      role : req.user.role
     });
 
   });
@@ -158,42 +158,17 @@ module.exports = function(app,passport) {
     nylas.threads.list({'in':'inbox'}).then(function(threads) {
       if(threads.length > 0){
          for(i = 0; i < threads.length; i++){         
-           emailUtil.addNewEmail(threads[i].subject, (success, result) => {               
+           emailUtil.addNewEmail(threads[i].id,threads[i].subject, (success, result) => {               
              if(success === false) {
                  return res.json({error: result});                 
              }  
            });
          }
        }
-       res.redirect('/email');
+       res.redirect('/emailmessages');
     });    
   });
-  
 
-
-  app.get('/emaillist',isLoggedIn,  function(req, res) {  
-    emailUtil.getEmailList((success, emails) => {
-        if(success === false) {
-            return res.json({error: emails});
-        }
-        res.render('email.ejs', {
-            emails : emails,
-            message : ''            
-        });
-    });     
-  });
-  
-
-
- //delete emails
- app.get('/deleteemail/:nylas_id',isLoggedIn, function(req,res){
-      nylas_id = req.params.nylas_id;      
-      emailUtil.RemoveEmailfromDB(nylas_id, (success, result) => {          
-          res.redirect('/emaillist',{
-            message : ''
-          });
-      });
- });
 
 
  app.get('/synccalendars',isLoggedIn,  function(req, res) {
@@ -224,6 +199,7 @@ module.exports = function(app,passport) {
         res.render('calendarlist.ejs', {
             calendar : calendar,
             message : ''
+
         });
     });     
   });
@@ -359,6 +335,7 @@ module.exports = function(app,passport) {
               // if they aren't redirect them to the restricted page
               res.render('dashboard.ejs',{
                 message : 'You are not authorized to access this page.'
+           
               }); 
           }
       }else{
