@@ -5,7 +5,7 @@
 <div class="flash-message"></div>
 <div class="abc">       
 <section>
-  <a href="/auth/google_oauth2"><button type="button" class="btn btn-primary">Add/Authorize Email</button></a>
+  <a href="<%= url %>"><button type="button" class="btn btn-primary">Add/Authorize Email</button></a>   
 </section>
 
 <section>
@@ -30,9 +30,9 @@
             <td>2017-06-07 10:46:31 UTC</td>      
             <td>Authenticated</td>                        
             <td class="action">
-              <a class="edit-icon" href="/fetch_messages/15" title="Edit">Fetch Messages</a>
+              <a class="edit-icon" href="/syncemails" title="Edit">Fetch Messages</a>
               <a class="edit-icon" href="/fetch_events/15" title="Edit">Calender Events</a>
-              <a class="edit-icon" href="/email_messages" title="Edit">View Messages</a>
+              <a class="edit-icon" href="/emailmessages" title="Edit">View Messages</a>
               <a data-class="edit-icon" data-confirm="Are you sure?" data-method="get" data-title="delete" href="#">Delete</a>           
             </td>
           </tr>
