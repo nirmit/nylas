@@ -20,6 +20,14 @@ module.exports = function(app,passport) {
         });
   });
   
+  app.get('/logout', (req, res) => {
+    req.logout();
+    req.session.destroy();
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
+    res.redirect('/');
+  });
+
 
   app.get('/home',isLoggedIn, function(req, res,next) {
      options = {
@@ -69,10 +77,14 @@ module.exports = function(app,passport) {
 
 
   app.get('/dashboard', isLoggedIn, function(req, res) {
-     res.render('dashboard.ejs',{
-        message : ''
-     });
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
+
+    res.render('dashboard.ejs',{
+      message : ''
     });
+
+  });
   
 
   app.get('/syncuseremails', isLoggedIn, function(req, res, next) {
@@ -244,6 +256,9 @@ module.exports = function(app,passport) {
 
 
   app.get('/', function(req, res) {
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
+
     if(req.isAuthenticated()){
       res.redirect('/dashboard')
     }else{
@@ -328,7 +343,7 @@ module.exports = function(app,passport) {
           }
       }else{
          // if they aren't redirect them to the home page
-          res.redirect('/login');  
+          res.redirect('/');  
       }    
   }
 
