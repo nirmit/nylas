@@ -28,16 +28,40 @@ module.exports = function(app,passport) {
     res.redirect('/');
   });
 
+  // =====================================
+    // GOOGLE ROUTES =======================
+    // =====================================
+    // send to google to do the authentication
+    // profile gets us their basic information including their name
+    // email gets their emails
+  app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+  // the callback after google has authenticated the user
+  app.get('/auth/google/callback',
+    passport.authenticate('google', {
+          successRedirect : '/dashboard',
+          failureRedirect : '/', // redirect back to the signup page if there is an error
+          failureFlash : true // allow flash messages
+  }));
+
+
+  app.get('/auth/google/callback', function(req, res){
+      console.log('In Callback');
+      // passport.authenticate('google',{
+      //   successRedirect : '/dashboard'
+      // });
+  });
+
 
   app.get('/home',isLoggedIn, function(req, res,next) {
-     options = {
-          redirectURI: 'http://localhost:4000/oauth/callback',                    
-          trial: false
-      }
-      res.render('index.ejs', {
-          url: Nylas.urlForAuthentication(options),
-          message : ''
-      });
+    options = {
+        redirectURI: 'http://localhost:4000/oauth/callback',                    
+        trial: false
+    }
+    res.render('index.ejs', {
+        url: Nylas.urlForAuthentication(options),
+        message : ''
+    });
 
   });
 
@@ -109,14 +133,11 @@ module.exports = function(app,passport) {
       if (req.query.code) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
             userUtil.UpdateToken(req.user.email, token, (success, result) => {
-              res.render('createuser.ejs', {
-                  message : result,                                        
-                  token: token
-              });                
+              res.render('dashboard.ejs',{
+                message : 'Token updated successfully.'
+              });   
             });
-            res.render('dashboard.ejs',{
-              message : ''
-            });
+            
           });
 
       } else if (req.query.error) {

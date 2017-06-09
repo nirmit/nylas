@@ -19,7 +19,9 @@
     "morgan": "^1.8.2",
     "nylas": "^3.0.0",
     "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-localapikey": "0.0.3"
   },
   "devDependencies": {},
   "scripts": {
