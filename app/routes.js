@@ -224,11 +224,11 @@ module.exports = function(app,passport) {
             res.render('edituser.ejs', {
                 userdetails : result,                
                 message: '',
+                firstname: result.firstname
                 lastname: result.lastname,
                 email: result.email,
-                phone: result.phone,
-                accessToken: result.accessToken,
-                firstname: result.firstname
+                role : result.role,                
+                
             });
         });
   });
@@ -240,9 +240,8 @@ module.exports = function(app,passport) {
         email = req.body.email,                
         userid = req.body.userid;
         password = req.body.password;
-        phone = req.body.phone;
-        accessToken = req.body.accessToken;        
-        userUtil.updateUserDetails(userid,firstname,lastname, email, password,phone,accessToken, (success, result) => {
+        role = req.body.role;                
+        userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => {
             res.redirect('/userlist');
             //res.render('edituser.ejs', {
                 //userdetails : result,
