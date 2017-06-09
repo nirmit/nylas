@@ -1,16 +1,10 @@
 <% include ./common/header.ejs %> 
 <% include ./common/nav.ejs %> 
-<div class="flash-message"></div>
 <div class="abc">              
 <section>
 <div class="inner-block">
 <h1>Add User</h1>
 <div class="frm">
-
- <!-- show any messages that come back with authentication -->
-    <% if (message != '') { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
 <form accept-charset="UTF-8" action="/createuser" class="new_user" id="new_user" method="post"><div style="display:none"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="MrFoO863KD/+U2wFXV74TF6bl26DqoVeh8LZbR0XMew=" /></div>
 
         <div class="frm-row col-2">
@@ -19,18 +13,20 @@
        </div>
         <div class="frm-row col-2">
             <div class="frm-col-1"><label>Email</label><input type="text" name="email" /></div>
-             <div class="frm-col-2"> <label>Password</label><input type="password" name="password" minlength="6" /></div>
+            <div class="frm-col-2"> <label>Password</label><input type="password" name="password" minlength="6" /></div>
         </div>
         <div class="frm-row col-1">
-            <div class="frm-col-1"><input type="radio" class="with-font" id="adminrole" name="role" value="Admin"><label for="adminrole">Admin</label> 
-            <input type="radio" class="with-font" id="userrole" name="role" value="User"><label for="userrole">User</label></div>
+            <div class="frm-col-1">
+        
+               <label><input type="radio" id="adminrole" name="role" value="Admin" />Admin</label> 
+               <label><input type="radio" id="userrole" name="role" value="User" />User</label>
+            </div>
         </div>   
- <div class="btn"> <button class="#run-now-btn" name="submit" type="submit">Submit</button> </div>
+       <button class="btn-lg btn-primary" name="submit" type="submit">Submit</button>
 
-</form> </div>
-</section>
-
+</form>
 </div>
-
+</div>
+</section>
 <% include ./common/footer.ejs %>
 

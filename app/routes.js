@@ -278,7 +278,7 @@ module.exports = function(app,passport) {
     app.get('/createuser',isLoggedIn, function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role:'' });
+        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role : req.user.role });
     });
 
     // process the signup form
@@ -300,14 +300,14 @@ module.exports = function(app,passport) {
             userUtil.addNewUser(firstname,lastname,email,password, role, (success, result) => {
                 res.render('createuser.ejs', {
                     message : result,
-                    firstname: firstname,lastname: lastname, email: email, role:role
+                    firstname: firstname,lastname: lastname, email: email, role: req.user.role
                 });
                 // res.json({'name':name, 'email':email, 'role': role, 'result': result});
             });
         }else{
             res.render('createuser.ejs', {
                 message : 'Please enter a valid Email.',
-                firstname: firstname,lastname: lastname, email: email, role:role
+                firstname: firstname,lastname: lastname, email: email, role: req.user.role
             });            
         }
         
