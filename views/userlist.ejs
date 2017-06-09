@@ -1,7 +1,6 @@
 
   <% include ./common/header.ejs %>
   <% include ./common/nav.ejs %>
-  <div class="flash-message"></div>
   <div class="abc">       
     <section>
       <a href="/createuser"><button type="button" class="btn btn-primary" >Add User</button></a>
@@ -29,7 +28,7 @@
         <td><%= userlist[i].role %></td>        
         <td class="action">
         <a class="edit-icon" href="<%= sitelink %>/edituser/<%= userlist[i].id %>" title="Edit">Edit</a>
-        <a class="delete-icon" href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" title="Delete">Delete</a>         
+        <a class="delete-icon" data-confirm='Are you sure ?' href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" title="Delete">Delete</a>         
         <a href="javascript:void(0);" onclick="switch_user(9, 1)" title="switch user">Switch User</a>
         </td>       
         </tr> 

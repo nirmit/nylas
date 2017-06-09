@@ -22,6 +22,19 @@ module.exports = function(app,passport) {
         });
 
   });
+
+  app.get('/reports', isLoggedIn,  function(req, res) {
+    userUtil.getUserList((success, userllist) => {
+      if(success === false) {
+          return res.json({error: userllist});
+      }
+   res.render('reports.ejs',{
+      message : '',
+      userlist : userllist,
+      role : req.user.role
+   });
+   });
+  });
   
   app.get('/logout', (req, res) => {
     req.logout();
@@ -89,15 +102,6 @@ module.exports = function(app,passport) {
      });
     });
 
-  
-  app.get('/reports', isLoggedIn,  function(req, res) {
-     res.render('reports.ejs',{
-        message : '',
-        role : req.user.role
-     });
-    });
-
-
   app.get('/dashboard', isLoggedIn, function(req, res) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
@@ -141,13 +145,6 @@ module.exports = function(app,passport) {
                 role : req.user.role,
                 user : req.user
               });
-
-              // mailboxUtil.addNewEmail(threads[i].id,threads[i].subject, (success, result) => {               
-              //   if(success === false) {
-              //     return res.json({error: result});                 
-              //   }
-              // });
-                 
             });
           });
       } else if (req.query.error) {
@@ -291,7 +288,7 @@ module.exports = function(app,passport) {
     app.get('/createuser',isLoggedIn, function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role:'' });
+        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role : req.user.role });
     });
 
     // process the signup form
@@ -313,14 +310,14 @@ module.exports = function(app,passport) {
             userUtil.addNewUser(firstname,lastname,email,password, role, (success, result) => {
                 res.render('createuser.ejs', {
                     message : result,
-                    firstname: firstname,lastname: lastname, email: email, role:role
+                    firstname: firstname,lastname: lastname, email: email, role: req.user.role
                 });
                 // res.json({'name':name, 'email':email, 'role': role, 'result': result});
             });
         }else{
             res.render('createuser.ejs', {
                 message : 'Please enter a valid Email.',
-                firstname: firstname,lastname: lastname, email: email, role:role
+                firstname: firstname,lastname: lastname, email: email, role: req.user.role
             });            
         }
         
