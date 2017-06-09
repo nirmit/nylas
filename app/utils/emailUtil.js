@@ -31,12 +31,12 @@ module.exports = {
 
   
   
-   addNewEmail: (emails,subject, callback) => {           
-         Email.findOne({'emails':emails}, (err, emails) => {
+  addNewEmail: (nylas_id,subject,callback) => {           
+         Email.findOne({nylas_id : nylas_id}, (err, emails) => {
            if(err) { return callback(false, "") };                 
            if(typeof(emails) === "undefined" || emails === null) { 
                 emails = new Email();                               
-                emails.subject = subject;                                                
+                emails.subject = subject;                                               
                 emails.save((err) => {
                     if(err) { return callback(false, errorMessage); }
                     return callback(true, 'email Create Successfully.');
@@ -47,7 +47,5 @@ module.exports = {
               } 
         });
     },
-
-    
   
 }
