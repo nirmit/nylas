@@ -38,9 +38,10 @@ module.exports = function(app,passport) {
          trial: false
      }
      res.render('mailbox.ejs',{
+
+        url: Nylas.urlForAuthentication(options),
         message : '',
-        role : req.user.role,
-        url: Nylas.urlForAuthentication(options)
+        role : req.user.role
 
      });
     });
