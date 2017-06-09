@@ -43,6 +43,7 @@ module.exports = {
 
 
     updateUserDetails: (userid, firstname,lastname, email, password,role,callback) => {
+      console.log(userid)
         if(password != ''){
             var puser = new User();
             var passstring = puser.generateHash(password);
