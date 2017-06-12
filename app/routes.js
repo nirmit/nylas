@@ -28,12 +28,62 @@ module.exports = function(app,passport) {
       if(success === false) {
           return res.json({error: userllist});
       }
-   res.render('reports.ejs',{
-      message : '',
-      userlist : userllist,
-      role : req.user.role
-   });
-   });
+      res.render('reports.ejs',{
+        message : '',
+        emails : '',
+        userlist : userllist,
+        role : req.user.role
+      });
+    });
+  });
+
+  app.post('/reports', isLoggedIn,  function(req, res) {
+    
+    emailUtil.getEmailListForReports(req.user.id, (success, emails) => {
+      userUtil.getUserList((success, userlist) => {
+
+        var template = '';
+        var email_list = '';
+        var email_arr = {};
+        if(req.body.search_string == 'd3cloud'){
+          template = 'word_cloud.ejs';
+          email_list = emails;
+        }else if(req.body.search_string == 'bubblechart'){
+          template = 'bubblechart.ejs';
+
+          var super_main_array = {}
+          super_main_array['name'] = "flair"
+          super_main_array['children'] = {}
+
+          var tmp_arr = []
+          emails.forEach(function(email) {
+            var tmp_hash = {}
+            tmp_hash.name = email.from;
+            tmp_hash.size = 2;
+            tmp_arr.push(tmp_hash);
+          });
+          super_main_array['children'] = tmp_arr;
+          email_list = JSON.stringify(super_main_array);
+        }else if(req.body.search_string == 'timebubbleline'){
+          template = 'timeline_bubble.ejs';
+          email_list = emails;
+        }else if(req.body.search_string == 'wordfrequency'){
+          template = 'wordfrequency.ejs';
+          email_list = emails;
+        }
+
+        res.render(template,{
+          message : '',
+          userlist: userlist,
+          emails : email_list,
+          role : req.user.role
+        });
+
+      });
+     
+
+    });
+    
   });
   
   app.get('/logout', (req, res) => {

@@ -1,0 +1,99 @@
+<% include ./common/header.ejs %>
+<% include ./common/nav.ejs %>
+<div id="chartContainer">
+ 
+  <script type="text/javascript">
+
+
+
+    var svg = dimple.newSvg("#chartContainer", 1180, 800);
+
+    // The default data set for these examples has regular times
+    // and the point of this demo is to show the time axis
+    // functionality, therefore a small bespoke data set is used.
+      var data = <%= emails %>;
+	
+    // Create Separate Date and Time, this allows us to draw them
+    // on separate axes.  Despite the time axis only displaying
+    // the time portion, the whole date is used so they need to
+    // have the same date allocated
+    data.forEach(function (d) {
+        d["Day"] = d["Date"].substring(0, d["Date"].length - 6);
+       
+        d["Time of Day"] =
+            "2016-01-01 " + d["Date"].substring(d["Date"].length - 5);
+    }, this);
+
+    // Create the chart as usual
+    var myChart = new dimple.chart(svg, data);
+    myChart.setBounds(70, 40, 980, 640)
+    
+    // Add the x axis reading dates in the format 01 Jan 2012
+    // and displaying them 01 Jan
+
+    var x = myChart.addTimeAxis("x", "Day", "%d %b %Y", "%d %b");
+
+    // Add the y axis reading dates and times but only outputting
+    // times.  
+    var y = myChart.addTimeAxis("y", "Time of Day",
+        "%Y-%m-%d %H:%M", "%H:%M");
+
+    // Size the bubbles by volume
+    var z = myChart.addMeasureAxis("z", "Value");
+    
+    // Setting min and max dates requires them to be set
+    // as actual javascript date objects
+    
+    //~ var d = new Date();
+    //~ var curr_date = d.getDate();
+    //~ var curr_month = d.getMonth() + 1; //Months are zero based
+    //~ var from_month = d.getMonth()-3; //1 month back
+    //~ var curr_year = d.getFullYear();
+    
+    //~ var from_date = curr_year + "-" + from_month + "-" + curr_date;
+    //~ var to_date = curr_year + "-" + (from_month+1) + "-" + curr_date;
+    
+    
+    var fd = new Date(new Date().setDate(new Date().getDate()-90))
+    var td = new Date(new Date().setDate(new Date().getDate()+30))
+	
+	var from_date = fd.getFullYear() + "-" + (fd.getMonth() + 1) + "-" + fd.getDate();
+	var to_date = td.getFullYear() + "-" + (td.getMonth() + 1) + "-" + td.getDate();
+	
+    console.log(typeof from_date);
+    console.log(from_date);
+    
+    x.overrideMin = new Date(from_date);
+    x.overrideMax = new Date(to_date);
+    y.overrideMin = new Date("01/01/2016 12:00 am");
+    y.overrideMax = new Date("01/01/2016 11:00 pm");
+
+    // Show a label for every 4 weeks.
+    x.timePeriod = d3.time.weeks;
+    x.timeInterval = 4;
+
+    // Control bubble sizes by setting the max and min values    
+    z.overrideMin = 1;
+    z.overrideMax = 9;
+
+    // Add the bubble series for shift values first so that it is
+    // drawn behind the lines
+    myChart.addSeries("Type", dimple.plot.bubble);
+
+    // Add the line series on top of the bubbles.  The bubbles
+    // and line points will naturally fall in the same places
+    var s = myChart.addSeries("Type", dimple.plot.line);
+
+    // Add line markers to the line because it looks nice
+    s.lineMarkers = true;
+
+    // Show a legend
+    myChart.addLegend(360, 10, 360, 20, "right");
+console.log(myChart)
+    // Draw everything
+    myChart.draw();
+
+  </script>
+
+</div>
+<% include ./common/footer.ejs %>

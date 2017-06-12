@@ -15,6 +15,17 @@ module.exports = {
         });
     },
 
+    getEmailListForReports: (user_id, callback) => {
+        Email.find({user_id : user_id},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
+           if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
+           if(typeof(emaillist) === "undefined" || emaillist === null) {
+               return callback(false, "No records Found.");
+           } else {
+               callback(true, emaillist);
+           }
+        });
+    },
+
 
     RemoveEmailfromDB: (nylas_id,callback) => {
         Email.findOne({nylas_id : nylas_id}, (err) => {
