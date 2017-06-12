@@ -1,6 +1,6 @@
 userUtil = require("./utils/userUtil");
 emailUtil = require("./utils/emailUtil");
-// mailboxUtil = require("./utils/mailboxUtil");
+mailboxUtil = require("./utils/mailboxUtil");
 calendarUtil = require("./utils/calendarUtil");
 
 module.exports = function(app,passport) {
@@ -25,6 +25,7 @@ module.exports = function(app,passport) {
 
   app.get('/reports', isLoggedIn,  function(req, res) {
     userUtil.getUserList((success, userllist) => {
+      console.log(userllist)
       if(success === false) {
           return res.json({error: userllist});
       }
@@ -111,21 +112,28 @@ module.exports = function(app,passport) {
   }));
 
   app.get('/mailbox', isLoggedIn, function(req, res) {
-    options = {
-         redirectURI: req.headers.host+'/oauth/callback',                
-         // redirectURI: 'http://localhost:4000/oauth/callback',
-         trial: false
-     }
-     res.render('mailbox.ejs',{
-        url: Nylas.urlForAuthentication(options),
-        message : '',
-        role : req.user.role,
-        user : req.user
-     });
-    });
+
+    mailboxUtil.getList( (success, list) => {
+        options = {
+          // redirectURI: req.headers.host+'/oauth/callback',                
+          redirectURI: 'http://localhost:4000/oauth/callback',
+          trial: false
+      }
+      res.render('mailbox.ejs',{
+         url: Nylas.urlForAuthentication(options),
+         message : '',
+         role : req.user.role,
+         user : req.user,
+         list : list
+      });
+
+    })
+  });
 
   app.get('/emailmessages', isLoggedIn,  function(req, res) {
    emailUtil.getEmailList(req.user.id, (success, emails) => {
+    // console.log(success)
+    console.log(emails)
        if(success === false) {
            return res.json({error: emails});
        }
@@ -139,10 +147,20 @@ module.exports = function(app,passport) {
 
   
   app.get('/calendarevent', isLoggedIn, function(req, res) {
-     res.render('calendarevent.ejs',{
-        message : '',
-        role : req.user.role
-     });
+        calendarUtil.getCalendarList((success, calendar) => {
+        console.log(success)
+        console.log(calendar)
+        if(success === false) {
+            return res.json({error: calendar});
+        }
+        // res.json({'result':userllist});
+        res.render('calendarevent.ejs', {
+            calendar : calendar,
+            message : '',
+            role : req.user.role
+
+        });
+    });
     });
 
   app.get('/dashboard', isLoggedIn, function(req, res) {
@@ -177,20 +195,30 @@ module.exports = function(app,passport) {
   app.get('/oauth/callback', isLoggedIn, function (req, res, next) {
       if (req.query.code) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
-            userUtil.UpdateToken(req.user.email, token, (success, result) => {
-              options = {
-                             redirectURI: req.headers.host+'/oauth/callback',
-                             // redirectURI: 'http://localhost:4000/oauth/callback',
-                             trial: false
-                         }
-              res.render('mailbox.ejs',{
-                url: Nylas.urlForAuthentication(options),
-                message : 'Email authorized successfully.',
-                role : req.user.role,
-                user : req.user
+           var nylas = Nylas.with(token);
+           nylas.account.get().then(function(model) {
+           mailboxUtil.addNewEmail(req.user.id, model.emailAddress , model.name, token, (success, result) => {
+
+              mailboxUtil.getList( (success, list) => {
+                options = {
+                  // redirectURI: req.headers.host+'/oauth/callback',                
+                  redirectURI: 'http://localhost:4000/oauth/callback',
+                  trial: false
+                }
+               res.render('mailbox.ejs',{
+                 url: Nylas.urlForAuthentication(options),
+                 message : 'Email authorized successfully.',
+                 role : req.user.role,
+                 user : req.user,
+                 list : list
               });
-            });
+
+             })
+
           });
+          });
+
+        });
       } else if (req.query.error) {
           res.render('error.ejs', {
               message: req.query.reason,
@@ -237,7 +265,7 @@ module.exports = function(app,passport) {
           });
         }
       }
-      res.redirect('/calendarlist');               
+      res.redirect('/calendarevent');               
     });      
   });
 
@@ -245,6 +273,8 @@ module.exports = function(app,passport) {
 
   app.get('/calendarlist',isLoggedIn,  function(req, res) {  
     calendarUtil.getCalendarList((success, calendar) => {
+        console.log(success)
+        console.log(calendar)
         if(success === false) {
             return res.json({error: calendar});
         }
