@@ -322,7 +322,7 @@ module.exports = function(app,passport) {
                 firstname: result.firstname,
                 lastname: result.lastname,
                 email: result.email,
-                role : result.role,           
+                role : req.user.role,          
             });   
         });
     });
