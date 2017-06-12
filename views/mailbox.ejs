@@ -19,15 +19,19 @@
           </tr>
         </thead>
         <tbody>
+        <% if (list.length > 0) { %>
+        <% for(var i=0; i < list.length; i++) { %>
           <tr>
-            <td><%= user.firstname+' '+user. lastname %></td>
-            <td><%= user.email %></td>
+            <td><%= list[i].name %></td>
+            <td><%= list[i].email %></td>
             <td class="action">
               <a class="edit-icon" href="/syncemails" title="Edit">Fetch Messages</a>
               <a class="edit-icon" href="/fetch_events/15" title="Edit">Calender Events</a>
               <a class="edit-icon" href="/emailmessages" title="Edit">View Messages</a>           
             </td>
           </tr>
+          <% } %>
+          <% } %>
         </tbody>
       </table>  
       </div>

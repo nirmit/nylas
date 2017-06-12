@@ -14,21 +14,22 @@
 <form action="/edituser/<%= userdetails.id %>" method="post">
 
         <div class="frm-row col-2">
-            <div class="frm-col-1"><label>First Name</label><input type="text" name="firstname" value="<%= (firstname != '') ? firstname : '' %>">
+            <div class="frm-col-1"><label>First Name</label><input type="text" name="firstname" value="<%= (firstname != '') ? firstname : '' %>" />
             </div>
-            <div class="frm-col-2"> <label>Last Name</label><input type="text" name="lastname" value="<%= (lastname != '') ? lastname : '' %>"> </div>
+            <div class="frm-col-2"> <label>Last Name</label><input type="text" name="lastname" value="<%= (lastname != '') ? lastname : '' %>" /> </div>
        </div>
         <div class="frm-row col-2">
-            <div class="frm-col-1"><label>Email</label><input type="text" name="email" value="<%= (email != '') ? email : '' %>"></div>
-            <div class="frm-col-2"> <label>Password</label><input type="password" name="password" value =''></div>
+            <div class="frm-col-1"><label>Email</label><input type="text" name="email" value="<%= (email != '') ? email : '' %>" /></div>
+            <div class="frm-col-2"> <label>Password</label><input type="password" name="password" value ='' /></div>
         </div>
         <div class="frm-row col-1">
-            <div class="frm-col-1"><input type="radio" class="with-font" id="adminrole" Checkedname="role" value="Admin"><label for="adminrole">Admin</label> 
-            <input type="radio" class="with-font" id="userrole"  name="role" value="User"><label for="userrole">User</label></div>
+            <div class="frm-col-1"><input type="radio" class="with-font" id="adminrole" Checkedname="role" value="Admin" /><label for="adminrole">Admin</label> 
+            <input type="radio" class="with-font" id="userrole"  name="role" value="User" /><label for="userrole">User</label></div>
         </div>
- <div><input type="hidden" class="form-control" name="userid" value="<%= userdetails.id %>"></div>          
+ <div><input type="hidden" class="form-control" name="userid" value="<%= userdetails.id %>" /></div>          
  <div class="btn"> <button class="#run-now-btn" name="submit" type="submit">Submit</button> </div>
 </form> </div>
+</div>
 </section>
 
 </div>
