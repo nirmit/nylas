@@ -114,8 +114,8 @@ module.exports = function(app,passport) {
 
     mailboxUtil.getList(req.user.id, (success, list) => {
         options = {
-          // redirectURI: req.headers.host+'/oauth/callback',                
-          redirectURI: 'http://localhost:4000/oauth/callback',
+          redirectURI: req.headers.host+'/oauth/callback',                
+          // redirectURI: 'http://localhost:4000/oauth/callback',
           trial: false
       }
       res.render('mailbox.ejs',{
@@ -201,8 +201,8 @@ module.exports = function(app,passport) {
 
               mailboxUtil.getList(req.user.id, (success, list) => {
                 options = {
-                  // redirectURI: req.headers.host+'/oauth/callback',                
-                  redirectURI: 'http://localhost:4000/oauth/callback',
+                  redirectURI: req.headers.host+'/oauth/callback',                
+                  // redirectURI: 'http://localhost:4000/oauth/callback',
                   trial: false
                 }
                res.render('mailbox.ejs',{
