@@ -4,22 +4,26 @@ let Mailbox = require("../models/mailboxes");
  
 module.exports = {
 
-  addNewEmail: (user_id, email, name, token,callback) => {           
-         Mailbox.findOne({user_id : user_id, token: token}, (err, mailbox) => {
-           if(err) { return callback(false, "there is an error") };
-          
-              mailbox = new Mailbox();
-              mailbox.email = email;
-              mailbox.name = name;
-              mailbox.token = token;
-              mailbox.save((err) => {
-                  if(err) { return callback(false, errorMessage); }
-                  return callback(true, 'Email authorized Successfully.');
-              }); 
-                    
+  addNewEmail: (user_id, email, name, token,callback) => {
+        Mailbox.findOne({user_id : user_id, email: email}, (err, mailbox) => {
+          if(err) { return callback(false, "there is an error") };
+          console.log('mailbox'); 
+          console.log(mailbox); 
+          if(typeof(mailbox) === "undefined" || mailbox === null) {
+            mailbox = new Mailbox();
+            mailbox.email = email;
+            mailbox.name = name;
+            mailbox.user_id = user_id;
+            mailbox.token = token;
+            mailbox.save((err) => {
+                if(err) { return callback(false, errorMessage); }
+                return callback(true, 'Email authorized Successfully.');
+            }); 
+          } else {
+            return callback(false, "Email already exists.");
+          }
         });
     },
-
 
     getList: (callback) => {
         Mailbox.find((err, list) => {

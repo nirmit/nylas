@@ -231,17 +231,24 @@ module.exports = function(app,passport) {
   });
 
 
-  app.get('/syncemails',isLoggedIn,  function(req, res) {
-      var token = req.user.token;
+  app.get('/syncemails/:mId',isLoggedIn, function(req, res) {
+      var token = req.params.mId;
       var nylas = Nylas.with(token);
 
       nylas.threads.list({'in':'inbox'}).then(function(threads) {
         if(threads.length > 0){
          for(i = 0; i < threads.length; i++){
+          
+          var id = threads[i].id ? threads[i].id : ''
+          var from = threads[i].participants[0] ? threads[i].participants[0].email : ''
+          var to = threads[i].participants[1] ? threads[i].participants[1].email : ''
+          var body = threads[i].snippet ? threads[i].snippet : ''
+          var date = threads[i].last_message_timestamp ? threads[i].last_message_timestamp : ''
+          // console.log(date);return false;
           //(id,from,to,subject,message,timestamp,user_id)
-            emailUtil.addNewEmail(threads[i].id,threads[i].participants[0].email,threads[i].participants[1].email,threads[i].subject, threads[i].snippet, threads[i].last_message_timestamp, req.user.id, (success, result) => {               
+            emailUtil.addNewEmail(id,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {               
               if(success === false) {
-                 return res.json({error: result});                 
+                 return res.json({error: result});
              }
            });
           }
@@ -373,7 +380,7 @@ module.exports = function(app,passport) {
    // }));
 
    //Update User Details
-    app.post("/createuser",isLoggedIn, function(req, res) {
+    app.post("/createuser",isAdmin, function(req, res) {
         firstname = req.body.firstname,
         lastname = req.body.lastname,   
         email = req.body.email,
