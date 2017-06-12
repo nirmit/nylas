@@ -197,7 +197,7 @@ module.exports = function(app,passport) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
            var nylas = Nylas.with(token);
            nylas.account.get().then(function(model) {
-           mailboxUtil.addNewEmail(req.user.id, model.emailAddress , model.name, token, (success, result) => {
+            mailboxUtil.addNewRecord(req.user.id, model.accountId, model.emailAddress , model.name, token, (success, result) => {
 
               mailboxUtil.getList( (success, list) => {
                 options = {
@@ -215,7 +215,7 @@ module.exports = function(app,passport) {
 
              })
 
-          });
+            });
           });
 
         });

@@ -4,7 +4,7 @@ let Mailbox = require("../models/mailboxes");
  
 module.exports = {
 
-  addNewEmail: (user_id, email, name, token,callback) => {
+  addNewRecord: (user_id, account_id, email, name, token,callback) => {
         Mailbox.findOne({user_id : user_id, email: email}, (err, mailbox) => {
           if(err) { return callback(false, "there is an error") };
           console.log('mailbox'); 
@@ -14,6 +14,7 @@ module.exports = {
             mailbox.email = email;
             mailbox.name = name;
             mailbox.user_id = user_id;
+            mailbox.account_id = account_id;
             mailbox.token = token;
             mailbox.save((err) => {
                 if(err) { return callback(false, errorMessage); }
