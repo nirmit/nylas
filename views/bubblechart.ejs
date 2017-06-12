@@ -1,6 +1,5 @@
 <% include ./common/header.ejs %>
 <% include ./common/nav.ejs %>
-<%= emails %>
 <script type="text/javascript">
 var diameter = 1200,
     format = d3.format(",d"),
@@ -16,7 +15,7 @@ var svg = d3.select("body").append("svg")
     .attr("height", diameter)
     .attr("class", "bubble");
 
-var vroot = <%= emails %>;
+var vroot = <%- emails %>;
 
 var node = svg.selectAll(".node")
       .data(bubble.nodes(classes(vroot))

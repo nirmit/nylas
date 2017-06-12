@@ -24,8 +24,7 @@ module.exports = function(app,passport) {
   });
 
   app.get('/reports', isLoggedIn,  function(req, res) {
-    userUtil.getUserList((success, userllist) => {
-      console.log(userllist)
+    mailboxUtil.getList(req.user.id,(success, userllist) => {
       if(success === false) {
           return res.json({error: userllist});
       }
@@ -113,7 +112,7 @@ module.exports = function(app,passport) {
 
   app.get('/mailbox', isLoggedIn, function(req, res) {
 
-    mailboxUtil.getList( (success, list) => {
+    mailboxUtil.getList(req.user.id, (success, list) => {
         options = {
           // redirectURI: req.headers.host+'/oauth/callback',                
           redirectURI: 'http://localhost:4000/oauth/callback',
@@ -130,19 +129,20 @@ module.exports = function(app,passport) {
     })
   });
 
-  app.get('/emailmessages', isLoggedIn,  function(req, res) {
-   emailUtil.getEmailList(req.user.id, (success, emails) => {
-    // console.log(success)
-    console.log(emails)
-       if(success === false) {
-           return res.json({error: emails});
-       }
-       res.render('email.ejs', {
-           emails : emails,
-           message : '',
-           role : req.user.role
-       });
-   });    
+  app.get('/emailmessages/:mToken', isLoggedIn,  function(req, res) {
+    var mToken = req.params.mToken;
+    emailUtil.getEmailList(req.user.id, mToken, (success, emails) => {
+      // console.log(success)
+      console.log(emails)
+         if(success === false) {
+             return res.json({error: emails});
+         }
+         res.render('email.ejs', {
+             emails : emails,
+             message : '',
+             role : req.user.role
+         });
+    });    
   });
 
   
@@ -197,9 +197,9 @@ module.exports = function(app,passport) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
            var nylas = Nylas.with(token);
            nylas.account.get().then(function(model) {
-            mailboxUtil.addNewRecord(req.user.id, model.accountId, model.emailAddress , model.name, token, (success, result) => {
+            mailboxUtil.addNewRecord(req.user.id, model.accountId, model.emailAddress, model.name, token, (success, result) => {
 
-              mailboxUtil.getList( (success, list) => {
+              mailboxUtil.getList(req.user.id, (success, list) => {
                 options = {
                   // redirectURI: req.headers.host+'/oauth/callback',                
                   redirectURI: 'http://localhost:4000/oauth/callback',
@@ -231,8 +231,8 @@ module.exports = function(app,passport) {
   });
 
 
-  app.get('/syncemails/:mId',isLoggedIn, function(req, res) {
-      var token = req.params.mId;
+  app.get('/syncemails/:mToken',isLoggedIn, function(req, res) {
+      var token = req.params.mToken;
       var nylas = Nylas.with(token);
 
       nylas.threads.list({'in':'inbox'}).then(function(threads) {
@@ -246,14 +246,14 @@ module.exports = function(app,passport) {
           var date = threads[i].last_message_timestamp ? threads[i].last_message_timestamp : ''
           // console.log(date);return false;
           //(id,from,to,subject,message,timestamp,user_id)
-            emailUtil.addNewEmail(id,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {               
+            emailUtil.addNewEmail(id,token,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {               
               if(success === false) {
                  return res.json({error: result});
              }
            });
           }
         }
-       res.redirect('/emailmessages');
+       res.redirect('/emailmessages/'+token);
     });    
   });
 

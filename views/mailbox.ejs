@@ -20,17 +20,21 @@
         </thead>
         <tbody>
         <% if (list.length > 0) { %>
-        <% for(var i=0; i < list.length; i++) { %>
-          <tr>
-            <td><%= list[i].name %></td>
-            <td><%= list[i].email %></td>
-            <td class="action">
-              <a class="edit-icon" href="/syncemails/<%= list[i].token %>" title="Edit">Fetch Messages</a>
-              <a class="edit-icon" href="/fetch_events/<%= list[i].id %>" title="Edit">Calender Events</a>
-              <a class="edit-icon" href="/emailmessages/<%= list[i].id %>" title="Edit">View Messages</a>           
-            </td>
-          </tr>
-          <% } %>
+          <% for(var i=0; i < list.length; i++) { %>
+            <tr>
+              <td><%= list[i].name %></td>
+              <td><%= list[i].email %></td>
+              <td class="action">
+                <a class="edit-icon" href="/syncemails/<%= list[i].token %>" title="Edit">Fetch Messages</a>
+                <a class="edit-icon" href="/fetch_events/<%= list[i].token %>" title="Edit">Calender Events</a>
+                <a class="edit-icon" href="/emailmessages/<%= list[i].token %>" title="Edit">View Messages</a>           
+              </td>
+            </tr>
+            <% } %>
+          <% }else{ %>
+            <tr>
+              <td colspan='3'><center>No Records Found</center></td>
+            </tr>  
           <% } %>
         </tbody>
       </table>  

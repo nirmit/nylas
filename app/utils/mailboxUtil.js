@@ -26,8 +26,8 @@ module.exports = {
         });
     },
 
-    getList: (callback) => {
-        Mailbox.find((err, list) => {
+    getList: (user_id,callback) => {
+        Mailbox.find({user_id: user_id}, (err, list) => {
            // console.log(list)
            if(err) { return callback(false, "Failed to get list. Please try again later.") };
 
