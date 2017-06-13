@@ -1,6 +1,7 @@
 "use strict";
 
 let Mailbox = require("../models/mailboxes");
+let Email = require("../models/email");
  
 module.exports = {
 
@@ -37,21 +38,27 @@ module.exports = {
                callback(true, list);
            }
         });
-    }
+    },
 
 
-    // deleteMailbox: (mailbox_token,callback) => {
-    //     Mailbox.find({mailbox_token : mailbox_token}, (err) => {
-    //        Mailbox.remove({mailbox_token: mailbox_token}, (err, result) => {
-    //            if(typeof(result) === "undefined" || result === null) {
-    //                return callback(false, err);
-    //            } else {
-    //                return callback(true, result);
-    //            }
-    //         });
-    //     });
-    // },
+    deleteMailbox: (token, callback) => {
+        Mailbox.find({token : token}, (err) => {
+           Mailbox.remove({token: token}, (err, result) => {
+               if(typeof(result) === "undefined" || result === null) {
+                   return callback(false, err);
+               } else {
 
+                Email.find({mailbox_token : token}, (err) => {
+                  Email.remove({mailbox_token : token}, (err, result) =>{
+
+                  })
+                })
+                return callback(true, result);
+
+               }
+            });
+        });
+    },
   
 }
 

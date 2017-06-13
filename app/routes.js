@@ -159,6 +159,14 @@ module.exports = function(app,passport) {
         });
   });
 
+
+  app.get("/deletemailbox/:mToken",isLoggedIn, function(req, res) {
+        var mToken = req.params.mToken;
+        mailboxUtil.deleteMailbox(mToken, (success, result) => {
+            res.redirect('/mailbox');
+        });
+  });
+
   
   app.get('/calendarevent', isLoggedIn, function(req, res) {
         calendarUtil.getCalendarList((success, calendar) => {
