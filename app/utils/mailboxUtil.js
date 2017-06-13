@@ -39,6 +39,19 @@ module.exports = {
         });
     }
 
+
+    // deleteMailbox: (mailbox_token,callback) => {
+    //     Mailbox.find({mailbox_token : mailbox_token}, (err) => {
+    //        Mailbox.remove({mailbox_token: mailbox_token}, (err, result) => {
+    //            if(typeof(result) === "undefined" || result === null) {
+    //                return callback(false, err);
+    //            } else {
+    //                return callback(true, result);
+    //            }
+    //         });
+    //     });
+    // },
+
   
 }
 

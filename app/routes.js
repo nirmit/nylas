@@ -118,10 +118,13 @@ module.exports = function(app,passport) {
           redirectURI: 'http://localhost:4000/oauth/callback',
           trial: false
       }
+      console.log(list)
+      sitelink = req.protocol + '://' + req.get('host');
       res.render('mailbox.ejs',{
          url: Nylas.urlForAuthentication(options),
          message : '',
          role : req.user.role,
+         sitelink : sitelink,
          user : req.user,
          list : list
       });
@@ -137,12 +140,23 @@ module.exports = function(app,passport) {
          if(success === false) {
              return res.json({error: emails});
          }
+         sitelink = req.protocol + '://' + req.get('host');
          res.render('email.ejs', {
              emails : emails,
+             sitelink : sitelink,
              message : '',
-             role : req.user.role
+             role : req.user.role,
+             mToken : mToken
          });
     });    
+  });
+
+
+  app.post("/deleteemail/:mToken",isLoggedIn, function(req, res) {
+        var mToken = req.params.mToken;
+        emailUtil.deleteEmails(mToken, (success, result) => {
+            res.redirect('/mailbox');
+        });
   });
 
   
@@ -190,7 +204,6 @@ module.exports = function(app,passport) {
         res.json(calendars);
       });
     });
-
 
   app.get('/oauth/callback', isLoggedIn, function (req, res, next) {
       if (req.query.code) {
@@ -333,7 +346,8 @@ module.exports = function(app,passport) {
                 firstname: result.firstname,
                 lastname: result.lastname,
                 email: result.email,
-                role : req.user.role,          
+                role : req.user.role,
+                user_role : result.role,          
             });   
         });
     });
