@@ -263,10 +263,11 @@ module.exports = function(app,passport) {
       var token = req.params.mToken;
       var nylas = Nylas.with(token);
     nylas.calendars.list().then(function(calendars) {
-      // console.log(calendars);return false;
-      return res.json({response: calendars});
+      console.log(calendars);return false;
+      
       if(calendars.length > 0){
         for(i = 0; i < calendars.length; i++){          
+          
           calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {   
             if(success === false) {
                 return res.json({error: result});
@@ -278,6 +279,14 @@ module.exports = function(app,passport) {
     });      
   });
 
+ app.get('/fetch_event_detail/:calendar_id',isLoggedIn,  function(req, res) {
+    var calendar_id = req.params.calendar_id;
+    var nylas = Nylas.with('faFlX5lDBGKUbsCpW8wWMXtXEUMOkM');
+    nylas.events.list({calendar_id:calendar_id}).then(function(events) {
+      return res.json({response: events});
+    });
+ });
+  
 
 
   app.get('/calendarlist',isLoggedIn,  function(req, res) {  
