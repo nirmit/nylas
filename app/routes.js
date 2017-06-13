@@ -213,7 +213,6 @@ module.exports = function(app,passport) {
       });
     });
 
-
   app.get('/oauth/callback', isLoggedIn, function (req, res, next) {
       if (req.query.code) {
           Nylas.exchangeCodeForToken(req.query.code).then(function(token) {
@@ -223,7 +222,7 @@ module.exports = function(app,passport) {
 
               mailboxUtil.getList(req.user.id, (success, list) => {
                 options = {
-                  // redirectURI: process.env.REDIRECT_URI,                
+                  // redirectURI: process.env.REDIRECT_URI,
                   redirectURI: 'http://localhost:4000/oauth/callback',
                   trial: false
                 }
@@ -253,7 +252,7 @@ module.exports = function(app,passport) {
   });
 
 
-  app.get('/syncemails/:mToken',isLoggedIn, function(req, res) {
+  app.get('/fetch_emails/:mToken',isLoggedIn, function(req, res) {
       var token = req.params.mToken;
       var nylas = Nylas.with(token);
 
@@ -267,8 +266,8 @@ module.exports = function(app,passport) {
           var body = threads[i].snippet ? threads[i].snippet : ''
           var date = threads[i].last_message_timestamp ? threads[i].last_message_timestamp : ''
           // console.log(date);return false;
-          //(id,from,to,subject,message,timestamp,user_id)
-            emailUtil.addNewEmail(id,token,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {               
+          //(id,mailbox_token,from,to,subject,message,timestamp,user_id)
+            emailUtil.addNewEmail(id,token,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {
               if(success === false) {
                  return res.json({error: result});
              }
@@ -276,17 +275,20 @@ module.exports = function(app,passport) {
           }
         }
        res.redirect('/emailmessages/'+token);
-    });    
+    });
   });
 
 
 
- app.get('/synccalendars',isLoggedIn,  function(req, res) {
-      var token = req.user.token;
+ app.get('/fetch_events/:mToken',isLoggedIn,  function(req, res) {
+      var token = req.params.mToken;
       var nylas = Nylas.with(token);
-    nylas.calendars.list().then(function(calendars) {              
+    nylas.calendars.list().then(function(calendars) {
+      console.log(calendars);return false;
+      
       if(calendars.length > 0){
         for(i = 0; i < calendars.length; i++){          
+          
           calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {   
             if(success === false) {
                 return res.json({error: result});
@@ -294,10 +296,18 @@ module.exports = function(app,passport) {
           });
         }
       }
-      res.redirect('/calendarevent');               
+      // res.redirect('/calendarevent');               
     });      
   });
 
+ app.get('/fetch_event_detail/:calendar_id',isLoggedIn,  function(req, res) {
+    var calendar_id = req.params.calendar_id;
+    var nylas = Nylas.with('faFlX5lDBGKUbsCpW8wWMXtXEUMOkM');
+    nylas.events.list({calendar_id:calendar_id}).then(function(events) {
+      return res.json({response: events});
+    });
+ });
+  
 
 
   app.get('/calendarlist',isLoggedIn,  function(req, res) {  
