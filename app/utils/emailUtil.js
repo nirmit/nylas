@@ -27,11 +27,11 @@ module.exports = {
     },
 
 
-    RemoveEmailfromDB: (nylas_id,callback) => {
-        Email.findOne({nylas_id : nylas_id}, (err) => {
-           Email.remove({nylas_id: nylas_id}, (err, result) => {
+    deleteEmails: (mailbox_token,callback) => {
+        Email.find({mailbox_token : mailbox_token}, (err) => {
+           Email.remove({mailbox_token: mailbox_token}, (err, result) => {
                if(typeof(result) === "undefined" || result === null) {
-                   return callback(true, err);
+                   return callback(false, err);
                } else {
                    return callback(true, result);
                }

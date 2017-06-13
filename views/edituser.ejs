@@ -20,12 +20,12 @@
        </div>
         <div class="frm-row col-2">
             <div class="frm-col-1"><label>Email</label><input type="text" name="email" value="<%= (email != '') ? email : '' %>" /></div>
-            <div class="frm-col-2"> <label>Password</label><input type="password" name="password" value ='' /></div>
+            <div class="frm-col-2"> <label>Password</label><input type="password" name="password" required value ='' /></div>
         </div>
         <div class="frm-row col-1">
             <div class="frm-col-1">
-               <label><input type="radio" id="adminrole" name="role" value="Admin" />Admin</label> 
-               <label><input type="radio" id="userrole"  name="role" value="User" />User</label>
+               <label><input type="radio" id="adminrole" name="role" value="Admin" <%= (user_role == 'Admin') ? 'checked' : '' %> />Admin</label> 
+               <label><input type="radio" id="userrole"  name="role" value="User" <%= (user_role == 'User') ? 'checked' : '' %> />User</label>
             </div>
         </div>
  <div><input type="hidden" class="form-control" name="userid" value="<%= userdetails.id %>" /></div>          
