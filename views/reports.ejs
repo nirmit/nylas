@@ -23,10 +23,10 @@
 							<option value="stats" >Stats</option>
 							<option value="wordfrequency" >Word Frequency Bubble</option>
 						</select>
-						<select name="search_string1" class="hide" id="search_string1" style="width: 250px;">
+						<select name="selected_email" class="hide" id="selected_email" style="width: 250px;">
 							<option value="">--Select Email--</option>
 							<% for (var x in userlist) { %>
-							<option value="d3cloud" ><%= userlist[x].email; %></option>
+							<option value="<%= userlist[x].email; %>" ><%= userlist[x].email; %></option>
 							<% } %>
 						</select>
 						<select name="seltype" id="seltype"  class="hide" style="width: 150px; display: inline-block;" aria-required="true" aria-invalid="false" class="valid">
@@ -74,7 +74,7 @@
 		var type = $(this).val();
 		if(type)
 		{
-			$("#search_string1").removeClass('hide');
+			$("#selected_email").removeClass('hide');
 			if(type =='bubblechart')
 			{				
 				$("#seltype").removeClass('hide');
@@ -97,7 +97,7 @@
 		}
 		else
 		{
-			$("#search_string1").addClass('hide');		
+			$("#selected_email").addClass('hide');		
 			$("#selmon").val('');	
 			$("#selmon").addClass('hide');
 			$("#selyear").addClass('hide');
@@ -111,14 +111,14 @@
 		ignore:":hidden",
 		rules :{
 			search_string: {required: true},
-			search_string1: {required: true},
+			selected_email: {required: true},
 			seltype: {required: true},
 			selmon: {required: true},		
 			selyear: {required: true},
 		},
 		messages: {
 			search_string :{required :"Please select report type"},
-			search_string1 :{required :"Please select email"},
+			selected_email :{required :"Please select email"},
 			seltype: {required: "Please select type"},
 			selmon :{required :"Please select month"},
 			selyear :{required :"Please select year"}

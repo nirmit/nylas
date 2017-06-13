@@ -39,7 +39,7 @@ module.exports = function(app,passport) {
 
   app.post('/reports', isLoggedIn,  function(req, res) {
     
-    emailUtil.getEmailListForReports(req.user.id, (success, emails) => {
+    emailUtil.getEmailListForReports(req.user.id, req.body.selected_email, (success, emails) => {
       userUtil.getUserList((success, userlist) => {
 
         var template = '';
@@ -259,7 +259,6 @@ module.exports = function(app,passport) {
       nylas.threads.list({'in':'inbox'}).then(function(threads) {
         if(threads.length > 0){
          for(i = 0; i < threads.length; i++){
-          
           var id = threads[i].id ? threads[i].id : ''
           var from = threads[i].participants[0] ? threads[i].participants[0].email : ''
           var to = threads[i].participants[1] ? threads[i].participants[1].email : ''
@@ -284,7 +283,7 @@ module.exports = function(app,passport) {
       var token = req.params.mToken;
       var nylas = Nylas.with(token);
     nylas.calendars.list().then(function(calendars) {
-      console.log(calendars);return false;
+      return res.json({response : calendars});
       
       if(calendars.length > 0){
         for(i = 0; i < calendars.length; i++){          

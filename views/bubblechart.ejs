@@ -1,5 +1,14 @@
 <% include ./common/header.ejs %>
 <% include ./common/nav.ejs %>
+
+<% if(emails.length == 0){ %>
+
+<div>
+    <p><center>No Record Found.</center></p>
+</div>
+
+<% }else{ %>
+
 <script type="text/javascript">
 var diameter = 1200,
     format = d3.format(",d"),
@@ -51,6 +60,6 @@ function classes(vroot) {
 }
 
 </script>
-
+<% } %>
 </section>
 <% include ./common/footer.ejs %>

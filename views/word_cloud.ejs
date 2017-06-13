@@ -1,5 +1,15 @@
 <% include ./common/header.ejs %>
 <% include ./common/nav.ejs %>
+
+<% if(emails.length == 0){ %>
+
+<div>
+    <p><center>No Record Found.</center></p>
+</div>
+
+<% }else{ %>
+
+
 <style>
 #presets a { border-left: solid #666 1px; padding: 0 10px; }
 #presets a.first { border-left: none; }
@@ -471,5 +481,5 @@ parseText(d3.select("#text").property("value")), d3.select("#random-palette").on
         d3.selectAll("#angle-count, #angle-from, #angle-to").on("change", t).on("mouseup", t), t()
     }();
 </script>
-
+<% } %>
 <% include ./common/footer.ejs %>
