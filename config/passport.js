@@ -8,8 +8,6 @@ var LocalStrategyAPI = require('passport-localapikey').Strategy;
 
 // load up the user model
 var User            = require('../app/models/user');
-// load the auth variables
-var configAuth = require('./auth');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -36,18 +34,17 @@ module.exports = function(passport) {
     // GOOGLE ==================================================================
     // =========================================================================
     passport.use(new GoogleStrategy({
-
-        clientID        : configAuth.googleAuth.clientID,
-        clientSecret    : configAuth.googleAuth.clientSecret,
-        callbackURL     : configAuth.googleAuth.callbackURL,
-    passReqToCallback   : true
+        clientID        : process.env.GOOGLE_clientID,
+        clientSecret    : process.env.GOOGLE_clientSecret,
+        callbackURL     : process.env.GOOGLE_REDIRECT_URI,
+        passReqToCallback   : true
 
     },
     function(req, token, refreshToken, profile, done) {
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-
+            console.log(profile);
             // try to find the user based on their google id
             User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
                 if (err)
