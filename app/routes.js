@@ -2,6 +2,8 @@ userUtil = require("./utils/userUtil");
 emailUtil = require("./utils/emailUtil");
 mailboxUtil = require("./utils/mailboxUtil");
 calendarUtil = require("./utils/calendarUtil");
+var request = require("request");
+
 
 module.exports = function(app,passport) {
 
@@ -35,7 +37,8 @@ module.exports = function(app,passport) {
         role : req.user.role
       });
     });
-  });
+  });  
+
 
   app.post('/reports', isLoggedIn,  function(req, res) {
     
@@ -196,12 +199,20 @@ module.exports = function(app,passport) {
   });
   
 
-  app.get('/syncuseremails', isLoggedIn, function(req, res, next) {
-      var token = req.user.token;
-      var nylas = Nylas.with(token);
-      nylas.threads.list({'in':'inbox'}).then(function(emails) {
-        res.json(emails);
-      });
+  app.get('/syncuseremails',  function(req, res, next) {
+      var token = 'DoYNkJaKsL6FBAWD8iwXZYbKKb4IKY';
+      console.log(token);
+
+      var options = { method: 'GET',
+        url: 'https://api.nylas.com/messages',
+        headers: { authorization: 'Basic '+token } };
+
+      console.log(options);  
+      request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+      });           
   });
 
 
@@ -389,7 +400,7 @@ module.exports = function(app,passport) {
         successRedirect : '/dashboard', 
         failureRedirect : '/', 
         failureFlash : true,
-        role : 'User'
+        role : 'eUser'
   }));
 
 

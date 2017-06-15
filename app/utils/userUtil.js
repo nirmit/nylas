@@ -33,7 +33,7 @@ module.exports = {
         User.findOne({_id: userid}, (err, url) => {
            User.remove({_id: userid}, (err, result) => {
                if(typeof(result) === "undefined" || result === null) {
-                   return callback(true, err);
+                   return callback(false, err);
                } else {
                    return callback(true, result);
                }
