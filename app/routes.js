@@ -114,8 +114,8 @@ module.exports = function(app,passport) {
 
     mailboxUtil.getList(req.user.id, (success, list) => {
         options = {
-          // redirectURI: process.env.REDIRECT_URI,                
-          redirectURI: 'http://localhost:4000/oauth/callback',
+          redirectURI: process.env.REDIRECT_URI,                
+          //redirectURI: 'http://localhost:4000/oauth/callback',
           trial: false
       }
       console.log(list)
