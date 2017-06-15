@@ -1,10 +1,6 @@
 
 <% include ./common/header.ejs %>
 <% include ./common/nav.ejs %>
-<div class="flash-message"> <!-- show any messages that come back with authentication -->
-    <% if (message != '') { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %></div>
 <div class="abc">               
 <section>
 <div class="inner-block">
@@ -20,7 +16,6 @@
        </div>
         <div class="frm-row col-2">
             <div class="frm-col-1"><label>Email</label><input type="text" name="email" value="<%= (email != '') ? email : '' %>" /></div>
-            <div class="frm-col-2"> <label>Password</label><input type="password" name="password" required value ='' /></div>
         </div>
         <div class="frm-row col-1">
             <div class="frm-col-1">
@@ -28,6 +23,18 @@
                <label><input type="radio" id="userrole"  name="role" value="User" <%= (user_role == 'User') ? 'checked' : '' %> />User</label>
             </div>
         </div>
+        <div class="frm-row col-1">
+               <label><input type="checkbox" id="checkbox" name="checkbox"  />Change Password</label> 
+        </div>
+
+        <div class="frm-row col-2" id='changePassword' style="display:none" >
+            <div class="frm-col-1">
+               <label>New Password</label><input type="password" id="newPassword" name="newPassword" /> 
+               <label>Confirm Password</label><input type="password" id="confirmPassword"  name="confirmPassword" />
+            </div>
+        </div>
+
+
  <div><input type="hidden" class="form-control" name="userid" value="<%= userdetails.id %>" /></div>          
  <button class="btn-lg btn-primary" name="submit" type="submit">Submit</button>
 </form> </div>
@@ -36,3 +43,11 @@
 
 </div>
 <% include ./common/footer.ejs %>
+
+<script>
+$(document).ready(function() {
+    $('#checkbox').change(function() {
+        $('#changePassword').toggle();
+    });
+});
+</script>

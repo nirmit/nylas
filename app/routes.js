@@ -366,11 +366,21 @@ module.exports = function(app,passport) {
         lastname = req.body.lastname,
         email = req.body.email,                
         userid = req.body.userid;
-        password = req.body.password;
-        role = req.body.role;                
-        userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => {
-            res.redirect('/userlist');       
-        });
+        password = req.body.newPassword;
+        confirmPassword = req.body.confirmPassword;
+        role = req.body.role;
+        isValid = userUtil.isvalidEmail(email);
+        matchPassword = userUtil.matchPassword(password, confirmPassword);
+        if(isValid && matchPassword){                
+          userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => { 
+              res.redirect('/userlist');       
+          }); 
+        }else{
+              userUtil.getUserDetails(userid,(success,result) => { 
+                 res.render('edituser.ejs',{ message : 'Failed to update', userdetails : result, firstname : result.firstname, lastname : result.lastname, email : result.email, role : req.user.role , user_role : result.role  });
+              })
+              
+        }
   });
 
 
