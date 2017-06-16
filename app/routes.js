@@ -183,7 +183,6 @@ module.exports = function(app,passport) {
             calendar : calendar,
             message : '',
             role : req.user.role
-
         });
     });
     });
@@ -205,7 +204,7 @@ module.exports = function(app,passport) {
 
       var options = { method: 'GET',
         url: 'https://api.nylas.com/messages',
-        headers: { authorization: 'Basic '+token } };
+        headers: { authorization: 'Base64 '+token } };
 
       console.log(options);  
       request(options, function (error, response, body) {
