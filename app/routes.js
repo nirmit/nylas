@@ -419,14 +419,13 @@ module.exports = function(app,passport,appId) {
     }
   });
     
- app.post('/', passport.authenticate('local-login', {        
+  app.post('/', passport.authenticate('local-login', {        
         successRedirect : '/dashboard', 
         failureRedirect : '/', 
         failureFlash : true,
         role : 'User',
         user : global.user
   }));
-
 
 
  // =====================================
