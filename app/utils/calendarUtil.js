@@ -1,9 +1,9 @@
 "use strict";
 
 let Calendar = require("../models/calendars");
+let Event = require("../models/events");
  
 module.exports = {
-
 
     getCalendarList: (callback) => {
         Calendar.find((err, calendarlist) => {
@@ -17,7 +17,6 @@ module.exports = {
         });
     },
 
-
     RemoveCalendarfromDB: (nylas_id,callback) => {
         Calendar.findOne({nylas_id : nylas_id}, (err) => {
            Calendar.remove({nylas_id: nylas_id}, (err, result) => {
@@ -30,26 +29,26 @@ module.exports = {
         });
     },
   
-  
-    addNewCalendar: (nylas_id,name, callback) => {           
-         Calendar.findOne({nylas_id: nylas_id}, (err, calendars) => {
+    addNewCalendar: (nylas_id,account_id,name,description, callback) => {           
+        Calendar.findOne({nylas_id: nylas_id}, (err, calendar) => {
            if(err) { return callback(false, "") };                  
-           if(typeof(emails) === "undefined" || emails === null) {                    
+           if(typeof(calendar) === "undefined" || calendar === null) {                    
                 calendars = new Calendar();
-                calendars.nylas_id = nylas_id;                
-                calendars.name = name;                                
+                calendars.nylas_id = nylas_id;
+                calendars.account_id = account_id;
+                calendars.name = name;
+                calendars.description = description;
                 calendars.save((err) => {
                     if(err) { return callback(false, errorMessage); }
-                    return callback(true, 'calendar create successfully.');
+                    return callback(true, 'calendar added successfully.');
 
                 });
 
            } else{
-              return callback(true, 'calendar create successfully.');
-               } 
-          });
-    },
+              return callback(true, 'calendar added successfully.');
+           }
+        });
+    }
 
-    
-  
+
 }

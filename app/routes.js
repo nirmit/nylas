@@ -285,21 +285,47 @@ module.exports = function(app,passport) {
     nylas.calendars.list().then(function(calendars) {
       return res.json({response : calendars});
       
-      if(calendars.length > 0){
-        for(i = 0; i < calendars.length; i++){          
+      // if(calendars.length > 0){
+      //   for(i = 0; i < calendars.length; i++){
+      //     return res.json({error: calendars[i]});
           
-          calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {   
-            if(success === false) {
-                return res.json({error: result});
-            }
-          });
-        }
-      }
-      // res.redirect('/calendarevent');               
-    });      
+      //     calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {
+      //       if(success === false) {
+      //           return res.json({error: result});
+      //       }
+      //     });
+
+      //   }
+      // }
+      // res.redirect('/calendarevent');
+    });
   });
 
  app.get('/fetch_event_detail/:calendar_id',isLoggedIn,  function(req, res) {
+    // var calendar_id = req.params.calendar_id;
+    // var request = require("request");
+    // var querystring = require('querystring');
+    // var data = querystring.stringify({
+    //   calendar_id: calendar_id
+    // });
+
+    // var options = { method: 'GET',
+    //   url: 'https://api.nylas.com/events',
+    //   headers: { authorization: 'faFlX5lDBGKUbsCpW8wWMXtXEUMOkM',
+    //   'Content-Type': 'application/x-www-form-urlencoded',
+    //   'Content-Length': Buffer.byteLength(data) 
+    // }};
+
+
+
+    // request(options, function (error, response, body) {
+    //   return res.json({error: body});
+    //   if (error) throw new Error(error);
+      
+    //   console.log(body);
+    // });
+
+
     var calendar_id = req.params.calendar_id;
     var nylas = Nylas.with('faFlX5lDBGKUbsCpW8wWMXtXEUMOkM');
     nylas.events.list({calendar_id:calendar_id}).then(function(events) {
