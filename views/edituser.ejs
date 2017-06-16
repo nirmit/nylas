@@ -7,15 +7,15 @@
 <h1>Edit User</h1>
 <div class="frm">
         
-<form action="/edituser/<%= userdetails.id %>" method="post">
+<form action="/edituser/<%= userdetails.id %>" method="post" id='edituser'>
 
         <div class="frm-row col-2">
-            <div class="frm-col-1"><label>First Name</label><input type="text" name="firstname" value="<%= (firstname != '') ? firstname : '' %>" />
+            <div class="frm-col-1"><label>First Name</label><input type="text" id='firstname' name="firstname" value="<%= (firstname != '') ? firstname : '' %>" />
             </div>
-            <div class="frm-col-2"> <label>Last Name</label><input type="text" name="lastname" value="<%= (lastname != '') ? lastname : '' %>" /> </div>
+            <div class="frm-col-2"> <label>Last Name</label><input type="text" id='lastname' name="lastname" value="<%= (lastname != '') ? lastname : '' %>" /> </div>
        </div>
         <div class="frm-row col-2">
-            <div class="frm-col-1"><label>Email</label><input type="text" name="email" value="<%= (email != '') ? email : '' %>" /></div>
+            <div class="frm-col-1"><label>Email</label><input type="text" id='email' name="email" value="<%= (email != '') ? email : '' %>" /></div>
         </div>
         <div class="frm-row col-1">
             <div class="frm-col-1">
@@ -50,4 +50,30 @@ $(document).ready(function() {
         $('#changePassword').toggle();
     });
 });
+
+$("#edituser").validate({
+    ignore:":hidden",
+    rules :{
+        firstname: {required: true},
+        lastname: {required: true},
+        email: {required: true, email : true},
+        role: {required: true},
+        newPassword : { required :"#checkbox:checked" , minlength : 6},
+        confirmPassword : {required : "#checkbox:checked" , minlength : 6, equalTo : '#newPassword'}
+
+    
+    },
+    messages: {
+        firstname :{required : "Please enter firstname"},
+        lastname :{required :"Please enter lastname"},
+        email: {required: "Please enter email", email : 'Please enter valid email address'},
+        role :{required :"Role is required"},
+        newPassword :{required :"Please provide password" , minlength : 'Your password must be atleast 6 characters long' },
+        confirmPassword : {required : 'Please provide password' , minlength : 'Your password must be atleast 6 characters long', equalTo : 'Password not matched'}
+        
+    },
+    errorElement: "em"
+});
+
+
 </script>

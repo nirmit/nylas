@@ -15,17 +15,6 @@ module.exports = {
         }
     },
 
-
-    matchPassword : (newPassword, confirmPassword) => {
-
-      if(newPassword != confirmPassword){   
-        return false ;
-      }else{
-        return true ;
-      }
-    },
-
-
     getUserList: (callback) => {
         User.find((err, userllist) => {
            if(err) { return callback(false, "Failed to get userllist. Please try again later.") };
