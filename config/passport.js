@@ -44,13 +44,13 @@ module.exports = function(passport) {
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-            console.log(profile);
             // try to find the user based on their google id
             User.findOne({ 'email' : profile.emails[0].value }, function(err, user) {
                 if (err)
                     return done(err);
 
                 if (user) {
+                    global.user = user;
                     // if a user is found, log them in
                     return done(null, user);
                 } else {
@@ -140,8 +140,10 @@ module.exports = function(passport) {
                 return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
 
             // if the user is found but the password is wrong
-            if (!user.validPassword(password))
+            if (!user.validPassword(password)){
+                global.user = user;
                 return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+            }
 
             // all is well, return successful user
             return done(null, user);
