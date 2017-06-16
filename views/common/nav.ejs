@@ -1,5 +1,5 @@
 
-  <nav class="nav">
+  <nav class="nav" id='nav'>
     <ul class="menu">
 
       <li><a href="/dashboard">Dashboard</a></li>
@@ -17,3 +17,19 @@
         <div class="alert alert-success"><p><%= message %></p></div>
       </div>  
     <% } %> 
+
+
+    <script>
+    // for active links
+
+    $(function(){
+    var current = location.pathname;
+      $('#nav li a').each(function(){
+          var $this = $(this);
+          if($this.attr('href').indexOf(current) !== -1){
+              $this.addClass('active');
+          }
+      })
+    })
+
+    </script>
