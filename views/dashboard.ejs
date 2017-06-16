@@ -1,15 +1,15 @@
-   <% include ./common/header.ejs %>
-	<div class="abc">
-		<section>
-			<div class="block">
-			    <% if(role == 'Admin') { %>
-				<a href="/userlist"><div class="home-box user"><h1>Users</h1></div></a> <% } %>
-				<a href="/mailbox"><div class="home-box mail-box"><h1>Mail box</h1></div></a>
-				<a href="/calendarevent"><div class="home-box cal-event"><h1>Calendar Events</h1></div></a>
-				<a href="/reports"><div class="home-box reports"><h1>Reports</h1></div></a>
-			</div>
-		</section>
-	</div>
+<% include ./common/header.ejs %>
+<% include ./common/nav.ejs %>
+<div class="abc">
+	<section>
+		<div class="block">
+		    <% if(role == 'Admin') { %>
+			<a href="/userlist"><div class="home-box user"><h1>Users</h1></div></a> <% } %>
+			<a href="/mailbox"><div class="home-box mail-box"><h1>Mail box</h1></div></a>
+			<a href="/reports"><div class="home-box reports"><h1>Reports</h1></div></a>
+		</div>
+	</section>
+</div>
 
-    <% include ./common/footer.ejs %>
+<% include ./common/footer.ejs %>
 

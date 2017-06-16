@@ -8,8 +8,7 @@ module.exports = {
   addNewRecord: (user_id, account_id, email, name, token,callback) => {
         Mailbox.findOne({user_id : user_id, email: email}, (err, mailbox) => {
           if(err) { return callback(false, "there is an error") };
-          console.log('mailbox'); 
-          console.log(mailbox); 
+          
           if(typeof(mailbox) === "undefined" || mailbox === null) {
             mailbox = new Mailbox();
             mailbox.email = email;

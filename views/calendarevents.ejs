@@ -1,0 +1,44 @@
+<% include ./common/header.ejs %>
+<% include ./common/nav.ejs %>
+
+<div class="abc">				
+  <section>
+    <div class="inner-block">
+    <h1>All Events</h1>
+    <div class="frm">
+      <div class="table-responsive left width100">
+        <table class="table table-bordered table-hover tablesorter"  id="myTable">
+            <thead>
+                <tr>
+                <th><span></span>Title</th>
+                <th><span></span>Summary</th>
+                <th><span></span>Location</th>
+                <th><span></span>Participants</th>
+                <th><span></span>Start Date</th>
+                <th><span></span>End Date</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% if (events.length > 0) { %>
+              <% for(var i=0; i < events.length; i++) { %>
+                <tr>
+                  <td><%= events[i].title %></td>
+                  <td><%= events[i].description %></td>
+                  <td><%= events[i].location %></td>
+                  <td><%= events[i].participants %></td>
+                  <td><%= events[i].start %></td>
+                  <td><%= events[i].end %></td>
+                </tr>
+                <% } %>
+            <% }else{ %>
+              <tr>
+                <td colspan='6'><center>No Events Found</center></td>
+              </tr>  
+            <% } %>
+          </tbody>
+        </table>  
+      </div>
+    </div>
+  </section>
+</div>
+<% include ./common/footer.ejs %>

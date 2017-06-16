@@ -3,7 +3,7 @@ emailUtil = require("./utils/emailUtil");
 mailboxUtil = require("./utils/mailboxUtil");
 calendarUtil = require("./utils/calendarUtil");
 
-module.exports = function(app,passport) {
+module.exports = function(app,passport,appId) {
 
  
   app.get('/userlist',  function(req, res) {
@@ -118,7 +118,6 @@ module.exports = function(app,passport) {
           //redirectURI: 'http://localhost:4000/oauth/callback',
           trial: false
       }
-      console.log(list)
       sitelink = req.protocol + '://' + req.get('host');
       res.render('mailbox.ejs',{
          url: Nylas.urlForAuthentication(options),
@@ -135,8 +134,6 @@ module.exports = function(app,passport) {
   app.get('/emailmessages/:mToken', isLoggedIn,  function(req, res) {
     var mToken = req.params.mToken;
     emailUtil.getEmailList(req.user.id, mToken, (success, emails) => {
-      // console.log(success)
-      console.log(emails)
          if(success === false) {
              return res.json({error: emails});
          }
@@ -168,22 +165,38 @@ module.exports = function(app,passport) {
   });
 
   
-  app.get('/calendarevent', isLoggedIn, function(req, res) {
-        calendarUtil.getCalendarList((success, calendar) => {
-        console.log(success)
-        console.log(calendar)
-        if(success === false) {
-            return res.json({error: calendar});
-        }
-        // res.json({'result':userllist});
-        res.render('calendarevent.ejs', {
-            calendar : calendar,
-            message : '',
-            role : req.user.role
+  app.get('/calendarevents/:calendar_id', isLoggedIn, function(req, res) {
+    var calendar_id = req.params.calendar_id;
+    calendarUtil.getEventList(calendar_id,(success, events) => {
+      if(success === false) {
+          return res.json({error: calendar});
+      }
+      // res.json({'result':userllist});
+      res.render('calendarevents.ejs', {
+          events : events,
+          message : '',
+          role : req.user.role
 
-        });
+      });
     });
+  });
+  
+  app.get('/calendars/:mToken', isLoggedIn, function(req, res) {
+    var mToken = req.params.mToken;
+    calendarUtil.getCalendarList(mToken,(success, calendars) => {
+      if(success === false) {
+          return res.json({error: calendar});
+      }
+      // res.json({'result':userllist});
+      res.render('calendars.ejs', {
+          calendars : calendars,
+          message : '',
+          role : req.user.role
+
+      });
     });
+  });
+
 
   app.get('/dashboard', isLoggedIn, function(req, res) {
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
@@ -264,7 +277,6 @@ module.exports = function(app,passport) {
           var to = threads[i].participants[1] ? threads[i].participants[1].email : ''
           var body = threads[i].snippet ? threads[i].snippet : ''
           var date = threads[i].last_message_timestamp ? threads[i].last_message_timestamp : ''
-          // console.log(date);return false;
           //(id,mailbox_token,from,to,subject,message,timestamp,user_id)
             emailUtil.addNewEmail(id,token,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {
               if(success === false) {
@@ -279,29 +291,26 @@ module.exports = function(app,passport) {
 
 
 
- app.get('/fetch_events/:mToken',isLoggedIn,  function(req, res) {
+ app.get('/fetch_calendars/:mToken',isLoggedIn,  function(req, res) {
       var token = req.params.mToken;
       var nylas = Nylas.with(token);
     nylas.calendars.list().then(function(calendars) {
-      return res.json({response : calendars});
       
-      // if(calendars.length > 0){
-      //   for(i = 0; i < calendars.length; i++){
-      //     return res.json({error: calendars[i]});
-          
-      //     calendarUtil.addNewCalendar(calendars[i].id,calendars[i].name, (success, result) => {
-      //       if(success === false) {
-      //           return res.json({error: result});
-      //       }
-      //     });
+      if(calendars.length > 0){
+        for(i = 0; i < calendars.length; i++){          
+          calendarUtil.addNewCalendar(calendars[i].id,token,calendars[i].account_id,calendars[i].name,calendars[i].description, (success, result) => {
+            if(success === false) {
+                return res.json({error: result});
+            }
+          });
 
-      //   }
-      // }
-      // res.redirect('/calendarevent');
+        }
+      }
+      res.redirect('/calendars/'+token);
     });
   });
 
- app.get('/fetch_event_detail/:calendar_id',isLoggedIn,  function(req, res) {
+ app.get('/fetch_event_details/:calendar_id/:mailbox_token',isLoggedIn,  function(req, res) {
     // var calendar_id = req.params.calendar_id;
     // var request = require("request");
     // var querystring = require('querystring');
@@ -327,36 +336,33 @@ module.exports = function(app,passport) {
 
 
     var calendar_id = req.params.calendar_id;
-    var nylas = Nylas.with('faFlX5lDBGKUbsCpW8wWMXtXEUMOkM');
+    var mailbox_token = req.params.mailbox_token;
+    var nylas = Nylas.with(mailbox_token);
     nylas.events.list({calendar_id:calendar_id}).then(function(events) {
-      return res.json({response: events});
-    });
- });
-  
+      // return res.json({response: events});
 
-
-  app.get('/calendarlist',isLoggedIn,  function(req, res) {  
-    calendarUtil.getCalendarList((success, calendar) => {
-        console.log(success)
-        console.log(calendar)
-        if(success === false) {
-            return res.json({error: calendar});
+      if(events.length > 0){
+        for(i = 0; i < events.length; i++){          
+          calendarUtil.addNewEvent(events[i],mailbox_token, (success, result) => {
+            if(success === false) {
+                return res.json({error: result});
+            }
+          });
         }
-        // res.json({'result':userllist});
-        res.render('calendarlist.ejs', {
-            calendar : calendar,
-            message : ''
+      }
+      res.redirect('/calendars/'+mailbox_token);
+    });
 
-        });
-    });     
-  });
+ });
 
-
-  //delete calender
-  app.get('/deletecalendar/:nylas_id',isLoggedIn, function(req,res){
-      nylas_id = req.params.nylas_id;      
-      calendarUtil.RemoveCalendarfromDB(nylas_id, (success, result) => {          
-          res.redirect('/calendarlist');
+  //delete calendar
+  app.get('/deletecalendar/:nylas_calendar_id',isLoggedIn, function(req,res){
+      nylas_calendar_id = req.params.nylas_calendar_id;      
+      calendarUtil.RemoveCalendarfromDB(nylas_calendar_id, (success, result) => {
+        if(success === false) {
+            return res.json({error: result});
+        }          
+        res.redirect('/dashboard');
       });
   }); 
    
@@ -371,8 +377,6 @@ module.exports = function(app,passport) {
   app.get("/edituser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;       
         userUtil.getUserDetails(userid, (success, result) => {
-         console.log(success)
-         console.log(result)          
             res.render('edituser.ejs', {
                 userdetails : result,                
                 message: '',
@@ -415,7 +419,8 @@ module.exports = function(app,passport) {
         successRedirect : '/dashboard', 
         failureRedirect : '/', 
         failureFlash : true,
-        role : 'User'
+        role : 'User',
+        user : global.user
   }));
 
 
@@ -466,8 +471,10 @@ module.exports = function(app,passport) {
 
   function isLoggedIn(req, res, next) {
     
-    if (req.isAuthenticated())
-        return next();
+    if (req.isAuthenticated()){
+      // return res.json({user: global.user});
+      return next();
+    }
     
     res.redirect('/'); 
   }
