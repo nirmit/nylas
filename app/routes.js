@@ -396,11 +396,15 @@ module.exports = function(app,passport,appId) {
         lastname = req.body.lastname,
         email = req.body.email,                
         userid = req.body.userid;
-        password = req.body.password;
-        role = req.body.role;                
-        userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => {
-            res.redirect('/userlist');       
-        });
+        password = req.body.newPassword;
+        confirmPassword = req.body.confirmPassword;
+        role = req.body.role;
+        // isValid = userUtil.isvalidEmail(email);
+                      
+          userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => { 
+              res.redirect('/userlist');       
+          }); 
+    
   });
 
 

@@ -15,7 +15,6 @@ module.exports = {
         }
     },
 
-
     getUserList: (callback) => {
         User.find((err, userllist) => {
            if(err) { return callback(false, "Failed to get userllist. Please try again later.") };
@@ -56,7 +55,7 @@ module.exports = {
                }
             });
         }else{
-            User.findOneAndUpdate({_id: userid}, { $set: {'firstname':firstname, 'lastname':lastname,  'email':email, 'password':passstring,'role': role}}, {returnNewDocument: true}, (err, user) => {
+            User.findOneAndUpdate({_id: userid}, { $set: {'firstname':firstname, 'lastname':lastname,  'email':email,'role': role}}, {returnNewDocument: true}, (err, user) => {
            if(err) { return callback(false, "Failed to get user details. Please try again later.") };
                if(typeof(user) === "undefined" || user === null) {
                    return callback(false, "user not found.");
