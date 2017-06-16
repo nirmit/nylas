@@ -30,3 +30,25 @@
 </section>
 <% include ./common/footer.ejs %>
 
+<script>
+$("#new_user").validate({
+    
+    rules :{
+        firstname: {required: true},
+        lastname: {required: true},
+        email: {required: true, email : true},
+        role: {required: true},
+        password : { required : true , minlength : 6}
+    
+    },
+    messages: {
+        firstname :{required : "Please enter First Name"},
+        lastname :{required :"Please enter Last Name"},
+        email: {required: "Please enter email", email : 'Please enter valid email address'},
+        role :{required :"Role is required"},
+        password :{required :"Please provide password" , minlength : 'Your password must be atleast 6 characters long' }   
+    },
+    errorElement: "div"
+});
+</script>
+
