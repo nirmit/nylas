@@ -198,7 +198,7 @@ module.exports = function(app,passport) {
   });
   
 
-  app.get('/syncuseremails',  function(req, res, next) {
+  app.get('/syncuseremails',isLoggedIn,  function(req, res, next) {
       var token = 'DoYNkJaKsL6FBAWD8iwXZYbKKb4IKY';
       console.log(token);
 
