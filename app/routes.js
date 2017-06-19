@@ -269,16 +269,20 @@ module.exports = function(app,passport,appId) {
       var token = req.params.mToken;
       var nylas = Nylas.with(token);
 
-      nylas.threads.list({'in':'inbox'}).then(function(threads) {
+      nylas.messages.list({'in':'inbox'}).then(function(threads) {
         if(threads.length > 0){
          for(i = 0; i < threads.length; i++){
+              // return res.json({response: threads[0]});
+              
           var id = threads[i].id ? threads[i].id : ''
-          var from = threads[i].participants[0] ? threads[i].participants[0].email : ''
-          var to = threads[i].participants[1] ? threads[i].participants[1].email : ''
+          var from = threads[i].from[0] ? threads[i].from[0].email : ''
+          var to = threads[i].to[0] ? threads[i].to[0].email : ''
+          var cc = threads[i].cc[0] ? threads[i].cc[0].email : ''
+          var bcc = threads[i].bcc[0] ? threads[i].bcc[0].email : ''
           var body = threads[i].snippet ? threads[i].snippet : ''
-          var date = threads[i].last_message_timestamp ? threads[i].last_message_timestamp : ''
+          var date = threads[i].date ? threads[i].date : ''
           //(id,mailbox_token,from,to,subject,message,timestamp,user_id)
-            emailUtil.addNewEmail(id,token,from,to,threads[i].subject,body,date,req.user.id,(success, result) => {
+            emailUtil.addNewEmail(id,token,from,to,cc,bcc,threads[i].subject,body,date,req.user.id,(success, result) => {
               if(success === false) {
                  return res.json({error: result});
              }

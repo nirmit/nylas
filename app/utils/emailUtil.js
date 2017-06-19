@@ -39,7 +39,7 @@ module.exports = {
         });
     },
 
-  addNewEmail: (nylas_id,mailbox_token,from,to,subject,message,timestamp,user_id,callback) => {           
+  addNewEmail: (nylas_id,mailbox_token,from,to,cc,bcc,subject,message,timestamp,user_id,callback) => {           
          Email.findOne({nylas_id : nylas_id}, (err, emails) => {
            if(err) { return callback(false, "") };                 
            if(typeof(emails) === "undefined" || emails === null) { 
@@ -48,6 +48,8 @@ module.exports = {
                 emails.from = from;
                 emails.mailbox_token = mailbox_token;
                 emails.to = to;
+                emails.cc = cc;
+                emails.bcc = bcc;
                 emails.subject = subject;                                        
                 emails.body = message;                                              
                 emails.date_timestamp = timestamp;                                          
