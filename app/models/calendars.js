@@ -1,9 +1,12 @@
 var mongoose = require('mongoose');
 
-var emailSchema = mongoose.Schema({
 
-            location : String        
-
+var calendarSchema = mongoose.Schema({
+		nylas_id : String,
+		account_id : String,
+        name : String,
+        description : String,
+        mailbox_token : String
 });
 
-module.exports = mongoose.model('Calendar', emailSchema);
+module.exports = mongoose.model('Calendar', calendarSchema);

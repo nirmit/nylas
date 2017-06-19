@@ -1,0 +1,42 @@
+
+  <% include ./common/header.ejs %>
+  <% include ./common/nav.ejs %>
+  <div class="abc">				
+    <section>
+      <div class="inner-block">
+      <h1>All Calendars</h1>
+      <div class="frm">
+        <div class="table-responsive left width100">
+          <table class="table table-bordered table-hover tablesorter"  id="myTable">
+              <thead>
+                  <tr>
+                  <th><span></span>Name</th>
+                  <th><span></span>Description</th>
+                  <th><span></span>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+              <% if (calendars.length > 0) { %>
+                <% for(var i=0; i < calendars.length; i++) { %>
+                  <tr>
+                    <td><%= calendars[i].name %></td>
+                    <td><%= calendars[i].description %></td>
+                    <td class="action">
+                      <a class="edit-icon" href="/fetch_event_details/<%= calendars[i].nylas_id %>/<%= calendars[i].mailbox_token %>" title="Edit">Fetch Events</a>
+                      <a class="edit-icon" href="/calendarevents/<%= calendars[i].nylas_id %>" title="Edit">View Events</a>
+                      <a class="edit-icon" data-confirm='Are you sure ?' title="Delete">Delete</a>
+                    </td>
+                  </tr>
+                  <% } %>
+              <% }else{ %>
+                <tr>
+                  <td colspan='3'><center>No Records Found</center></td>
+                </tr>  
+              <% } %>
+            </tbody>
+          </table>  
+        </div>
+      </div>
+    </section>
+  </div>
+  <% include ./common/footer.ejs %>

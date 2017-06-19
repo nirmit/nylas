@@ -42,7 +42,7 @@ global.Nylas = require('nylas').config({
    appSecret: process.env.API_SECRET
 });
 
-require('./app/routes.js')(app,passport);
+require('./app/routes.js')(app,passport,process.env.API_ID);
 
 http.createServer( app ).listen( app.get( 'port' ), function (){
   console.log( 'Express server listening on port ' + app.get( 'port' ));
