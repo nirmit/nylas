@@ -214,6 +214,7 @@ module.exports = function(app,passport,appId) {
 
   app.get('/syncuseremails',isLoggedIn,  function(req, res, next) {
       var token = 'DoYNkJaKsL6FBAWD8iwXZYbKKb4IKY';
+
       console.log(token);
 
       var options = { method: 'GET',
@@ -225,7 +226,7 @@ module.exports = function(app,passport,appId) {
         if (error) throw new Error(error);
 
         console.log(body);
-      });           
+      });                 
   });
 
 

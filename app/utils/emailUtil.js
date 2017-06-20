@@ -42,7 +42,7 @@ module.exports = {
   addNewEmail: (nylas_id,mailbox_token,from,to,subject,message,timestamp,user_id,callback) => {           
          Email.findOne({nylas_id : nylas_id}, (err, emails) => {
            if(err) { return callback(false, "") };                 
-           if(typeof(emails) === "undefined" || emails === null) { 
+           if(typeof(emails) === "undefined" || emails === null) {            
                 emails = new Email();
                 emails.nylas_id = nylas_id;
                 emails.from = from;
@@ -54,11 +54,11 @@ module.exports = {
                 emails.user_id = user_id;                       
                 emails.save((err) => {
                     if(err) { return callback(false, errorMessage); }
-                    return callback(true, 'email fetched Successfully.');
+                    return callback(true, 'emails created Successfully.');
                 });
 
            } else{
-            return callback(true, 'email fetched Successfully.');
+            return callback(true, 'emails Already Exists, Please try any other emails.');
            } 
         });
     },
