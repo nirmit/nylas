@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var emailMessagesSchema = mongoose.Schema({
-		nylas_id : String,
+	nylas_id : String,
         from : String,
         to : String,
         cc : String,

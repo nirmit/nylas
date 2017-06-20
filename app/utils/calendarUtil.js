@@ -10,7 +10,7 @@ Number.prototype.padLeft = function(base,chr){
 
 module.exports = {
 
-    getCalendarList: (mailbox_token,callback) => {
+    getCalendarList: (mailbox_token,callback) => {      
         Calendar.find({mailbox_token:mailbox_token},(err, calendarlist) => {
            if(err) { return callback(false, "Failed to get contactlist. Please try again later.") };
 
@@ -46,10 +46,10 @@ module.exports = {
         });
     },
   
-    addNewCalendar: (nylas_id,mailbox_token,account_id,name,description, callback) => {           
+    addNewCalendar: (nylas_id,mailbox_token,account_id,name,description, callback) => {             
         Calendar.findOne({nylas_id: nylas_id}, (err, calendar) => {
            if(err) { return callback(false, "") }; 
-           if(calendar === null) {
+           if(typeof(calendar) === "undefined" || calendar === null) {
               calendar = new Calendar();
               calendar.nylas_id = nylas_id;
               calendar.mailbox_token = mailbox_token;
@@ -59,11 +59,10 @@ module.exports = {
               calendar.save((err) => {
                   if(err) { return callback(false, errorMessage); }
                   return callback(true, 'calendar added successfully.');
-
               });
 
            } else{
-              return callback(true, 'calendar added successfully.');
+              return callback(true, 'calendar Already Exists, Please try any other calendar.');
            }
         });
     },
