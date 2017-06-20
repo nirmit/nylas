@@ -4,6 +4,8 @@ var emailMessagesSchema = mongoose.Schema({
 		nylas_id : String,
         from : String,
         to : String,
+        cc : String,
+        bcc : String,
         subject : String,
         body : String,
         date_timestamp : String,
