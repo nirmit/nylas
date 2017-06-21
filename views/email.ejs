@@ -8,10 +8,12 @@
     </section>
 
     <section>
+      <% if (message) { %>
+      <% } %>             
       <div class="inner-block">
       <h1>EmailMessages</h1>
       <div class="frm">
-      <div class="table-responsive left width100">
+      <div class="table-responsive left width100">    
         <table class="table table-bordered table-hover tablesorter" id="myTable">
           <thead>
           <tr>
@@ -33,7 +35,7 @@
                   <td><%= emails[i].bcc %></td>
                 </tr>
               <% } %>
-              <% } %>                  
+              <% } %>                       
           </tbody>
         </table>  
       </div>

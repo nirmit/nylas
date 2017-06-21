@@ -18,7 +18,7 @@ module.exports = function(app,passport,appId) {
             res.render('userlist.ejs', {
                 userlist : userllist,
                 sitelink : sitelink,
-                message : '',
+                message : req.flash('info'),
                 role : req.user.role
             });
         });
@@ -125,7 +125,7 @@ module.exports = function(app,passport,appId) {
       sitelink = req.protocol + '://' + req.get('host');
       res.render('mailbox.ejs',{
          url: Nylas.urlForAuthentication(options),
-         message : '',
+         message : req.flash('info'),
          role : req.user.role,
          sitelink : sitelink,
          user : req.user,
@@ -145,7 +145,7 @@ module.exports = function(app,passport,appId) {
          res.render('email.ejs', {
              emails : emails,
              sitelink : sitelink,
-             message : '',
+             message : req.flash('info'),
              role : req.user.role,
              mToken : mToken
          });
@@ -164,6 +164,7 @@ module.exports = function(app,passport,appId) {
   app.get("/deletemailbox/:mToken",isLoggedIn, function(req, res) {
         var mToken = req.params.mToken;
         mailboxUtil.deleteMailbox(mToken, (success, result) => {
+            req.flash('info', 'Deleted MailUser Successfully');
             res.redirect('/mailbox');
         });
   });  
@@ -196,7 +197,7 @@ module.exports = function(app,passport,appId) {
       res.render('calendars.ejs', {
           calendars : calendars,
           sitelink : sitelink,
-          message : '',
+          message : req.flash('info'),
           role : req.user.role,
           mToken : mToken
       });
@@ -304,6 +305,7 @@ module.exports = function(app,passport,appId) {
            });
           }
         }
+       req.flash('info', 'Fetched Messages Successfully');        
        res.redirect('/emailmessages/'+token);
     });
   });
@@ -324,6 +326,7 @@ module.exports = function(app,passport,appId) {
 
         }
       }
+      req.flash('info', 'Fetched Calendars Successfully');
       res.redirect('/calendars/'+token);      
     });
   });
@@ -369,6 +372,7 @@ module.exports = function(app,passport,appId) {
           });
         }
       }
+      req.flash('info', 'Fetched Events Successfully');
       res.redirect('/calendars/'+mailbox_token);
     });
 
@@ -388,6 +392,7 @@ module.exports = function(app,passport,appId) {
   app.get("/removeuser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;
         userUtil.RemoveUserfromDB(userid, (success, result) => {
+            req.flash('info', 'Deleted User Successfully');
             res.redirect('/userlist');
         });
   });
