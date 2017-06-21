@@ -164,6 +164,18 @@ module.exports = function(app,passport,appId) {
         });
   });
 
+
+    //delete calendar
+  app.get('/deletecalendar/:nylas_id',isLoggedIn, function(req,res){
+      var nylas_id = req.params.nylas_id;      
+      calendarUtil.deletecalendar(nylas_id, (success, result) => {
+        if(success === false) {
+            return res.json({error: result});
+        }          
+        res.redirect('/mailbox');
+      });
+  }); 
+
   
   app.get('/calendarevents/:calendar_id', isLoggedIn, function(req, res) {
     var calendar_id = req.params.calendar_id;
@@ -188,10 +200,13 @@ module.exports = function(app,passport,appId) {
           return res.json({error: calendar});
       }
       // res.json({'result':userllist});
+      sitelink = req.protocol + '://' + req.get('host');
       res.render('calendars.ejs', {
           calendars : calendars,
           message : '',
-          role : req.user.role
+          role : req.user.role,
+          sitelink : sitelink
+         
 
       });
     });
@@ -272,7 +287,7 @@ module.exports = function(app,passport,appId) {
       nylas.messages.list({'in':'inbox'}).then(function(threads) {
         if(threads.length > 0){
          for(i = 0; i < threads.length; i++){
-              // return res.json({response: threads[0]});
+             // return res.json({response: threads[0]});
               
           var id = threads[i].id ? threads[i].id : ''
           var from = threads[i].from[0] ? threads[i].from[0].email : ''
@@ -359,16 +374,7 @@ module.exports = function(app,passport,appId) {
 
  });
 
-  //delete calendar
-  app.get('/deletecalendar/:nylas_calendar_id',isLoggedIn, function(req,res){
-      nylas_calendar_id = req.params.nylas_calendar_id;      
-      calendarUtil.RemoveCalendarfromDB(nylas_calendar_id, (success, result) => {
-        if(success === false) {
-            return res.json({error: result});
-        }          
-        res.redirect('/dashboard');
-      });
-  }); 
+
    
   app.get("/removeuser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;

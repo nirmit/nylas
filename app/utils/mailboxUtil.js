@@ -2,6 +2,8 @@
 
 let Mailbox = require("../models/mailboxes");
 let Email = require("../models/email");
+let Calendar = require("../models/calendars");
+let Event = require('../models/events');
  
 module.exports = {
 
@@ -52,6 +54,20 @@ module.exports = {
 
                   })
                 })
+                Calendar.find({mailbox_token : token}, (err) => {
+                  Calendar.remove({mailbox_token : token}, (err, result) =>{
+                    if(typeof(result) === 'undefined' || result === null){
+                      return callback(false, err);
+                    }else{
+                       Event.find({mailbox_token : token},(err) => {
+                         Event.remove({mailbox_token : token},(err, result) => {
+                
+                         })
+                       })
+                    }
+                  })
+                })
+
                 return callback(true, result);
 
                }

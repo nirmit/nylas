@@ -9,7 +9,8 @@ var eventSchema = mongoose.Schema({
         location : String,
         start : String,
         end : String,
-        participants : String
+        participants : String,
+        mailbox_token : String
 });
 
 module.exports = mongoose.model('Event', eventSchema);
