@@ -34,12 +34,17 @@ module.exports = {
         });
     },
 
-    RemoveCalendarfromDB: (nylas_id,callback) => {
-        Calendar.findOne({nylas_id : nylas_id}, (err) => {
+    deletecalendar: (nylas_id,callback) => {
+        Calendar.find({nylas_id : nylas_id}, (err) => {
            Calendar.remove({nylas_id: nylas_id}, (err, result) => {
                if(typeof(result) === "undefined" || result === null) {
                    return callback(true, err);
                } else {
+                   Event.find({nylas_calendar_id : nylas_id},(err) => {
+                     Event.remove({nylas_calendar_id : nylas_id},(err, result) => {
+
+                     })
+                   })
                    return callback(true, result);
                }
             });
@@ -77,7 +82,8 @@ module.exports = {
       var location = event.location;
       var start = '';
       var end = '';
-      var participants = ''
+      var participants = '';
+      var mailbox_token = mailbox_token
 
       if(event.when){
         var sd = new Date(event.when.start_time * 1000);
@@ -110,6 +116,7 @@ module.exports = {
           event.start = start;
           event.end = end;
           event.participants = participants;
+          event.mailbox_token = mailbox_token;
           event.save((err) => {
               if(err) { return callback(false, errorMessage); }
               return callback(true, 'event added successfully.');
