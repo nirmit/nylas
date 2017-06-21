@@ -167,7 +167,8 @@ module.exports = function(app,passport,appId) {
 
     //delete calendar
   app.get('/deletecalendar/:nylas_id',isLoggedIn, function(req,res){
-      var nylas_id = req.params.nylas_id;      
+      var nylas_id = req.params.nylas_id;
+             
       calendarUtil.deletecalendar(nylas_id, (success, result) => {
         if(success === false) {
             return res.json({error: result});
