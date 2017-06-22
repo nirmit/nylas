@@ -38,7 +38,7 @@ module.exports = {
         Calendar.find({nylas_id : nylas_id}, (err) => {
            Calendar.remove({nylas_id: nylas_id}, (err, result) => {
                if(typeof(result) === "undefined" || result === null) {
-                   return callback(true, err);
+                   return callback(false, err);
                } else {
                    Event.find({nylas_calendar_id : nylas_id},(err) => {
                      Event.remove({nylas_calendar_id : nylas_id},(err, result) => {
@@ -67,7 +67,12 @@ module.exports = {
               });
 
            } else{
-              return callback(true, 'calendar Already Exists, Please try any other calendar.');
+
+              Calendar.findOneAndUpdate({nylas_id: nylas_id}, { $set: { 'name': name, 'description': description}}, {returnNewDocument: true}, (err, calendar) => {
+                if(err) { return callback(false, "Couldn't update your calendar") };
+  
+              });
+
            }
         });
     },
@@ -123,7 +128,10 @@ module.exports = {
 
           });
         }else{
-          return callback(true, 'event added successfully.');
+              Event.findOneAndUpdate({nylas_id: nylas_id}, { $set: { 'title': title, 'description': description, 'location' : location, 'start' : start, 'end' : end, 'participants' : participants}}, {returnNewDocument: true}, (err, event) => {
+                if(err) { return callback(false, "Couldn't update your events") };
+  
+              });
         }
 
       });
