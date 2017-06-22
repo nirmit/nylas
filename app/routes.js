@@ -349,29 +349,6 @@ module.exports = function(app,passport,appId) {
 
 
  app.get('/fetch_event_details/:calendar_id/:mailbox_token',isLoggedIn,  function(req, res) {
-    // var calendar_id = req.params.calendar_id;
-    // var request = require("request");
-    // var querystring = require('querystring');
-    // var data = querystring.stringify({
-    //   calendar_id: calendar_id
-    // });
-
-    // var options = { method: 'GET',
-    //   url: 'https://api.nylas.com/events',
-    //   headers: { authorization: 'faFlX5lDBGKUbsCpW8wWMXtXEUMOkM',
-    //   'Content-Type': 'application/x-www-form-urlencoded',
-    //   'Content-Length': Buffer.byteLength(data) 
-    // }};
-
-
-
-    // request(options, function (error, response, body) {
-    //   return res.json({error: body});
-    //   if (error) throw new Error(error);
-      
-    //   console.log(body);
-    // });
-
 
     var calendar_id = req.params.calendar_id;
     var mailbox_token = req.params.mailbox_token;
