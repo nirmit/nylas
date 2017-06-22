@@ -10,7 +10,8 @@ var emailMessagesSchema = mongoose.Schema({
         body : String,
         date_timestamp : String,
         user_id : String,
-        mailbox_token : String
+        mailbox_token : String,
+        email_type : String
 });
 
 module.exports = mongoose.model('Email', emailMessagesSchema);
