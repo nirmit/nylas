@@ -104,7 +104,7 @@ module.exports = {
                 user.role = role;
                 user.save((err) => {
                     if(err) { return callback(false, errorMessage); }
-                    return callback(true, 'User Create Successfully.');
+                    return callback(true, 'User Created Successfully.');
                 });
            } else {
                callback(true, 'User Already Exists, Please try any other email address.');
