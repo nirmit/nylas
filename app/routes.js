@@ -164,7 +164,7 @@ module.exports = function(app,passport,appId) {
   app.get("/deletemailbox/:mToken",isLoggedIn, function(req, res) {
         var mToken = req.params.mToken;
         mailboxUtil.deleteMailbox(mToken, (success, result) => {
-            req.flash('info', 'Deleted MailUser Successfully');
+            req.flash('info', 'MailUser Deleted Successfully');
             res.redirect('/mailbox');
         });
   });  
@@ -180,7 +180,7 @@ module.exports = function(app,passport,appId) {
         if(success === false) {
             return res.json({error: result});
         }
-        req.flash('info', 'Deleted Calendar Successfully');          
+        req.flash('info', 'Calendar Deleted Successfully');          
         res.redirect('/mailbox');
       });
   });
@@ -321,7 +321,7 @@ module.exports = function(app,passport,appId) {
            });
           }
         }
-       req.flash('info', 'Fetched Messages Successfully');        
+       req.flash('info', 'Messages Fetched Successfully');        
        res.redirect('/emailmessages/'+token);
     });
   });
@@ -342,7 +342,7 @@ module.exports = function(app,passport,appId) {
 
         }
       }
-      req.flash('info', 'Fetched Calendars Successfully');
+      req.flash('info', 'Calendars Fetched Successfully');
       res.redirect('/calendars/'+token);      
     });
   });
@@ -388,7 +388,7 @@ module.exports = function(app,passport,appId) {
           });
         }
       }
-      req.flash('info', 'Fetched Events Successfully');
+      req.flash('info', 'Events Fetched Successfully');
       res.redirect('/calendars/'+mailbox_token);
     });
 
@@ -399,7 +399,7 @@ module.exports = function(app,passport,appId) {
   app.get("/removeuser/:uuid",isLoggedIn, function(req, res) {
         userid = req.params.uuid;
         userUtil.RemoveUserfromDB(userid, (success, result) => {
-            req.flash('info', 'Deleted User Successfully');
+            req.flash('info', 'User Deleted Successfully');
             res.redirect('/userlist');
         });
   });
@@ -432,7 +432,8 @@ module.exports = function(app,passport,appId) {
         role = req.body.role;
         // isValid = userUtil.isvalidEmail(email);
                       
-          userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => { 
+          userUtil.updateUserDetails(userid,firstname,lastname, email, password,role, (success, result) => {
+              req.flash('info', 'User Updated Successfully'); 
               res.redirect('/userlist');       
           }); 
     

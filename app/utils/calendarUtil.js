@@ -38,7 +38,7 @@ module.exports = {
         Calendar.find({nylas_id : nylas_id}, (err) => {
            Calendar.remove({nylas_id: nylas_id}, (err, result) => {
                if(typeof(result) === "undefined" || result === null) {
-                   return callback(true, err);
+                   return callback(false, err);
                } else {
                    Event.find({nylas_calendar_id : nylas_id},(err) => {
                      Event.remove({nylas_calendar_id : nylas_id},(err, result) => {
