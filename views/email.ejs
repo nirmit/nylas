@@ -7,9 +7,9 @@
       <div class='bttn' style='float : left'>
             <select name="email_type" id="email_type" style="width: 250px;">
               <option value =''>Select Email Type</option>
-              <option value="all">All</option>
-              <option value="received" >Received</option>
-              <option value="sent" >Sent</option>
+              <option value="all" <%= (email_type == 'all') ? 'selected' : '' %>>All</option>
+              <option value="received" <%= (email_type == 'received') ? 'selected' : '' %> >Received</option>
+              <option value="sent" <%= (email_type == 'sent') ? 'selected' : '' %> >Sent</option>
             </select>
       </div>
 
@@ -67,5 +67,6 @@
       }
 
     });
+
   </script>
   <% include ./common/footer.ejs %>
