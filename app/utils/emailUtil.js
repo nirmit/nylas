@@ -30,8 +30,9 @@ module.exports = {
         });
     },
 
-    getEmailListForReports: (user_id, to_email, callback) => {
-        Email.find({user_id : user_id, to : to_email},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
+    getEmailListForReports: (user_id,email_type, callback) => {
+      if(email_type == 'received' || email_type == 'sent'){
+        Email.find({user_id : user_id, email_type : email_type},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
            if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
            if(typeof(emaillist) === "undefined" || emaillist === null) {
                return callback(false, "No records Found.");
@@ -39,6 +40,16 @@ module.exports = {
                callback(true, emaillist);
            }
         });
+      }else{
+        Email.find({user_id : user_id},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
+           if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
+           if(typeof(emaillist) === "undefined" || emaillist === null) {
+               return callback(false, "No records Found.");
+           } else {
+               callback(true, emaillist);
+           }
+        });
+      }
     },
 
 
