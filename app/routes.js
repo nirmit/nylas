@@ -8,7 +8,7 @@ var request = require("request");
 module.exports = function(app,passport,appId) {
 
  
-  app.get('/userlist', isAdmin, function(req, res) {
+  app.get('/userlist',isAdmin,  function(req, res) {
         userUtil.getUserList((success, userllist) => {
             if(success === false) {
                 return res.json({error: userllist});
@@ -26,14 +26,21 @@ module.exports = function(app,passport,appId) {
   });
 
 
-  app.get("/switchuser/:uuid",isLoggedIn, function(req, res) {
+  app.get("/switchuser/:uuid", isLoggedIn, function(req, res) {
         userid = req.params.uuid;
         userUtil.switchUser(userid, (success, result) => {
           console.log(result);
           console.log(success);
-            if(result){
+             if(result){
               global.user = result;
-              //global.user.olduser = req.user;
+              global.user.olduser = req.user;
+
+              // if(global.user.olduser){
+              //    global.user.olduser = null;
+              // }else{
+              //   global.user.olduser = req.user;
+              // }              
+                            
               req.logIn(result,function(err){                
               req.flash('info', 'User Switched Successfully');  
               res.redirect('/userlist');
