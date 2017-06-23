@@ -35,7 +35,10 @@ module.exports = function(app,passport,appId) {
         message : '',
         emails : '',
         userlist : userllist,
-        role : req.user.role
+        role : req.user.role,
+        report_type : req.body.search_string,
+        selected_email : req.body.selected_email
+
       });
     });
   });  
@@ -80,7 +83,13 @@ module.exports = function(app,passport,appId) {
           message : '',
           userlist: userlist,
           emails : email_list,
-          role : req.user.role
+          role : req.user.role,
+          report_type : req.body.search_string,
+          selected_email : req.body.selected_email,
+          seltype : req.body.seltype,
+          selmon : req.body.selmon,
+          selyear : req.body.selyear
+
         });
 
       });
