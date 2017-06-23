@@ -23,7 +23,7 @@ module.exports = function(app,passport,appId) {
             });
         });
 
-  });  
+  }); 
     
 
   app.get('/reports', isLoggedIn,  function(req, res) {

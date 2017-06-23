@@ -65,6 +65,7 @@ module.exports = {
             });
         }        
     },
+    
 
     UpdateToken: ( email, accessToken,callback) => {
          User.findOneAndUpdate({email: email}, { $set: {'token':accessToken }}, {returnNewDocument: true}, (err, user) => {
