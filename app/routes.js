@@ -37,7 +37,8 @@ module.exports = function(app,passport,appId) {
         userlist : userllist,
         role : req.user.role,
         report_type : req.body.search_string,
-        selected_email : req.body.selected_email
+        selected_email : req.body.selected_email,
+        seltype : req.body.seltype
 
       });
     });
@@ -46,7 +47,7 @@ module.exports = function(app,passport,appId) {
 
   app.post('/reports', isLoggedIn,  function(req, res) {
     
-    emailUtil.getEmailListForReports(req.user.id, req.body.selected_email, (success, emails) => {
+    emailUtil.getEmailListForReports(req.user.id,req.body.seltype, (success, emails) => {
       userUtil.getUserList((success, userlist) => {
 
         var template = '';
@@ -86,10 +87,7 @@ module.exports = function(app,passport,appId) {
           role : req.user.role,
           report_type : req.body.search_string,
           selected_email : req.body.selected_email,
-          seltype : req.body.seltype,
-          selmon : req.body.selmon,
-          selyear : req.body.selyear
-
+          seltype : req.body.seltype
         });
 
       });

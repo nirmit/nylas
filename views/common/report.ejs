@@ -33,9 +33,9 @@
                  
 						<select name="seltype" id="seltype"  class="hide" style="width: 150px; display: inline-block;" aria-required="true" aria-invalid="false" class="valid">
 							<option value="" selected="selected">--Select Type--</option>
-							<option value="all" >All</option>
-							<option value="received" >Received</option>
-							<option value="sent" >Sent</option>
+							<option value="all" <%= (seltype == 'all') ? 'selected' : '' %> >All</option>
+							<option value="received" <%= (seltype == 'received') ? 'selected' : '' %> >Received</option>
+							<option value="sent" <%= (seltype == 'sent') ? 'selected' : '' %> >Sent</option>
 						</select>
 						<select name="selmon" id="selmon" class="hide" style="width: 150px;">
 							<option value="">--Select Month--</option>
@@ -73,6 +73,7 @@
 	<script>
 
 	$(function() {
+
 	    var report_type = $('#search_string').val();
 	    if(report_type)
 		{
