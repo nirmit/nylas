@@ -65,26 +65,26 @@ module.exports = {
         });
     },
 
-  addNewEmail: (nylas_id,mailbox_token,from,to,cc,bcc,subject,message,timestamp,email_type,user_id,callback) => {           
+    addNewEmail: (nylas_id,mailbox_token,from,to,cc,bcc,subject,message,timestamp,email_type,user_id,callback) => {           
          Email.findOne({nylas_id : nylas_id}, (err, emails) => {
            if(err) { return callback(false, "") };                 
-           if(typeof(emails) === "undefined" || emails === null) {            
-                emails = new Email();
-                emails.nylas_id = nylas_id;
-                emails.from = from;
-                emails.mailbox_token = mailbox_token;
-                emails.to = to;
-                emails.cc = cc;
-                emails.bcc = bcc;
-                emails.subject = subject;                                        
-                emails.body = message;                                              
-                emails.date_timestamp = timestamp;
-                emails.email_type = email_type;                                          
-                emails.user_id = user_id;                       
-                emails.save((err) => {
-                    if(err) { return callback(false, errorMessage); }
-                    return callback(true, 'emails created Successfully.');
-                });
+           if(typeof(emails) === "undefined" || emails === null) {
+              emails = new Email();
+              emails.nylas_id = nylas_id;
+              emails.from = from;
+              emails.mailbox_token = mailbox_token;
+              emails.to = to;
+              emails.cc = cc;
+              emails.bcc = bcc;
+              emails.subject = subject;                                        
+              emails.body = message;                                              
+              emails.date_timestamp = timestamp;
+              emails.email_type = email_type;                                          
+              emails.user_id = user_id;                       
+              emails.save((err) => {
+                  if(err) { return callback(false, errorMessage); }
+                  return callback(true, 'emails created Successfully.');
+              });
 
            } else{
             return callback(true, 'emails Already Exists, Please try any other emails.');

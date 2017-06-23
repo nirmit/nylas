@@ -350,20 +350,45 @@ module.exports = function(app,passport,appId) {
       nylas.messages.list({'in':'sent'}).then(function(threads) {
         if(threads.length > 0){
          for(i = 0; i < threads.length; i++){
-             // return res.json({response: threads[0]});
-              
-          var id = threads[i].id ? threads[i].id : ''
-          var email_type = 'sent'
-          var from = threads[i].from[0] ? threads[i].from[0].email : ''
-          var to = threads[i].to[0] ? threads[i].to[0].email : ''
-          var cc = threads[i].cc[0] ? threads[i].cc[0].email : ''
-          var bcc = threads[i].bcc[0] ? threads[i].bcc[0].email : ''
-          var body = threads[i].snippet ? threads[i].snippet : ''
-          var date = threads[i].date ? threads[i].date : ''
+              // return res.json({response: threads[i].cc});
+          var id = threads[i].id ? threads[i].id : '';
+          var email_type = 'sent';
+          var from = threads[i].from[0] ? threads[i].from[0].email : '';
+          var to = threads[i].to[0] ? threads[i].to[0].email : '';
+          var cc = threads[i].cc ? threads[i].cc : [];
+          var bcc = threads[i].bcc ? threads[i].bcc : [];
+          var body = threads[i].snippet ? threads[i].snippet : '';
+          var date = threads[i].date ? threads[i].date : '';
+
+          if(threads[i].subject == 'Hello'){
+            return res.json({response: threads[i].cc});
+          }
+
+          var email_cc = '';
+          var email_bcc = '';
+          
+          for(a = 0; a < cc.length; a++){
+            if(email_cc == ''){
+              email_cc += cc[a].email
+            }else{
+              email_cc += ', '+cc[a].email
+            }
+          }
+
+          for(a = 0; a < bcc.length; a++){
+            if(email_bcc == ''){
+              email_bcc += bcc[a].email
+            }else{
+              email_bcc += ', '+bcc[a].email
+            }
+          }
+
+
+
           //(id,mailbox_token,from,to,subject,message,timestamp,user_id)
-            emailUtil.addNewEmail(id,token,from,to,cc,bcc,threads[i].subject,body,date,email_type,req.user.id,(success, result) => {               
-              if(success === false) {                
-                 return res.json({error: result});            
+            emailUtil.addNewEmail(id,token,from,to,email_cc,email_bcc,threads[i].subject,body,date,email_type,req.user.id,(success, result) => {
+              if(success === false) {
+                 return res.json({error: result});
              }
            });
           }
@@ -379,12 +404,35 @@ module.exports = function(app,passport,appId) {
           var email_type = 'received'
           var from = threads[i].from[0] ? threads[i].from[0].email : ''
           var to = threads[i].to[0] ? threads[i].to[0].email : ''
-          var cc = threads[i].cc[0] ? threads[i].cc[0].email : ''
-          var bcc = threads[i].bcc[0] ? threads[i].bcc[0].email : ''
+
+          var cc = threads[i].cc ? threads[i].cc : []
+          var bcc = threads[i].bcc ? threads[i].bcc : []
           var body = threads[i].snippet ? threads[i].snippet : ''
           var date = threads[i].date ? threads[i].date : ''
+
+
+          var email_cc = '';
+          var email_bcc = '';
+          
+          for(a = 0; a < cc.length; a++){
+            if(email_cc == ''){
+              email_cc += cc[a].email
+            }else{
+              email_cc += ', '+cc[a].email
+            }
+          }
+
+          for(a = 0; a < bcc.length; a++){
+            if(email_bcc == ''){
+              email_bcc += bcc[a].email
+            }else{
+              email_bcc += ', '+bcc[a].email
+            }
+          }
+
+
           //(id,mailbox_token,from,to,subject,message,timestamp,user_id)
-            emailUtil.addNewEmail(id,token,from,to,cc,bcc,threads[i].subject,body,date,email_type,req.user.id,(success, result) => {               
+            emailUtil.addNewEmail(id,token,from,to,email_cc,email_bcc,threads[i].subject,body,date,email_type,req.user.id,(success, result) => {               
               if(success === false) {                
                  return res.json({error: result});            
              }
@@ -392,7 +440,8 @@ module.exports = function(app,passport,appId) {
           }
         }
        req.flash('info', 'Messages Fetched Successfully');        
-       res.redirect('/emailmessages/'+token);
+       // res.redirect('/emailmessages/'+token);
+       res.redirect('/mailbox');
     });
   });
 
@@ -413,7 +462,8 @@ module.exports = function(app,passport,appId) {
         }
       }
       req.flash('info', 'Calendars Fetched Successfully');
-      res.redirect('/calendars/'+token);      
+      // res.redirect('/calendars/'+token);
+      res.redirect('/mailbox');
     });
   });
 
