@@ -4,8 +4,23 @@ let Email = require("../models/email");
  
 module.exports = {
 
+  // for all emails 
+
     getEmailList: (user_id, mailbox_token, callback) => {
         Email.find({user_id: user_id, mailbox_token: mailbox_token},(err, emaillist) => {
+           if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
+           if(typeof(emaillist) === "undefined" || emaillist === null) {
+               return callback(false, "No records Found.");
+           } else {
+               callback(true, emaillist);
+           }
+        });
+    },
+
+    // for emails based on email type 
+
+    getEmailTypeList: (user_id, mailbox_token, email_type, callback) => {
+        Email.find({user_id: user_id, mailbox_token: mailbox_token, email_type : email_type},(err, emaillist) => {
            if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
            if(typeof(emaillist) === "undefined" || emaillist === null) {
                return callback(false, "No records Found.");

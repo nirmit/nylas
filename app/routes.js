@@ -148,7 +148,28 @@ module.exports = function(app,passport,appId) {
              sitelink : sitelink,
              message : req.flash('info'),
              role : req.user.role,
-             mToken : mToken
+             mToken : mToken,
+             email_type : 'all'
+         });
+    });    
+  });
+
+  app.get('/emailmessages/:mToken/:email_type', isLoggedIn,  function(req, res) {
+    var mToken = req.params.mToken;
+    var email_type = req.params.email_type
+    emailUtil.getEmailTypeList(req.user.id, mToken, email_type, (success, emails) => {
+         if(success === false) {
+             return res.json({error: emails});
+         }
+         // return res.json({error : emails})
+         sitelink = req.protocol + '://' + req.get('host');
+         res.render('email.ejs', {
+             emails : emails,
+             sitelink : sitelink,
+             message : req.flash('info'),
+             role : req.user.role,
+             mToken : mToken,
+             email_type : email_type
          });
     });    
   });
