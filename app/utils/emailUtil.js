@@ -86,8 +86,11 @@ module.exports = {
                     return callback(true, 'emails created Successfully.');
                 });
 
-           } else{
-            return callback(true, 'emails Already Exists, Please try any other emails.');
+           } else{            
+            Email.findOneAndUpdate({nylas_id: nylas_id}, { $set: { 'from': from, 'subject': subject, 'body' : message, 'cc' : cc, 'bcc' : bcc }}, {returnNewDocument: true}, (err, emails) => {
+                if(err) { return callback(false, "Couldn't update your emails") };
+  
+              });
            } 
         });
     },
