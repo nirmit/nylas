@@ -8,7 +8,7 @@ var request = require("request");
 module.exports = function(app,passport,appId) {
 
  
-  app.get('/userlist',  function(req, res) {
+  app.get('/userlist', isAdmin, function(req, res) {
         userUtil.getUserList((success, userllist) => {
             if(success === false) {
                 return res.json({error: userllist});
@@ -23,6 +23,23 @@ module.exports = function(app,passport,appId) {
             });
         });
 
+  });
+
+
+  app.get("/switchuser/:uuid",isLoggedIn, function(req, res) {
+        userid = req.params.uuid;
+        userUtil.switchUser(userid, (success, result) => {
+          console.log(result);
+          console.log(success);
+            if(result){
+              global.user = result;
+              //global.user.olduser = req.user;
+              req.logIn(result,function(err){                
+              req.flash('info', 'User Switched Successfully');  
+              res.redirect('/userlist');
+              });
+            }
+        });
   }); 
     
 
@@ -503,7 +520,7 @@ module.exports = function(app,passport,appId) {
    // }));
 
    //Update User Details
-    app.post("/createuser",isAdmin, function(req, res) {
+    app.post("/createuser", isAdmin, function(req, res) {
         firstname = req.body.firstname,
         lastname = req.body.lastname,   
         email = req.body.email,

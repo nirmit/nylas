@@ -41,6 +41,19 @@ module.exports = {
     },
 
 
+    switchUser: (userid, callback) => {
+        User.findOne({_id: userid}, 
+          function(err,user) {
+            if(err) { return callback(false, "Failed to get user. Please try again later.") };
+            if(typeof(user) === "undefined" || user === null) {
+                return callback(false, "user not found.");
+            } else {
+                callback(true, user);
+            }
+        });
+      },    
+
+
     updateUserDetails: (userid, firstname,lastname, email, password,role,callback) => {
       console.log(userid)
         if(password != ''){

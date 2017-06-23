@@ -5,7 +5,9 @@
     <section>
       <% if (message) { %>
       <% } %>
-      <a href="/createuser"><button type="button" class="btn btn-primary" >Add User</button></a>
+      <% if (role == 'Admin') { %>
+        <a href="/createuser"><button type="button" class="btn btn-primary" >Add User</button></a>
+      <% } %>
       <div class="inner-block usr_list_div">
       <h1>All User</h1>
       <div class="frm">
@@ -30,8 +32,10 @@
         <td><%= userlist[i].role %></td>        
         <td class="action">
         <a class="edit-icon" href="<%= sitelink %>/edituser/<%= userlist[i].id %>" title="Edit">Edit</a>
-        <a class="delete-icon" data-confirm='Are you sure ?' href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" title="Delete">Delete</a>         
-        <a href="<%= sitelink %>/switchuser/<%= userlist[i].id %>" title="switch user">Switch User</a>
+        <a class="delete-icon" data-confirm='Are you sure ?' href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" title="Delete">Delete</a>  
+        <% if (role == 'Admin') { %>
+          <a href="<%= sitelink %>/switchuser/<%= userlist[i].id %>" title="switch user">Switch User</a>
+        <% } %>       
         </td>       
         </tr> 
         <% } %>
