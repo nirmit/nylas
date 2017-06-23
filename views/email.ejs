@@ -3,8 +3,19 @@
   <% include ./common/nav.ejs %>
   <div class="abc">				
     <section>
+     
+      <div class='bttn' style='float : left'>
+            <select name="email_type" id="email_type" style="width: 250px;">
+              <option value =''>Select Email Type</option>
+              <option value="all">All</option>
+              <option value="received" >Received</option>
+              <option value="sent" >Sent</option>
+            </select>
+      </div>
+
       <div style="float:right" class="bttn"> <a href="<%= sitelink %>/deleteemail/<%= mToken %>" data-class="edit-icon" data-confirm="Are you sure?" data-method="get" data-title="delete">
-      <button type="button" class="btn btn-primary">Delete All Email Messages</button></a></div>
+        <button type="button" class="btn btn-primary">Delete All Email Messages</button></a>
+      </div>
     </section>
 
     <section>
@@ -46,5 +57,15 @@
     $(document).ready(function() {
         $('#myTable').DataTable();
     } );
+
+    $(document).on('change','#email_type',function(){
+      var type = $(this).val();
+      if(type == 'all'){
+        window.location.href = "/emailmessages/<%= mToken %>";
+      }else{
+        window.location.href = "/emailmessages/<%= mToken %>/" + type;
+      }
+
+    });
   </script>
   <% include ./common/footer.ejs %>

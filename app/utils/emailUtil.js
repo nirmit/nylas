@@ -4,8 +4,23 @@ let Email = require("../models/email");
  
 module.exports = {
 
+  // for all emails 
+
     getEmailList: (user_id, mailbox_token, callback) => {
         Email.find({user_id: user_id, mailbox_token: mailbox_token},(err, emaillist) => {
+           if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
+           if(typeof(emaillist) === "undefined" || emaillist === null) {
+               return callback(false, "No records Found.");
+           } else {
+               callback(true, emaillist);
+           }
+        });
+    },
+
+    // for emails based on email type 
+
+    getEmailTypeList: (user_id, mailbox_token, email_type, callback) => {
+        Email.find({user_id: user_id, mailbox_token: mailbox_token, email_type : email_type},(err, emaillist) => {
            if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
            if(typeof(emaillist) === "undefined" || emaillist === null) {
                return callback(false, "No records Found.");
@@ -39,7 +54,7 @@ module.exports = {
         });
     },
 
-  addNewEmail: (nylas_id,mailbox_token,from,to,cc,bcc,subject,message,timestamp,user_id,callback) => {           
+  addNewEmail: (nylas_id,mailbox_token,from,to,cc,bcc,subject,message,timestamp,email_type,user_id,callback) => {           
          Email.findOne({nylas_id : nylas_id}, (err, emails) => {
            if(err) { return callback(false, "") };                 
            if(typeof(emails) === "undefined" || emails === null) {            
@@ -52,7 +67,8 @@ module.exports = {
                 emails.bcc = bcc;
                 emails.subject = subject;                                        
                 emails.body = message;                                              
-                emails.date_timestamp = timestamp;                                          
+                emails.date_timestamp = timestamp;
+                emails.email_type = email_type;                                          
                 emails.user_id = user_id;                       
                 emails.save((err) => {
                     if(err) { return callback(false, errorMessage); }
