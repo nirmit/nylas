@@ -32,13 +32,14 @@ module.exports = {
 
     getEmailListForReports: (user_id,email_type, callback) => {
       if(email_type == 'received' || email_type == 'sent'){
-        Email.find({user_id : user_id, email_type : email_type},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
-           if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
-           if(typeof(emaillist) === "undefined" || emaillist === null) {
+        Email.find({user_id : user_id, email_type : email_type},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1,user_id:1},(err, emaillist) => {
+           
+          if(typeof(emaillist) === "undefined" || emaillist === null) {
                return callback(false, "No records Found.");
            } else {
                callback(true, emaillist);
            }
+
         });
       }else{
         Email.find({user_id : user_id},{'_id': 0, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
@@ -51,7 +52,6 @@ module.exports = {
         });
       }
     },
-
 
     deleteEmails: (mailbox_token,callback) => {
         Email.find({mailbox_token : mailbox_token}, (err) => {
@@ -66,8 +66,9 @@ module.exports = {
     },
 
     addNewEmail: (nylas_id,mailbox_token,from,to,cc,bcc,subject,message,timestamp,email_type,user_id,callback) => {           
-         Email.findOne({nylas_id : nylas_id}, (err, emails) => {
-           if(err) { return callback(false, "") };                 
+         Email.findOne({nylas_id : nylas_id, mailbox_token : mailbox_token }, (err, emails) => {
+          
+           if(err) { return callback(false, "") };
            if(typeof(emails) === "undefined" || emails === null) {
               emails = new Email();
               emails.nylas_id = nylas_id;
@@ -87,7 +88,7 @@ module.exports = {
               });
 
            } else{            
-            Email.findOneAndUpdate({nylas_id: nylas_id}, { $set: { 'from': from, 'subject': subject, 'body' : message, 'cc' : cc, 'bcc' : bcc }}, {returnNewDocument: true}, (err, emails) => {
+            Email.findOneAndUpdate({nylas_id: nylas_id, mailbox_token : mailbox_token}, { $set: { 'from': from, 'subject': subject, 'body' : message, 'cc' : cc, 'bcc' : bcc }}, {returnNewDocument: true}, (err, emails) => {
                 if(err) { return callback(false, "Couldn't update your emails") };
   
               });

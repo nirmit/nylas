@@ -51,14 +51,14 @@ module.exports = function(app,passport,appId) {
     
 
   app.get('/reports', isLoggedIn,  function(req, res) {
-    mailboxUtil.getList(req.user.id,(success, userllist) => {
+    mailboxUtil.getList(req.user.id,(success, userlist) => {
       if(success === false) {
           return res.json({error: userllist});
       }
       res.render('reports.ejs',{
         message : '',
         emails : '',
-        userlist : userllist,
+        userlist : userlist,
         role : req.user.role,
         report_type : req.body.search_string,
         selected_email : req.body.selected_email,
@@ -70,35 +70,56 @@ module.exports = function(app,passport,appId) {
 
 
   app.post('/reports', isLoggedIn,  function(req, res) {
-    
     emailUtil.getEmailListForReports(req.user.id,req.body.seltype, (success, emails) => {
-      userUtil.getUserList((success, userlist) => {
+      mailboxUtil.getList(req.user.id,(success, userlist) => {
 
         var template = '';
         var email_list = '';
-        var email_arr = {};
+        var email_arr = emails;
         if(req.body.search_string == 'd3cloud'){
           template = 'word_cloud.ejs';
-          email_list = emails;
         }else if(req.body.search_string == 'bubblechart'){
           template = 'bubblechart.ejs';
 
           var super_main_array = {}
           super_main_array['name'] = "flair"
           super_main_array['children'] = {}
-
+          
           var tmp_arr = []
           emails.forEach(function(email) {
             var tmp_hash = {}
-            tmp_hash.name = email.from;
-            tmp_hash.size = 2;
-            tmp_arr.push(tmp_hash);
+            tmp_hash.name = (req.body.seltype == 'sent') ? email.to : email.from;
+            tmp_hash.size = 1;
+            var new_record = true;
+            for (var i=0; i < tmp_arr.length; i++) {
+              if(tmp_arr[i].name == tmp_hash.name){
+                tmp_arr[i].size = tmp_arr[i].size + 1;
+                new_record = false;
+              }
+            }
+
+            if(new_record){
+              tmp_arr.push(tmp_hash);  
+            }
+            
           });
           super_main_array['children'] = tmp_arr;
           email_list = JSON.stringify(super_main_array);
-        }else if(req.body.search_string == 'timebubbleline'){
-          template = 'timeline_bubble.ejs';
-          email_list = emails;
+        }else if(req.body.search_string == 'stats'){
+          template = 'stats.ejs';
+          var sent_count = 0;
+          var received_count = 0;
+          emails.forEach(function(email) {
+            if(req.body.selected_email == email.to){
+              sent_count++;
+            }else{
+              received_count++;
+            }
+          });
+          email_list = {};
+          email_list.all_count = emails.length;
+          email_list.sent_count = sent_count;
+          email_list.received_count = received_count;
         }else if(req.body.search_string == 'wordfrequency'){
           template = 'wordfrequency.ejs';
           email_list = emails;
@@ -389,8 +410,6 @@ module.exports = function(app,passport,appId) {
               email_bcc += ', '+bcc[a].email
             }
           }
-
-
 
           //(id,mailbox_token,from,to,subject,message,timestamp,user_id)
             emailUtil.addNewEmail(id,token,from,to,email_cc,email_bcc,threads[i].subject,body,date,email_type,req.user.id,(success, result) => {
