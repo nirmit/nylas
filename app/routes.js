@@ -52,7 +52,7 @@ module.exports = function(app,passport,appId) {
   app.get('/reports', isLoggedIn,  function(req, res) {
     mailboxUtil.getList(req.user.id,(success, userlist) => {
       if(success === false) {
-          return res.json({error: userllist});
+          return res.json({error: userlist});
       }
       res.render('reports.ejs',{
         message : '',
@@ -69,7 +69,7 @@ module.exports = function(app,passport,appId) {
 
 
   app.post('/reports', isLoggedIn,  function(req, res) {
-    emailUtil.getEmailListForReports(req.user.id,req.body.seltype, (success, emails) => {
+    emailUtil.getEmailListForReports(req.user.id,req.body.selected_email,req.body.seltype, (success, emails) => {
       mailboxUtil.getList(req.user.id,(success, userlist) => {
 
         var template = '';
