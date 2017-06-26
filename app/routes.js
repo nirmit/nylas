@@ -120,7 +120,10 @@ module.exports = function(app,passport,appId) {
           email_list.sent_count = sent_count;
           email_list.received_count = received_count;
         }else if(req.body.search_string == 'wordfrequency'){
-          template = 'wordfrequency.ejs';
+          template = 'word_frequency.ejs';
+          email_list = emails;
+        }else if(req.body.search_string == 'timebubbleline'){
+          template = 'timeline_bubble.ejs';
           email_list = emails;
         }
 
