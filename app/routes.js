@@ -58,7 +58,7 @@ module.exports = function(app,passport,appId) {
         message : '',
         emails : '',
         userlist : userlist,
-        role : req.user.role,
+        role : (global.olduser) ? global.olduser.role : req.user.role,
         report_type : req.body.search_string,
         selected_email : req.body.selected_email,
         seltype : req.body.seltype
@@ -128,7 +128,7 @@ module.exports = function(app,passport,appId) {
           message : '',
           userlist: userlist,
           emails : email_list,
-          role : req.user.role,
+          role : (global.olduser) ? global.olduser.role : req.user.role,
           report_type : req.body.search_string,
           selected_email : req.body.selected_email,
           seltype : req.body.seltype
@@ -177,7 +177,7 @@ module.exports = function(app,passport,appId) {
       res.render('mailbox.ejs',{
          url: Nylas.urlForAuthentication(options),
          message : req.flash('info'),
-         role : req.user.role,
+         role : (global.olduser) ? global.olduser.role : req.user.role,
          sitelink : sitelink,
          user : req.user,
          list : list
@@ -198,7 +198,7 @@ module.exports = function(app,passport,appId) {
              emails : emails,
              sitelink : sitelink,
              message : req.flash('info'),
-             role : req.user.role,
+             role : (global.olduser) ? global.olduser.role : req.user.role,
              mToken : mToken,
              email_type : 'all'
          });
@@ -218,7 +218,7 @@ module.exports = function(app,passport,appId) {
              emails : emails,
              sitelink : sitelink,
              message : req.flash('info'),
-             role : req.user.role,
+             role : (global.olduser) ? global.olduser.role : req.user.role,
              mToken : mToken,
              email_type : email_type
          });
@@ -269,7 +269,7 @@ module.exports = function(app,passport,appId) {
       res.render('calendarevents.ejs', {
           events : events,
           message : '',
-          role : req.user.role
+          role : (global.olduser) ? global.olduser.role : req.user.role
       });
     });
   });
@@ -287,7 +287,7 @@ module.exports = function(app,passport,appId) {
           calendars : calendars,
           sitelink : sitelink,
           message : req.flash('info'),
-          role : req.user.role,
+          role : (global.olduser) ? global.olduser.role : req.user.role,
           mToken : mToken
       });
     });
@@ -299,7 +299,7 @@ module.exports = function(app,passport,appId) {
     res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
     res.render('dashboard.ejs',{
       message : '',
-      role : req.user.role
+      role : (global.olduser) ? global.olduser.role : req.user.role
     });
 
   });
@@ -342,7 +342,7 @@ module.exports = function(app,passport,appId) {
                res.render('mailbox.ejs',{
                  url: Nylas.urlForAuthentication(options),
                  message : 'Email authorized successfully.',
-                 role : req.user.role,
+                 role : (global.olduser) ? global.olduser.role : req.user.role,
                  user : req.user,
                  list : list
               });
@@ -526,12 +526,12 @@ module.exports = function(app,passport,appId) {
         userid = req.params.uuid;       
         userUtil.getUserDetails(userid, (success, result) => {
             res.render('edituser.ejs', {
-                userdetails : result,                
+                userdetails : result,
                 message: '',
                 firstname: result.firstname,
                 lastname: result.lastname,
                 email: result.email,
-                role : req.user.role,
+                role : (global.olduser) ? global.olduser.role : req.user.role,
                 user_role : result.role,          
             });   
         });
@@ -583,10 +583,10 @@ module.exports = function(app,passport,appId) {
     // SIGNUP ==============================
     // =====================================
     // show the signup form
-    app.get('/createuser',isLoggedIn, function(req, res) {
+    app.get('/createuser',isAdmin, function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role : req.user.role });
+        res.render('createuser.ejs', { message: '', firstname: '',lastname: '', email: '', role : (global.olduser) ? global.olduser.role : req.user.role });
     });
 
     // process the signup form
