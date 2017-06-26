@@ -167,17 +167,19 @@ module.exports = function(app,passport,appId) {
           var super_main_array = {}
           
           var tmp_arr = []
+          var i = 1;
           emails.forEach(function(email) {
             var tmp_hash = {}
             tmp_hash.Type = email.email_type
             tmp_hash.Shift = (tmp_hash.Type == 'received') ? email.from : email.to;
             tmp_hash.Date = email.date_timestamp
-            tmp_hash.Value = 2;
+            tmp_hash.Value = i;
 
             tmp_arr.push(tmp_hash);  
-             
+            i++; 
           });
           super_main_array = tmp_arr;
+          // return res.json({result:super_main_array})
           email_list = JSON.stringify(super_main_array);
         
         }

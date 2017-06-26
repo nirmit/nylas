@@ -16,7 +16,7 @@
 							<option value="">--Select Report--</option>
 							<option value="d3cloud" <%= (report_type == 'd3cloud') ? 'selected' : '' %>>Word Cloud</option>
 							<option value="bubblechart" <%= (report_type == 'bubblechart') ? 'selected' : '' %> >Bubble Chart</option>
-							<option value="timebubbleline" <%= (report_type == 'timebubbleline') ? 'selected' : '' %> >Time Bubble Lines</option>
+							<!-- <option value="timebubbleline" <%= (report_type == 'timebubbleline') ? 'selected' : '' %> >Time Bubble Lines</option> -->
 							<option value="stats" <%= (report_type == 'stats') ? 'selected' : '' %> >Stats</option>
 							<option value="wordfrequency" <%= (report_type == 'wordfrequency') ? 'selected' : '' %> >Word Frequency Bubble</option>
 						</select>
@@ -56,6 +56,7 @@
 
 						<select name="selyear" id="selyear" class="hide" style="width: 150px; display: inline-block;">
 							<option value="">--Select Year--</option>
+							<option value="2017" >2017</option>
 							<option value="2016" >2016</option>
 							<option value="2015" >2015</option>
 							<option value="2014" >2014</option>
