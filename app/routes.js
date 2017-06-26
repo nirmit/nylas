@@ -138,7 +138,9 @@ module.exports = function(app,passport,appId) {
                 freq[word] += 1;
             
             var tmp_hash = {}
+           
             tmp_hash.name = word
+            
             tmp_hash.size = freq[word];
             var new_record = true;
 
@@ -149,7 +151,7 @@ module.exports = function(app,passport,appId) {
               }
             }
 
-            if(new_record && tmp_hash.size > 1){
+            if(new_record && tmp_hash.size > 1 && tmp_hash.name.length > 4){
               tmp_arr.push(tmp_hash);
             }
               
