@@ -10,6 +10,9 @@
 </div>
 
 <% }else{ %>
+
+<%= emails %>
+
   <script type="text/javascript">
 
 
@@ -20,7 +23,7 @@
     // and the point of this demo is to show the time axis
     // functionality, therefore a small bespoke data set is used.
       var data = <%= emails %>;
-	
+    
     // Create Separate Date and Time, this allows us to draw them
     // on separate axes.  Despite the time axis only displaying
     // the time portion, the whole date is used so they need to
@@ -64,10 +67,10 @@
     
     var fd = new Date(new Date().setDate(new Date().getDate()-90))
     var td = new Date(new Date().setDate(new Date().getDate()+30))
-	
-	var from_date = fd.getFullYear() + "-" + (fd.getMonth() + 1) + "-" + fd.getDate();
-	var to_date = td.getFullYear() + "-" + (td.getMonth() + 1) + "-" + td.getDate();
-	
+    
+    var from_date = fd.getFullYear() + "-" + (fd.getMonth() + 1) + "-" + fd.getDate();
+    var to_date = td.getFullYear() + "-" + (td.getMonth() + 1) + "-" + td.getDate();
+    
     console.log(typeof from_date);
     console.log(from_date);
     
