@@ -121,7 +121,43 @@ module.exports = function(app,passport,appId) {
           email_list.received_count = received_count;
         }else if(req.body.search_string == 'wordfrequency'){
           template = 'word_frequency.ejs';
-          email_list = emails;
+          var super_main_array = {}
+          super_main_array['name'] = "flair"
+          super_main_array['children'] = {}
+
+          var tmp_arr = []
+          emails.forEach(function(email) {
+            var string = email.subject
+            var words = string.replace(/[.]/g, '').split(/\s/);
+            var freq = {};
+            words.forEach(function(word) {
+               if (!freq[word]) {
+                freq[word] = 0;
+               }
+                freq[word] += 1;
+            
+            var tmp_hash = {}
+            tmp_hash.name = word
+            tmp_hash.size = freq[word];
+            var new_record = true;
+
+            for (var i=0; i < tmp_arr.length; i++) {
+              if(tmp_arr[i].name == tmp_hash.name){
+                tmp_arr[i].size = tmp_arr[i].size + 1;
+                new_record = false;
+              }
+            }
+
+            if(new_record && tmp_hash.size > 1){
+              tmp_arr.push(tmp_hash);
+            }
+              
+           });
+            super_main_array['children'] = tmp_arr;
+            email_list = JSON.stringify(super_main_array);
+            
+           });  
+
         }else if(req.body.search_string == 'timebubbleline'){
           template = 'timeline_bubble.ejs';
           email_list = emails;
