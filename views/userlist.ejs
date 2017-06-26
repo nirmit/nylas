@@ -33,7 +33,7 @@
         <td class="action">
         <a class="edit-icon" href="<%= sitelink %>/edituser/<%= userlist[i].id %>" title="Edit">Edit</a>
         <a class="delete-icon" data-confirm='Are you sure ?' href="<%= sitelink %>/removeuser/<%= userlist[i].id %>" title="Delete">Delete</a>  
-        <% if (role == 'Admin') { %>
+        <% if (role == 'Admin' && (global.user.id != userlist[i].id)) { %>
           <a href="<%= sitelink %>/switchuser/<%= userlist[i].id %>" title="switch user">Switch User</a>
         <% } %>       
         </td>       

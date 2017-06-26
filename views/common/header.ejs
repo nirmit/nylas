@@ -17,8 +17,8 @@
   <header>
     <a href="/dashboard"><img alt="GAPI" class="hdr-logo" src='/images/hdr_logo.png' />    
     <div class="welcome-name"><a href="/logout" rel="nofollow">Log Out</a></div>
-    <% if (global.user.olduser) { %>  
-    <div class="welcome-name"><a href="/switchuser/<%= global.user.olduser.id %>" rel="nofollow">Switch Back to <%= global.user.olduser.firstname %> <%= global.user.olduser.lastname %></a></div><% } %>   
+    <% if (global.olduser) { %>  
+    <div class="welcome-name"><a href="/switchuser/<%= global.olduser.id %>" rel="nofollow">Switch Back to <%= global.olduser.firstname %> <%= global.olduser.lastname %></a></div><% } %>   
     <% if (global.user) { %>    
     <div class="welcome-name"><%= global.user.firstname %> <%= global.user.lastname %></div>    
     <% } %>   

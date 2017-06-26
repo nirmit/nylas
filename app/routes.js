@@ -19,7 +19,7 @@ module.exports = function(app,passport,appId) {
                 userlist : userllist,
                 sitelink : sitelink,
                 message : req.flash('info'),
-                role : req.user.role
+                role : (global.olduser) ? global.olduser.role : req.user.role
             });
         });
 
@@ -27,26 +27,25 @@ module.exports = function(app,passport,appId) {
 
 
   app.get("/switchuser/:uuid", isLoggedIn, function(req, res) {
-        userid = req.params.uuid;
-        userUtil.switchUser(userid, (success, result) => {
-          console.log(result);
-          console.log(success);
-             if(result){
-              global.user = result;
-              global.user.olduser = req.user;
-
-              // if(global.user.olduser){
-              //    global.user.olduser = null;
-              // }else{
-              //   global.user.olduser = req.user;
-              // }              
-                            
-              req.logIn(result,function(err){                
-              req.flash('info', 'User Switched Successfully');  
-              res.redirect('/userlist');
-              });
+      userid = req.params.uuid;
+      userUtil.switchUser(userid, (success, result) => {
+           if(result){
+            global.user = result;
+            
+            if(typeof global.olduser === 'undefined' || !global.olduser){
+              global.olduser = req.user;
             }
-        });
+
+            if(global.olduser.id == global.user.id){
+              global.olduser = null; 
+            }
+
+            req.logIn(result,function(err){                
+            req.flash('info', 'User Switched Successfully');  
+            res.redirect('/userlist');
+            });
+          }
+      });
   }); 
     
 
@@ -74,8 +73,8 @@ module.exports = function(app,passport,appId) {
       mailboxUtil.getList(req.user.id,(success, userlist) => {
 
         var template = '';
-        var email_list = '';
-        var email_arr = emails;
+        var email_list = emails;
+        var email_arr = [];
         if(req.body.search_string == 'd3cloud'){
           template = 'word_cloud.ejs';
         }else if(req.body.search_string == 'bubblechart'){
@@ -309,17 +308,12 @@ module.exports = function(app,passport,appId) {
   app.get('/syncuseremails',isLoggedIn,  function(req, res, next) {
       var token = 'DoYNkJaKsL6FBAWD8iwXZYbKKb4IKY';
 
-      console.log(token);
-
       var options = { method: 'GET',
         url: 'https://api.nylas.com/messages',
         headers: { authorization: 'Base64 '+token } };
-
-      console.log(options);  
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
 
-        console.log(body);
       });                 
   });
 
@@ -641,11 +635,11 @@ module.exports = function(app,passport,appId) {
 
   // route middleware to make sure a user is logged in
   function isAdmin(req, res, next) {
-
+      
       // if user is authenticated in the session, carry on 
       if (req.isAuthenticated()){
 
-          if(req.user.role && req.user.role.toLowerCase() == 'admin'){
+          if((req.user.role && req.user.role.toLowerCase() == 'admin') || (global.olduser && global.olduser.role.toLowerCase() == 'admin') ){
               return next();
           }else{
               // if they aren't redirect them to the restricted page
