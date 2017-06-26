@@ -143,6 +143,7 @@ module.exports = function(app,passport,appId) {
   
   app.get('/logout', (req, res) => {
     req.logout();
+    global.olduser = null;
     req.session.destroy();
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     res.header('Expires', 'Fri, 31 Dec 1998 12:00:00 GMT');
