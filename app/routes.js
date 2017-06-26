@@ -127,7 +127,8 @@ module.exports = function(app,passport,appId) {
 
           var tmp_arr = []
           emails.forEach(function(email) {
-            var string = email.subject
+            console.log(email)
+            var string = email.body
             var words = string.replace(/[.]/g, '').split(/\s/);
             var freq = {};
             words.forEach(function(word) {
@@ -160,7 +161,23 @@ module.exports = function(app,passport,appId) {
 
         }else if(req.body.search_string == 'timebubbleline'){
           template = 'timeline_bubble.ejs';
-          email_list = emails;
+
+          var super_main_array = {}
+          
+          var tmp_arr = []
+          emails.forEach(function(email) {
+            var tmp_hash = {}
+            tmp_hash.Type = email.email_type
+            tmp_hash.Shift = (tmp_hash.Type == 'received') ? email.from : email.to;
+            tmp_hash.Date = email.date_timestamp
+            tmp_hash.Value = 2;
+
+            tmp_arr.push(tmp_hash);  
+             
+          });
+          super_main_array = tmp_arr;
+          email_list = JSON.stringify(super_main_array);
+        
         }
 
         res.render(template,{

@@ -11,8 +11,6 @@
 
 <% }else{ %>
 
-<%= emails %>
-
   <script type="text/javascript">
 
 
@@ -22,7 +20,7 @@
     // The default data set for these examples has regular times
     // and the point of this demo is to show the time axis
     // functionality, therefore a small bespoke data set is used.
-      var data = <%= emails %>;
+      var data = <%- emails %>;
     
     // Create Separate Date and Time, this allows us to draw them
     // on separate axes.  Despite the time axis only displaying
