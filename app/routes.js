@@ -69,7 +69,7 @@ module.exports = function(app,passport,appId) {
 
 
   app.post('/reports', isLoggedIn,  function(req, res) {
-    emailUtil.getEmailListForReports(req.user.id,req.body.selected_email,req.body.seltype, (success, emails) => {
+    emailUtil.getEmailListForReports(req.user.id,req.body.selected_email,req.body.seltype,req.body.selmon,req.body.selyear,req.body.search_string,(success, emails) => {
       mailboxUtil.getList(req.user.id,(success, userlist) => {
 
         var template = '';
@@ -127,7 +127,6 @@ module.exports = function(app,passport,appId) {
 
           var tmp_arr = []
           emails.forEach(function(email) {
-            console.log(email)
             var string = email.body
             var words = string.replace(/[.]/g, '').split(/\s/);
             var freq = {};
@@ -167,16 +166,30 @@ module.exports = function(app,passport,appId) {
           var super_main_array = {}
           
           var tmp_arr = []
-          var i = 1;
+      
           emails.forEach(function(email) {
             var tmp_hash = {}
             tmp_hash.Type = email.email_type
             tmp_hash.Shift = (tmp_hash.Type == 'received') ? email.from : email.to;
-            tmp_hash.Date = email.date_timestamp
-            tmp_hash.Value = i;
 
-            tmp_arr.push(tmp_hash);  
-            i++; 
+            var date = new Date(email.date_timestamp)
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            var year = date.getFullYear();
+            var month = months[date.getMonth()];
+            var datee = date.getDate();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+
+            tmp_hash.Date = datee + ' ' + month + ' ' + year + ' ' + hour + ':' + min
+            var count = 0;
+            for(var i = 0; i < tmp_arr.length; ++i){
+               if(tmp_arr[i].Date == tmp_hash.Date)
+               count++;
+            }
+            
+            tmp_hash.Value = count;
+            tmp_arr.push(tmp_hash);
+         
           });
           super_main_array = tmp_arr;
           // return res.json({result:super_main_array})

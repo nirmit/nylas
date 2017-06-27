@@ -31,31 +31,42 @@ module.exports = {
         });
     },
 
-    getEmailListForReports: (user_id,email,email_type, callback) => {
+    getEmailListForReports: (user_id,email,email_type,selmon,selyear,search,callback) => {
       
       Mailbox.findOne({user_id : user_id, email : email }, (err, mailbox) => {
         var mailbox_token = mailbox.token;
-        if(email_type == 'received' || email_type == 'sent'){
-          Email.find({mailbox_token : mailbox_token, email_type : email_type},{'_id': 0, 'body': 1, 'email_type': 1, 'subject': 1,'from': 1,'to':1,'date_timestamp':1,user_id:1},(err, emaillist) => {
-             
-            if(typeof(emaillist) === "undefined" || emaillist === null) {
-                 return callback(false, "No records Found.");
-             } else {
-                 callback(true, emaillist);
-             }
-
-          });
+        var start = new Date(selyear, selmon-1, 1)
+        var end = new Date(selyear, selmon-1, 30)
+        if(search == 'timebubbleline'){
+          Email.find({mailbox_token : mailbox_token, date_timestamp : { $gte : start, $lte : end}}, (err,emaillist) => {
+              if(typeof(emaillist) === "undefined" || emaillist === null) {
+                   return callback(false, "No records Found.");
+               } else {
+                   callback(true, emaillist);
+               }
+          })
         }else{
-          Email.find({mailbox_token : mailbox_token},{'_id': 0, 'body': 1, 'email_type': 1, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
-             if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
-             if(typeof(emaillist) === "undefined" || emaillist === null) {
-                 return callback(false, "No records Found.");
-             } else {
-                 callback(true, emaillist);
-             }
-          });
-        }
+          if(email_type == 'received' || email_type == 'sent'){
+            Email.find({mailbox_token : mailbox_token, email_type : email_type},{'_id': 0, 'body': 1, 'email_type': 1, 'subject': 1,'from': 1,'to':1,'date_timestamp':1,user_id:1},(err, emaillist) => {
+               
+              if(typeof(emaillist) === "undefined" || emaillist === null) {
+                   return callback(false, "No records Found.");
+               } else {
+                   callback(true, emaillist);
+               }
 
+            });
+          }else{
+            Email.find({mailbox_token : mailbox_token},{'_id': 0, 'body': 1, 'email_type': 1, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
+               if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
+               if(typeof(emaillist) === "undefined" || emaillist === null) {
+                   return callback(false, "No records Found.");
+               } else {
+                   callback(true, emaillist);
+               }
+            });
+          }
+        }
       });
 
     },
