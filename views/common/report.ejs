@@ -72,10 +72,18 @@
 	</section>
 
 	<script>
-
 	$(function() {
+		// for dropdown autoselect
+		var selyear = <%= selyear %>
+		$("#selyear").val(selyear);
+
+		var selmon = <%= selmon %>
+		selmon = ("0" + selmon).slice(-2);  // for 2 digits value
+		$("#selmon").val(selmon);
+	
 
 	    var report_type = $('#search_string').val();
+
 	    if(report_type)
 		{
 			$("#selected_email").removeClass('hide');
@@ -107,6 +115,10 @@
 			$("#selyear").addClass('hide');
 			$("#seltype").addClass('hide');
 		}
+
+	    
+
+	
 
 	});
 
@@ -165,6 +177,7 @@
 		},
 		errorElement: "em"
 	});
+
 		</script>
 
 

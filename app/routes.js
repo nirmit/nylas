@@ -61,7 +61,9 @@ module.exports = function(app,passport,appId) {
         role : (global.olduser) ? global.olduser.role : req.user.role,
         report_type : req.body.search_string,
         selected_email : req.body.selected_email,
-        seltype : req.body.seltype
+        seltype : req.body.seltype,
+        selmon : req.body.selmon,
+        selyear : req.body.selyear
 
       });
     });
@@ -211,7 +213,9 @@ module.exports = function(app,passport,appId) {
           role : (global.olduser) ? global.olduser.role : req.user.role,
           report_type : req.body.search_string,
           selected_email : req.body.selected_email,
-          seltype : req.body.seltype
+          seltype : req.body.seltype,
+          selmon : req.body.selmon,
+          selyear : req.body.selyear
         });
 
       });
