@@ -178,17 +178,24 @@ module.exports = function(app,passport,appId) {
             var month = months[date.getMonth()];
             var datee = date.getDate();
             var hour = date.getHours();
-            var min = date.getMinutes();
-
-            tmp_hash.Date = datee + ' ' + month + ' ' + year + ' ' + hour + ':' + min
-            var count = 0;
-            for(var i = 0; i < tmp_arr.length; ++i){
-               if(tmp_arr[i].Date == tmp_hash.Date)
-               count++;
-            }
+            hour = ("0" + hour).slice(-2);
             
-            tmp_hash.Value = count;
-            tmp_arr.push(tmp_hash);
+            // tmp_hash.Date = datee + ' ' + month + ' ' + year + ' ' + hour + ':' + min
+            tmp_hash.Date = datee + ' ' + month + ' ' + year + ' ' + hour + ':' + '00'
+            tmp_hash.Value = 1;
+      
+            var new_record = true;
+
+            for(var i = 0; i < tmp_arr.length; ++i){
+               if(tmp_arr[i].Date == tmp_hash.Date){
+                 tmp_arr[i].Value = tmp_arr[i].Value + 1;
+                 new_record = false;
+               }
+
+            }
+            if(new_record){
+              tmp_arr.push(tmp_hash);
+            }
          
           });
           super_main_array = tmp_arr;
