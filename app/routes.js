@@ -170,6 +170,7 @@ module.exports = function(app,passport,appId) {
           var tmp_arr = []
       
           emails.forEach(function(email) {
+      
             var tmp_hash = {}
             tmp_hash.Type = email.email_type
             tmp_hash.Shift = (tmp_hash.Type == 'received') ? email.from : email.to;
@@ -466,10 +467,6 @@ module.exports = function(app,passport,appId) {
           var bcc = threads[i].bcc ? threads[i].bcc : [];
           var body = threads[i].snippet ? threads[i].snippet : '';
           var date = threads[i].date ? threads[i].date : '';
-
-          if(threads[i].subject == 'Hello'){
-            return res.json({response: threads[i].cc});
-          }
 
           var email_cc = '';
           var email_bcc = '';

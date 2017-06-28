@@ -35,8 +35,14 @@ module.exports = {
       
       Mailbox.findOne({user_id : user_id, email : email }, (err, mailbox) => {
         var mailbox_token = mailbox.token;
-        var start = new Date(selyear, selmon-1, 1)
-        var end = new Date(selyear, selmon-1, 30)
+        if(selmon == '00'){
+          var start = new Date(selyear, 0, 1)
+          var end = new Date(selyear, 11, 30)
+        }else{
+          var start = new Date(selyear, selmon-1, 1)
+          var end = new Date(selyear, selmon-1, 30)
+         
+        }
         if(search == 'timebubbleline'){
           Email.find({mailbox_token : mailbox_token, date_timestamp : { $gte : start, $lte : end}}, (err,emaillist) => {
               if(typeof(emaillist) === "undefined" || emaillist === null) {
