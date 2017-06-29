@@ -8,7 +8,7 @@ var emailMessagesSchema = mongoose.Schema({
         bcc : String,
         subject : String,
         body : String,
-        date_timestamp : String,
+        date_timestamp : Date,
         user_id : String,
         mailbox_token : String,
         email_type : String
