@@ -83,7 +83,7 @@ module.exports = function(app,passport,appId) {
           template = 'bubblechart.ejs';
 
           var super_main_array = {}
-          super_main_array['name'] = "flair"
+          super_main_array['name'] = "flare"
           super_main_array['children'] = {}
           
           var tmp_arr = []
@@ -124,7 +124,7 @@ module.exports = function(app,passport,appId) {
         }else if(req.body.search_string == 'wordfrequency'){
           template = 'word_frequency.ejs';
           var super_main_array = {}
-          super_main_array['name'] = "flair"
+          super_main_array['name'] = "flare"
           super_main_array['children'] = {}
 
           var tmp_arr = []
@@ -205,6 +205,62 @@ module.exports = function(app,passport,appId) {
           // return res.json({result:super_main_array})
           email_list = JSON.stringify(super_main_array);
         
+        }else if(req.body.search_string == 'circlepacking'){
+          template = 'circlepacking.ejs';
+
+          var array = {}
+          array['name'] =  req.body.selected_email
+          array['children'] = {}
+
+          var main = []      
+          
+          emails.forEach(function(email) {
+
+            // var mail_cc = email.cc
+            // var ele = mail_cc.split(',');
+            // console.log(ele.length)
+
+            var one_hash = {}
+            one_hash['name'] = (req.body.seltype == 'sent') ? email.to : email.from;
+            one_hash['children'] = {}
+
+            var sec_arr = []    
+            var sec_hash1 = {}
+                sec_hash1['name'] = 'cc'
+                sec_hash1['size'] = 10
+
+            var sec_hash2 = {}
+                sec_hash2['name'] = 'bcc'
+                sec_hash2['size'] = 15
+
+            var sec_hash3 = {}
+                sec_hash3['name'] = 'to'
+                sec_hash3['size'] = 20
+
+            var sec_hash4 = {}
+                sec_hash4['name'] = 'from'
+                sec_hash4['size'] = 25
+          
+
+            sec_arr.push(sec_hash1, sec_hash2, sec_hash3, sec_hash4 );
+            one_hash['children'] = sec_arr
+
+    
+            var new_record = true ;
+
+            for (var i=0; i < main.length; i++) {
+                if(main[i].name == one_hash.name){
+                  new_record = false;
+                }
+            }
+
+            if(new_record){
+               main.push(one_hash);
+            }
+          });
+          array['children'] = main
+          email_list = JSON.stringify(array);
+
         }
 
         res.render(template,{

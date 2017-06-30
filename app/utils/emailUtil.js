@@ -63,7 +63,7 @@ module.exports = {
 
             });
           }else{
-            Email.find({mailbox_token : mailbox_token},{'_id': 0, 'body': 1, 'email_type': 1, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
+            Email.find({mailbox_token : mailbox_token},{'_id': 0, 'body': 1, 'bcc': 1, 'cc' : 1, 'email_type': 1, 'subject': 1,'from': 1,'to':1,'date_timestamp':1},(err, emaillist) => {
                if(err) { return callback(false, "Failed to get emails. Please try again later.") };            
                if(typeof(emaillist) === "undefined" || emaillist === null) {
                    return callback(false, "No records Found.");
