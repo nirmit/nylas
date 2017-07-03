@@ -212,48 +212,55 @@ module.exports = function(app,passport,appId) {
           array['name'] =  req.body.selected_email
           array['children'] = {}
 
-          var main = []      
+          var main = []  
           
           emails.forEach(function(email) {
 
-            // var mail_cc = email.cc
-            // var ele = mail_cc.split(',');
-            // console.log(ele.length)
-
+            var mail_cc = email.cc
+            var mail_bcc = email.bcc
+            var ele_cc = mail_cc.split(',');
+            var ele_bcc = mail_bcc.split(',');
+  
             var one_hash = {}
-            one_hash['name'] = (req.body.seltype == 'sent') ? email.to : email.from;
+            one_hash['name'] = (email.email_type == 'sent') ? email.to : email.from
             one_hash['children'] = {}
 
+            var new_record = true ;
+         
             var sec_arr = []    
             var sec_hash1 = {}
-                sec_hash1['name'] = 'cc'
-                sec_hash1['size'] = 10
-
+                sec_hash1['name'] = 'Cc'
+                sec_hash1['size'] = ele_cc.length
             var sec_hash2 = {}
-                sec_hash2['name'] = 'bcc'
-                sec_hash2['size'] = 15
+                sec_hash2['name'] = 'Bcc'
+                sec_hash2['size'] = ele_bcc.length
 
             var sec_hash3 = {}
-                sec_hash3['name'] = 'to'
-                sec_hash3['size'] = 20
+                sec_hash3['name'] = 'To'
+                sec_hash3['size'] = 1
 
             var sec_hash4 = {}
-                sec_hash4['name'] = 'from'
-                sec_hash4['size'] = 25
-          
+                sec_hash4['name'] = 'From'
+                sec_hash4['size'] = 1
+
 
             sec_arr.push(sec_hash1, sec_hash2, sec_hash3, sec_hash4 );
             one_hash['children'] = sec_arr
-
-    
-            var new_record = true ;
-
+            
             for (var i=0; i < main.length; i++) {
                 if(main[i].name == one_hash.name){
+                  // main[i].children[0].size = main[i].children[0].size + ele_cc.length
+                  // main[i].children[1].size = main[i].children[0].size + ele_bcc.length 
+                  if(email.email_type == 'sent'){
+                    main[i].children[2].size = main[i].children[2].size + 1
+                  }else{
+                    main[i].children[3].size = main[i].children[3].size + 1
+                  }
                   new_record = false;
                 }
             }
 
+            
             if(new_record){
                main.push(one_hash);
             }
