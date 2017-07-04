@@ -218,9 +218,19 @@ module.exports = function(app,passport,appId) {
 
             var mail_cc = email.cc
             var mail_bcc = email.bcc
-            var ele_cc = mail_cc.split(',');
-            var ele_bcc = mail_bcc.split(',');
-  
+
+            if(mail_cc == ''){
+              var ele_cc = mail_cc
+            }else{
+              var ele_cc = mail_cc.split(',');
+            }
+
+            if(mail_bcc == ''){
+              var ele_bcc = mail_bcc
+            }else{
+              var ele_bcc = mail_bcc.split(',');
+            }
+
             var one_hash = {}
             one_hash['name'] = (email.email_type == 'sent') ? email.to : email.from
             one_hash['children'] = {}
@@ -237,11 +247,11 @@ module.exports = function(app,passport,appId) {
 
             var sec_hash3 = {}
                 sec_hash3['name'] = 'To'
-                sec_hash3['size'] = 1
+                sec_hash3['size'] = 0
 
             var sec_hash4 = {}
                 sec_hash4['name'] = 'From'
-                sec_hash4['size'] = 1
+                sec_hash4['size'] = 0
 
 
             sec_arr.push(sec_hash1, sec_hash2, sec_hash3, sec_hash4 );
@@ -249,8 +259,8 @@ module.exports = function(app,passport,appId) {
             
             for (var i=0; i < main.length; i++) {
                 if(main[i].name == one_hash.name){
-                  // main[i].children[0].size = main[i].children[0].size + ele_cc.length
-                  // main[i].children[1].size = main[i].children[0].size + ele_bcc.length 
+                   main[i].children[0].size = main[i].children[0].size + ele_cc.length
+                   main[i].children[1].size = main[i].children[1].size + ele_bcc.length 
                   if(email.email_type == 'sent'){
                     main[i].children[2].size = main[i].children[2].size + 1
                   }else{
