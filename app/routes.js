@@ -247,27 +247,31 @@ module.exports = function(app,passport,appId) {
 
             var sec_hash3 = {}
                 sec_hash3['name'] = 'To'
-                sec_hash3['size'] = 0
+                sec_hash3['size'] = 1
 
             var sec_hash4 = {}
                 sec_hash4['name'] = 'From'
                 sec_hash4['size'] = 0
 
-
+        
             sec_arr.push(sec_hash1, sec_hash2, sec_hash3, sec_hash4 );
             one_hash['children'] = sec_arr
-            
+        
             for (var i=0; i < main.length; i++) {
+
                 if(main[i].name == one_hash.name){
                    main[i].children[0].size = main[i].children[0].size + ele_cc.length
-                   main[i].children[1].size = main[i].children[1].size + ele_bcc.length 
-                  if(email.email_type == 'sent'){
-                    main[i].children[2].size = main[i].children[2].size + 1
-                  }else{
-                    main[i].children[3].size = main[i].children[3].size + 1
-                  }
+                   main[i].children[1].size = main[i].children[1].size + ele_bcc.length
+
+                   if(email.email_type == 'sent'){
+                      main[i].children[2].size = main[i].children[2].size + 1
+                   }else if(email.email_type == 'received'){
+                      main[i].children[3].size = main[i].children[3].size + 1
+                   }
+
                   new_record = false;
                 }
+
             }
 
             

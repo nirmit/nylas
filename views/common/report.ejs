@@ -64,7 +64,7 @@
 						</select>
 
 						<button class="btn"><i class="fa fa-floppy-o"></i><span>Go</span></button>
-						<button class="btn" type="reset"><i class="fa fa-times"></i><span>Clear</span></button>
+						<button id='clear' class="btn" type="reset"><i class="fa fa-times"></i><span>Clear</span></button>
 					</div>
 				</form>
 			</div>
@@ -72,7 +72,13 @@
 
 	</section>
 
+
 	<script>
+
+	$('#clear').click(function(){
+      location.href = location.href
+    });
+
 	$(function() {
 		// for dropdown autoselect
 		var selyear = <%= selyear %>
