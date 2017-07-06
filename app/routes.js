@@ -34,20 +34,18 @@ module.exports = function(app,passport,appId) {
     // value of the challenge parameter in the body of the response.
 
     res.send(req.query.challenge);
-    
+
     // return res.status(200).send(req.query.challenge);
   });
 
 
   app.post('/webhook', function(req, res) {
-    console.log(req)
-    return res.json({'response':req.body});
 
     res.sendStatus(200);
 
     console.log('Event Fired from nylas')
 
-    console.log(req)
+    console.log(req.body)
     
     // Verify the request to make sure it's actually from Nylas.
     if (!verify_nylas_request(req)) {
