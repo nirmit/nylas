@@ -56,14 +56,14 @@ module.exports = function(app,passport,appId) {
 
     // Nylas sent us a webhook notification for some kind of event, so we should
     // process it!
-    let data = req.body.deltas;
-    console.log(JSON.stringify(data, null, 2));
-    for (var i = 0; i < data.length; i++) {
-      // Print some of the information Nylas sent us. This is where you
-      // would normally process the webhook notification and do things like
-      // fetch relevant message ids, update your database, etc.
-      console.log("%s at %s with id %s", data[i].type, data[i].date, data[i].object_data.id);
-    }
+    // let data = req.body.deltas;
+    // console.log(JSON.stringify(data, null, 2));
+    // for (var i = 0; i < data.length; i++) {
+    //   // Print some of the information Nylas sent us. This is where you
+    //   // would normally process the webhook notification and do things like
+    //   // fetch relevant message ids, update your database, etc.
+    //   console.log("%s at %s with id %s", data[i].type, data[i].date, data[i].object_data.id);
+    // }
     // Don't forget to let Nylas know that everything was pretty ok.
   });
 
