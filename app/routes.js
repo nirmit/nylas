@@ -27,15 +27,20 @@ module.exports = function(app,passport,appId) {
   });
 
   app.get('/webhook', function(req, res) {
+    return res.json({'challenge':req.query.challenge});
     // Nylas will check to make sure your webhook is valid by making a GET
     // request to your endpoint with a challenge parameter when you add the
     // endpoint to the developer dashboard.  All you have to do is return the
     // value of the challenge parameter in the body of the response.
-    return res.status(200).send(req.query.challenge);
+
+    // return res.status(200).send(req.query.challenge);
   });
 
 
   app.post('/webhook', function(req, res) {
+    console.log(req)
+    return res.json({'response':req.body});
+
     res.sendStatus(200);
 
     console.log('Event Fired from nylas')
