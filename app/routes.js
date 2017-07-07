@@ -45,13 +45,13 @@ module.exports = function(app,passport,appId) {
 
     console.log('Event Fired from nylas')
 
-    console.log(req.body)
+    console.log(req)
     
     // Verify the request to make sure it's actually from Nylas.
-    if (!verify_nylas_request(req)) {
-      console.log("Failed to verify nylas");
-      return res.status(401).send("X-Nylas-Signature failed verification 🚷 ");
-    }
+    // if (!verify_nylas_request(req)) {
+    //   console.log("Failed to verify nylas");
+    //   return res.status(401).send("X-Nylas-Signature failed verification 🚷 ");
+    // }
 
 
     // Nylas sent us a webhook notification for some kind of event, so we should
