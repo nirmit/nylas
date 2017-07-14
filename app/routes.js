@@ -2,8 +2,9 @@ userUtil = require("./utils/userUtil");
 emailUtil = require("./utils/emailUtil");
 mailboxUtil = require("./utils/mailboxUtil");
 calendarUtil = require("./utils/calendarUtil");
-var request = require("request");
-
+const request = require("request");
+const crypto = require('crypto');
+const nylasClientSecret = '9rue6zvlb2a00uesbbuhwib33';
 
 module.exports = function(app,passport,appId) {
 
@@ -25,6 +26,53 @@ module.exports = function(app,passport,appId) {
 
   });
 
+  app.get('/webhook', function(req, res) {
+    // return res.json({'challenge':req.query.challenge});
+    // Nylas will check to make sure your webhook is valid by making a GET
+    // request to your endpoint with a challenge parameter when you add the
+    // endpoint to the developer dashboard.  All you have to do is return the
+    // value of the challenge parameter in the body of the response.
+
+    res.send(req.query.challenge);
+
+    // return res.status(200).send(req.query.challenge);
+  });
+
+
+  app.post('/webhook', function(req, res) {
+
+    res.sendStatus(200);
+
+    console.log('Event Fired from nylas')
+
+    console.log(req)
+    
+    // Verify the request to make sure it's actually from Nylas.
+    // if (!verify_nylas_request(req)) {
+    //   console.log("Failed to verify nylas");
+    //   return res.status(401).send("X-Nylas-Signature failed verification 🚷 ");
+    // }
+
+
+    // Nylas sent us a webhook notification for some kind of event, so we should
+    // process it!
+    // let data = req.body.deltas;
+    // console.log(JSON.stringify(data, null, 2));
+    // for (var i = 0; i < data.length; i++) {
+    //   // Print some of the information Nylas sent us. This is where you
+    //   // would normally process the webhook notification and do things like
+    //   // fetch relevant message ids, update your database, etc.
+    //   console.log("%s at %s with id %s", data[i].type, data[i].date, data[i].object_data.id);
+    // }
+    // Don't forget to let Nylas know that everything was pretty ok.
+  });
+
+  function verify_nylas_request(req) {
+    let digest = crypto.createHmac('sha256', nylasClientSecret)
+                     .update(req.rawBody)
+                     .digest('hex');
+    return digest === req.get('x-nylas-signature')
+  }
 
   app.get("/switchuser/:uuid", isLoggedIn, function(req, res) {
       userid = req.params.uuid;
